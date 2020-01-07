@@ -22,8 +22,11 @@ public class SensitiveWordData implements IWordData {
     private static List<String> defaultLines;
 
     static {
+        long start  = System.currentTimeMillis();
         defaultLines = new ArrayList<>(183837);
         defaultLines = StreamUtils.readAllLines("/dict.txt");
+        long end  = System.currentTimeMillis();
+        System.out.println("Sensitive data loaded!, cost time: " + (end-start) + " ms");
     }
 
     @Override
