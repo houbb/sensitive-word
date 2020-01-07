@@ -26,7 +26,7 @@ public class SensitiveWordData implements IWordData {
     static {
         synchronized (SensitiveWordData.class) {
             long start = System.currentTimeMillis();
-            defaultLines = new ArrayList<>(183837);
+            defaultLines = new ArrayList<>(183836);
             defaultLines = StreamUtils.readAllLines("/dict.txt");
             long end = System.currentTimeMillis();
             System.out.println("Sensitive data loaded!, cost time: " + (end - start) + " ms");

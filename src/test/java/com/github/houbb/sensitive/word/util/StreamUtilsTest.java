@@ -16,7 +16,7 @@ public class StreamUtilsTest {
         final String dictPath = "/dict.txt";
 
         List<String> stringList = StreamUtils.readAllLines(dictPath);
-        Assert.assertEquals(183837, stringList.size());
+        Assert.assertEquals(183836, stringList.size());
     }
 
 }
