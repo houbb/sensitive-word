@@ -59,3 +59,5 @@ morphine
 narcotic
 麻醉药
 精神药品
+生鸦片
+鸦片

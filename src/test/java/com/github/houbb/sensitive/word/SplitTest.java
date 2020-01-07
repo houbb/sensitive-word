@@ -17,7 +17,7 @@ public class SplitTest {
     @Ignore
     public void splitTest() {
         final String targetFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict4.txt";
-        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\minganci.txt";
+        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\_minganci.txt";
 
         String string = FileUtil.getFileContent(sourceFile);
 
