@@ -1,0 +1,8 @@
+language: java
+jdk:
+- oraclejdk7
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+script: mvn test
+after_success:
+- mvn clean cobertura:cobertura coveralls:report
+
