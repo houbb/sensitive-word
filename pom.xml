@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -141,8 +141,8 @@
     </build>
 
     <!--============================== ADD For sonatype START ==============================-->
-    <name>email</name>
-    <description>The most elegant email tool for java.</description>
+    <name>sensitive-word</name>
+    <description>The sensitive word tool for java with DFA.</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -157,8 +157,8 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/houbb/email</url>
-        <connection>https://github.com/houbb/email.git</connection>
+        <url>https://github.com/houbb/sensitive-word</url>
+        <connection>https://github.com/houbb/sensitive-word.git</connection>
         <developerConnection>https://houbb.github.io/</developerConnection>
     </scm>
     <developers>

@@ -10,3 +10,6 @@
 
 ## stop-word
 
+## 重复词
+
+ffffuuuucccckkk

@@ -102,4 +102,18 @@ public class DataInitTest {
         FileUtil.write(target, disctinct);
     }
 
+    @Test
+    @Ignore
+    public void oneWordTest() {
+        final String source = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
+
+        List<String> lines = FileUtil.readAllLines(source);
+        for(int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if(line.trim().length() == 1) {
+                System.out.println(i + " === " + line);
+            }
+        }
+    }
+
 }
