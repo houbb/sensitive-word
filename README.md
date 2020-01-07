@@ -46,7 +46,7 @@
 
 ## 使用实例
 
-所有测试案例参见 [SensitiveWordBsTest]()
+所有测试案例参见 [SensitiveWordBsTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/bs/SensitiveWordBsTest.java)
 
 ### 判断是否包含敏感词
 
