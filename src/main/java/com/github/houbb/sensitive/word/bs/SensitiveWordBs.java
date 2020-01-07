@@ -83,6 +83,7 @@ public class SensitiveWordBs {
      * 返回所有的敏感词
      * 1. 这里是默认去重的，且是有序的。
      * 2. 如果不存在，返回空列表
+     * @param target 目标字符串
      * @return 敏感词列表
      * @since 0.0.1
      */
@@ -93,6 +94,7 @@ public class SensitiveWordBs {
     /**
      * 返回第一个敏感词
      * （1）如果不存在，则返回 {@code null}
+     * @param target 目标字符串
      * @return 敏感词
      * @since 0.0.1
      */
