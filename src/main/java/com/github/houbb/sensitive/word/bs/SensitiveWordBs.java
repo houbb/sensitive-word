@@ -1,7 +1,11 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.heaven.support.instance.impl.Instances;
+import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
+import com.github.houbb.sensitive.word.api.IWordData;
+import com.github.houbb.sensitive.word.support.data.SensitiveWordData;
 
 import java.util.List;
 
@@ -25,6 +29,12 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     private volatile String target;
+
+    /**
+     * 敏感数据信息
+     * @since 0.0.1
+     */
+    private IWordData sensitiveWordData = Instances.singleton(SensitiveWordData.class);
 
     /**
      * 新建验证实例
@@ -76,6 +86,11 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public List<String> findAll() {
+        if(StringUtil.isEmpty(target)) {
+            return Guavas.newArrayList();
+        }
+
+        // 分词
         return null;
     }
 
@@ -86,7 +101,7 @@ public class SensitiveWordBs {
      * @return 过滤后的结果
      * @since 0.0.1
      */
-    public String filter() {
+    private String filter() {
         return filter(StringUtil.EMPTY);
     }
 
@@ -96,7 +111,7 @@ public class SensitiveWordBs {
      * @return 过滤后的结果
      * @since 0.0.1
      */
-    public String filter(final String filter) {
+    private String filter(final String filter) {
         return "";
     }
 

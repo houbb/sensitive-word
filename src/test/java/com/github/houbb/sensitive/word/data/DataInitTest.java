@@ -1,9 +1,8 @@
-package com.github.houbb.sensitive.word;
+package com.github.houbb.sensitive.word.data;
 
 import com.github.houbb.heaven.support.filter.IFilter;
 import com.github.houbb.heaven.util.io.FileUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
-import com.github.houbb.heaven.util.util.CharsetUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.util.CharsetUtils;
 import org.junit.Ignore;
@@ -13,10 +12,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 数据初始化
  * @author binbin.hou
- * @since 1.0.0
+ * @since 0.0.1
  */
-public class SplitTest {
+public class DataInitTest {
 
     @Test
     @Ignore
@@ -41,6 +41,12 @@ public class SplitTest {
         FileUtil.write(target, trimLines);
     }
 
+    /**
+     * 获取对应文件的独一无二内容
+     * @param name 名称
+     * @return 结果
+     * @since 0.0.1
+     */
     private List<String> distinctLines(final String name) {
         final String dir = "D:\\github\\sensitive-word\\src\\main\\resources\\";
         final String path = dir + name;
@@ -49,6 +55,7 @@ public class SplitTest {
     }
 
     @Test
+    @Ignore
     public void stopWordTest() {
         final String source = "D:\\github\\sensitive-word\\src\\main\\resources\\stopword.txt";
         final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\stopword_chars.txt";
@@ -63,6 +70,36 @@ public class SplitTest {
         }));
         Collections.sort(resultList);
         FileUtil.write(target, resultList);
+    }
+
+    @Test
+    @Ignore
+    public void dictAllInOneTest() {
+        final List<String> allLines = distinctLines("dict.txt");
+
+        allLines.addAll(distinctLines("不正当竞争.txt"));
+        allLines.addAll(distinctLines("人名.txt"));
+        allLines.addAll(distinctLines("其他.txt"));
+        allLines.addAll(distinctLines("广告.txt"));
+        allLines.addAll(distinctLines("房产.txt"));
+        allLines.addAll(distinctLines("政治类.txt"));
+        allLines.addAll(distinctLines("新闻实事.txt"));
+        allLines.addAll(distinctLines("暴力.txt"));
+        allLines.addAll(distinctLines("毒品.txt"));
+        allLines.addAll(distinctLines("网址.txt"));
+        allLines.addAll(distinctLines("色情类.txt"));
+        allLines.addAll(distinctLines("辱骂.txt"));
+        allLines.addAll(distinctLines("邪教.txt"));
+
+
+        List<String> disctinct = CollectionUtil
+                .distinct(CollectionUtil.trimCollection(allLines));
+
+        Collections.sort(disctinct);
+
+        final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+
+        FileUtil.write(target, disctinct);
     }
 
 }
