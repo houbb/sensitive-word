@@ -25,9 +25,8 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-
+        <heaven.version>0.1.66</heaven.version>
         <!--============================== OTHER ==============================-->
-        <javax.mail.version>1.6.2</javax.mail.version>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -36,13 +35,13 @@
             <!--============================== SELF ==============================-->
 
             <!--============================== INTER ==============================-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>heaven</artifactId>
+                <version>${heaven.version}</version>
+            </dependency>
 
             <!--============================== OTHER ==============================-->
-            <dependency>
-                <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
-                <version>${javax.mail.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>junit</groupId>
@@ -59,6 +58,10 @@
         <!--============================== SELF ==============================-->
 
         <!--============================== INTER ==============================-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+        </dependency>
 
         <!--============================== OTHER ==============================-->
         <dependency>
@@ -66,10 +69,6 @@
             <artifactId>junit</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
