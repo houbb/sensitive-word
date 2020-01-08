@@ -270,7 +270,7 @@ public class SensitiveWordMap implements IWordMap {
             return target;
         }
         // 用于结果构建
-        StringBuilder resultBuilder = new StringBuilder();
+        StringBuilder resultBuilder = new StringBuilder(target.length());
 
         for (int i = 0; i < target.length(); i++) {
             char currentChar = target.charAt(i);
