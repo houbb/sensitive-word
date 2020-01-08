@@ -40,7 +40,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -72,4 +72,20 @@ final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天�
 
 List<String> wordList = SensitiveWordBs.getInstance().findAll(text);
 Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
+```
+
+### 默认的替换策略
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+String result = SensitiveWordBs.getInstance().replace(text);
+Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
+```
+
+### 指定替换的内容
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+String result = SensitiveWordBs.getInstance().replace(text, '0');
+Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
 ```

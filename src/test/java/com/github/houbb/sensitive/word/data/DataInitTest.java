@@ -16,6 +16,7 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.1
  */
+@Ignore
 public class DataInitTest {
 
     @Test
