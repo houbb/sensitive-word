@@ -3,6 +3,8 @@ package com.github.houbb.sensitive.word.data;
 import com.github.houbb.heaven.util.io.FileUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +24,13 @@ public class DataUtil {
         final String path = dir + name;
         List<String> lines = FileUtil.readAllLines(path);
         return CollectionUtil.distinct(lines);
+    }
+
+    public static List<String> disctinctAndSort(final Collection<String> collection) {
+        List<String> stringList = CollectionUtil.distinct(collection);
+        Collections.sort(stringList);
+
+        return stringList;
     }
 
 }
