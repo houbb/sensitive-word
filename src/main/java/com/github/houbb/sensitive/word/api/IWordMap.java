@@ -47,4 +47,16 @@ public interface IWordMap {
      */
     String findFirst(final String string);
 
+    /**
+     * 替换所有敏感词内容
+     *
+     * ps: 这里可以添加优化。
+     *
+     * @param target 目标字符串
+     * @param replaceChar 替换为的 char
+     * @return 替换后结果
+     * @since 0.0.2
+     */
+    String replace(final String target, final char replaceChar);
+
 }

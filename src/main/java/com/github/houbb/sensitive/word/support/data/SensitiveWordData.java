@@ -1,10 +1,11 @@
 package com.github.houbb.sensitive.word.support.data;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.io.StreamUtil;
 import com.github.houbb.sensitive.word.api.IWordData;
-import com.github.houbb.sensitive.word.util.StreamUtils;
+import com.github.houbb.sensitive.word.constant.AppConst;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ public class SensitiveWordData implements IWordData {
     static {
         synchronized (SensitiveWordData.class) {
             long start = System.currentTimeMillis();
-            defaultLines = new ArrayList<>(183836);
-            defaultLines = StreamUtils.readAllLines("/dict.txt");
+            defaultLines = Guavas.newArrayList(AppConst.DICT_SIZE);
+            defaultLines = StreamUtil.readAllLines("/dict.txt");
             long end = System.currentTimeMillis();
             System.out.println("Sensitive data loaded!, cost time: " + (end - start) + " ms");
         }

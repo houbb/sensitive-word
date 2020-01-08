@@ -40,7 +40,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 
@@ -51,7 +51,7 @@
 ### 判断是否包含敏感词
 
 ```java
-final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。。";
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
 Assert.assertTrue(SensitiveWordBs.getInstance().contains(text));
 ```

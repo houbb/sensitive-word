@@ -3,8 +3,8 @@ package com.github.houbb.sensitive.word.data;
 import com.github.houbb.heaven.support.filter.IFilter;
 import com.github.houbb.heaven.util.io.FileUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.util.CharsetUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.sensitive.word.util.CharsetUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -38,7 +38,6 @@ public class DataInitTest {
         List<String> trimLines = CollectionUtil.distinct(CollectionUtil.trimCollection(lines));
 
         final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
-        FileUtil.write(target, trimLines);
     }
 
     /**
@@ -65,7 +64,7 @@ public class DataInitTest {
         List<String> resultList = CollectionUtil.distinct(CollectionUtil.filterList(lines, new IFilter<String>() {
             @Override
             public boolean filter(String s) {
-                return CharsetUtils.isContainsChinese(s);
+                return CharsetUtil.isContainsChinese(s);
             }
         }));
         Collections.sort(resultList);

@@ -1,9 +1,7 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.heaven.constant.CharConst;
 import com.github.houbb.heaven.support.instance.impl.Instances;
-import com.github.houbb.heaven.util.guava.Guavas;
-import com.github.houbb.heaven.util.lang.StringUtil;
-import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.support.data.SensitiveWordData;
@@ -60,16 +58,6 @@ public class SensitiveWordBs {
     }
 
     /**
-     * 是否合法
-     * @param target 目标字符串
-     * @return 是否
-     * @since 0.0.1
-     */
-    public boolean valid(final String target) {
-        return !contains(target);
-    }
-
-    /**
      * 是否包含敏感词
      * @param target 目标字符串
      * @return 是否
@@ -100,6 +88,27 @@ public class SensitiveWordBs {
      */
     public String findFirst(final String target) {
         return this.sensitiveWordMap.findFirst(target);
+    }
+
+    /**
+     * 替换所有内容
+     * @param target 目标字符串
+     * @param replaceChar 替换为的 char
+     * @return 替换后结果
+     * @since 0.0.2
+     */
+    public String replace(final String target, final char replaceChar) {
+        return this.sensitiveWordMap.replace(target, replaceChar);
+    }
+
+    /**
+     * 替换所有内容
+     * @param target 目标字符串
+     * @return 替换后结果
+     * @since 0.0.2
+     */
+    public String replace(final String target) {
+        return this.replace(target, CharConst.STAR);
     }
 
 }

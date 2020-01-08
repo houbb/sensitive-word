@@ -25,7 +25,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.66</heaven.version>
+        <heaven.version>0.1.67-SNAPSHOT</heaven.version>
         <!--============================== OTHER ==============================-->
         <junit.version>4.12</junit.version>
     </properties>

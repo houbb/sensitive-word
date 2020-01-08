@@ -2,6 +2,7 @@ package com.github.houbb.sensitive.word.support.map;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
@@ -95,7 +96,7 @@ public class SensitiveWordMap implements IWordMap {
         }
 
         long endTime = System.currentTimeMillis();
-        System.out.println("Init sensitive word map end! Cost time " + (endTime-startTime) + "ms");
+        System.out.println("Init sensitive word map end! Cost time " + (endTime - startTime) + "ms");
     }
 
     /**
@@ -114,7 +115,7 @@ public class SensitiveWordMap implements IWordMap {
         }
 
         for (int i = 0; i < string.length(); i++) {
-            int checkResult = checkSensitiveWord(string, i);
+            int checkResult = checkSensitiveWord(string, i, ValidModeEnum.FAIL_FAST);
             // 快速返回
             if (checkResult > 0) {
                 return true;
@@ -148,6 +149,15 @@ public class SensitiveWordMap implements IWordMap {
         return stringList.get(0);
     }
 
+    @Override
+    public String replace(String target, char replaceChar) {
+        if(StringUtil.isEmpty(target)) {
+            return target;
+        }
+
+        return this.replaceSensitiveWord(target, ValidModeEnum.FAIL_OVER, replaceChar);
+    }
+
     /**
      * 获取敏感词列表
      *
@@ -164,15 +174,15 @@ public class SensitiveWordMap implements IWordMap {
 
         List<String> resultList = Guavas.newArrayList();
         for (int i = 0; i < text.length(); i++) {
-            int wordLength = checkSensitiveWord(text, i);
+            int wordLength = checkSensitiveWord(text, i, ValidModeEnum.FAIL_OVER);
 
             // 命中
             if (wordLength > 0) {
                 // 保存敏感词
-                String sensitiveWord = text.substring(i, i+wordLength);
+                String sensitiveWord = text.substring(i, i + wordLength);
 
                 // 添加去重
-                if(!resultList.contains(sensitiveWord)) {
+                if (!resultList.contains(sensitiveWord)) {
                     resultList.add(sensitiveWord);
                 }
 
@@ -183,6 +193,7 @@ public class SensitiveWordMap implements IWordMap {
 
                 // 增加 i 的步长
                 // 为什么要-1，因为默认就会自增1
+                // TODO: 这里可以根据字符串匹配算法优化。
                 i += wordLength - 1;
             }
         }
@@ -196,17 +207,24 @@ public class SensitiveWordMap implements IWordMap {
      * （1）如果未命中敏感词，直接返回 0
      * （2）命中敏感词，则返回敏感词的长度。
      *
-     * @param txt        文本信息
-     * @param beginIndex 开始下标
+     * ps: 这里结果进行优化，
+     * 1. 是否包含敏感词。
+     * 2. 敏感词的长度
+     * 3. 正常走过字段的长度（便于后期替换优化，避免不必要的循环重复）
+     *
+     * @param txt           文本信息
+     * @param beginIndex    开始下标
+     * @param validModeEnum 验证模式
      * @return 敏感词对应的长度
      * @since 0.0.1
      */
-    private int checkSensitiveWord(String txt, int beginIndex) {
+    private int checkSensitiveWord(final String txt, final int beginIndex,
+                                   final ValidModeEnum validModeEnum) {
         Map nowMap = sensitiveWordMap;
 
-        boolean flag = false;
         // 记录敏感词的长度
-        int sensitiveWordLength = 0;
+        int lengthCount = 0;
+        int actualLength = 0;
 
         for (int i = beginIndex; i < txt.length(); i++) {
             char charKey = txt.charAt(i);
@@ -214,15 +232,20 @@ public class SensitiveWordMap implements IWordMap {
             // 并且将 nowMap 替换为新的 map，进入下一层的循环。
             nowMap = (Map) nowMap.get(charKey);
             if (ObjectUtil.isNotNull(nowMap)) {
-                sensitiveWordLength++;
+                lengthCount++;
 
                 // 判断是否是敏感词的结尾字，如果是结尾字则判断是否继续检测
                 boolean isEnd = (boolean) nowMap.get(AppConst.IS_END);
                 if (isEnd) {
-                    flag = true;
+                    // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。
+                    // eg: 敏感词 敏感词xxx
+                    // 如果是 【敏感词x】也会被匹配。
+                    actualLength = lengthCount;
 
-                    // 这里直接默认 fail-fast 即可。
-                    break;
+                    // 这里确实需要一种验证模式，主要是为了最大匹配从而达到最佳匹配的效果。
+                    if (ValidModeEnum.FAIL_FAST.equals(validModeEnum)) {
+                        break;
+                    }
                 }
             } else {
                 // 直接跳出循环
@@ -230,10 +253,44 @@ public class SensitiveWordMap implements IWordMap {
             }
         }
 
-        if (!flag) {
-            sensitiveWordLength = 0;
+        return actualLength;
+    }
+
+    /**
+     * 直接替换敏感词，返回替换后的结果
+     * @param target           文本信息
+     * @param validModeEnum 验证模式
+     * @return 脱敏后的字符串
+     * @since 0.0.2
+     */
+    private String replaceSensitiveWord(final String target,
+                                        final ValidModeEnum validModeEnum,
+                                        final char replaceChar) {
+        if(StringUtil.isEmpty(target)) {
+            return target;
         }
-        return sensitiveWordLength;
+        // 用于结果构建
+        StringBuilder resultBuilder = new StringBuilder();
+
+        for (int i = 0; i < target.length(); i++) {
+            char currentChar = target.charAt(i);
+            // 内层直接从 i 开始往后遍历，这个算法的，获取第一个匹配的单词
+            int wordLength = checkSensitiveWord(target, i, validModeEnum);
+
+            // 敏感词
+            if(wordLength > 0) {
+                String replaceStr = CharUtil.repeat(replaceChar, wordLength);
+                resultBuilder.append(replaceStr);
+
+                // 直接跳过敏感词的长度
+                i += wordLength-1;
+            } else {
+                // 普通词
+                resultBuilder.append(currentChar);
+            }
+        }
+
+        return resultBuilder.toString();
     }
 
 }
