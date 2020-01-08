@@ -23,6 +23,12 @@ public final class AppConst {
      * 字典的大小
      * @since 0.0.1
      */
-    public static final int DICT_SIZE = 66337;
+    public static final int DICT_SIZE = 65711;
+
+    /**
+     * 英语词典的大小
+     * @since 0.0.4
+     */
+    public static final int DICT_EN_SIZE = 12;
 
 }

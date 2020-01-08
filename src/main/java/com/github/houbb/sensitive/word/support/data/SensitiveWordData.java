@@ -27,8 +27,9 @@ public class SensitiveWordData implements IWordData {
     static {
         synchronized (SensitiveWordData.class) {
             long start = System.currentTimeMillis();
-            defaultLines = Guavas.newArrayList(AppConst.DICT_SIZE);
+            defaultLines = Guavas.newArrayList(AppConst.DICT_SIZE+AppConst.DICT_EN_SIZE);
             defaultLines = StreamUtil.readAllLines("/dict.txt");
+            defaultLines.addAll(StreamUtil.readAllLines("/dict_en.txt"));
             long end = System.currentTimeMillis();
             System.out.println("Sensitive data loaded!, cost time: " + (end - start) + " ms");
         }
