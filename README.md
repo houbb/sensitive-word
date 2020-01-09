@@ -136,6 +136,8 @@ Assert.assertEquals("ｆｕｃｋ", word);
 
 # 后期 road-map
 
+- 数字的转换处理
+
 - 繁简体互换
 
 - 重复词
@@ -149,3 +151,13 @@ Assert.assertEquals("ｆｕｃｋ", word);
 - 文字镜像翻转
 
 - 敏感词标签支持
+
+# 拓展阅读
+
+[敏感词工具实现思路](https://houbb.github.io/2020/01/07/sensitive-word)
+
+[DFA 算法讲解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+[敏感词优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
+
+[停止词的思考记录](https://houbb.github.io/2020/01/07/sensitive-word-stopword)
