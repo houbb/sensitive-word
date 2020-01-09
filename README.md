@@ -158,6 +158,6 @@ Assert.assertEquals("ｆｕｃｋ", word);
 
 [DFA 算法讲解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
 
-[敏感词优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
+[敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
 
 [停止词的思考记录](https://houbb.github.io/2020/01/07/sensitive-word-stopword)
