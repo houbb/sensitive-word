@@ -20,15 +20,19 @@
 
 - 6W+ 词库，且不断优化更新
 
-- 基于 DFA 算法，性能很好
+- 基于 DFA 算法，性能较好
 
-- 基于 fluent-api 实现，优雅方便
+- 基于 fluent-api 实现，使用优雅简洁
 
 - 支持敏感词的判断、返回、脱敏等常见操作
 
 - 支持全角半角互换
 
 - 支持英文大小写互换
+
+## 变更日志
+
+[CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
 # 快速开始
 
