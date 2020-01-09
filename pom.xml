@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
