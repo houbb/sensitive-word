@@ -31,7 +31,7 @@ public class SensitiveWordData implements IWordData {
             defaultLines = StreamUtil.readAllLines("/dict.txt");
             defaultLines.addAll(StreamUtil.readAllLines("/dict_en.txt"));
             long end = System.currentTimeMillis();
-            System.out.println("Sensitive data loaded!, cost time: " + (end - start) + " ms");
+            System.out.println("Sensitive data loaded!, cost time: " + (end - start) + "ms");
         }
     }
 

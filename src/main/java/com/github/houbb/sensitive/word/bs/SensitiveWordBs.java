@@ -1,7 +1,7 @@
 package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.heaven.constant.CharConst;
-import com.github.houbb.heaven.support.instance.impl.Instances;
+import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.support.data.SensitiveWordData;
@@ -23,40 +23,67 @@ public class SensitiveWordBs {
     private SensitiveWordBs(){}
 
     /**
-     * 敏感数据信息
-     * @since 0.0.1
-     */
-    private IWordData sensitiveWordData = Instances.singleton(SensitiveWordData.class);
-
-    /**
      * 敏感词 map
      * @since 0.0.1
      */
-    private IWordMap sensitiveWordMap = Instances.singleton(SensitiveWordMap.class);
+    private static volatile IWordMap sensitiveWordMap;
 
     /**
-     * 获取单例信息
-     * @since 0.0.1
+     * 默认的执行上下文
+     * @since 0.0.4
      */
-    private static final SensitiveWordBs INSTANCE;
+    private volatile IWordContext context;
 
-    static {
-        synchronized (SensitiveWordBs.class) {
-            INSTANCE = new SensitiveWordBs();
-            List<String> lines = INSTANCE.sensitiveWordData.getWordData();
-            INSTANCE.sensitiveWordMap.initWordMap(lines);
+    /**
+     * DCL 初始化 wordMap 信息
+     * @return 初始化后的结果
+     * @since 0.0.4
+     */
+    private static IWordMap initWordMap() {
+        if(sensitiveWordMap == null) {
+            synchronized (IWordMap.class) {
+                if(sensitiveWordMap == null) {
+                    // 加载配置信息
+                    IWordData wordData = new SensitiveWordData();
+                    List<String> lines = wordData.getWordData();
+
+                    // 初始化 DFA 信息
+                    sensitiveWordMap = new SensitiveWordMap();
+                    sensitiveWordMap.initWordMap(lines);
+                }
+            }
         }
+
+        return sensitiveWordMap;
     }
 
     /**
      * 新建验证实例
+     *
+     * double-lock
      * @return this
      * @since 0.0.1
      */
-    public static SensitiveWordBs getInstance() {
-        return INSTANCE;
+    public static SensitiveWordBs newInstance() {
+        initWordMap();
+
+        SensitiveWordBs bs = new SensitiveWordBs();
+        bs.context = buildDefaultContext();
+        return bs;
     }
 
+    /**
+     * 构建默认的上下文
+     * @return 结果
+     * @since 0.0.4
+     */
+    private static IWordContext buildDefaultContext() {
+        IWordContext wordContext = SensitiveWordContext.newInstance();
+        wordContext.ignoreCase(true);
+        wordContext.ignoreWidth(true);
+
+        return wordContext;
+    }
     /**
      * 是否包含敏感词
      * @param target 目标字符串
@@ -64,7 +91,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public boolean contains(final String target) {
-        return this.sensitiveWordMap.contains(target);
+        return sensitiveWordMap.contains(target, context);
     }
 
     /**
@@ -76,7 +103,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public List<String> findAll(final String target) {
-        return this.sensitiveWordMap.findAll(target);
+        return sensitiveWordMap.findAll(target, context);
     }
 
     /**
@@ -87,7 +114,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public String findFirst(final String target) {
-        return this.sensitiveWordMap.findFirst(target);
+        return sensitiveWordMap.findFirst(target, context);
     }
 
     /**
@@ -98,7 +125,7 @@ public class SensitiveWordBs {
      * @since 0.0.2
      */
     public String replace(final String target, final char replaceChar) {
-        return this.sensitiveWordMap.replace(target, replaceChar);
+        return sensitiveWordMap.replace(target, replaceChar, context);
     }
 
     /**

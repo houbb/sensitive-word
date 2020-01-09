@@ -22,7 +22,7 @@ public class SensitiveWordBsTest {
     public void containsTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        Assert.assertTrue(SensitiveWordBs.getInstance().contains(text));
+        Assert.assertTrue(SensitiveWordBs.newInstance().contains(text));
     }
 
     /**
@@ -33,7 +33,7 @@ public class SensitiveWordBsTest {
     public void findAllTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        List<String> wordList = SensitiveWordBs.getInstance().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
         Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
     }
 
@@ -45,7 +45,7 @@ public class SensitiveWordBsTest {
     public void findFirstTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String word = SensitiveWordBs.getInstance().findFirst(text);
+        String word = SensitiveWordBs.newInstance().findFirst(text);
         Assert.assertEquals("五星红旗", word);
     }
 
@@ -57,7 +57,7 @@ public class SensitiveWordBsTest {
     public void replaceTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.getInstance().replace(text);
+        String result = SensitiveWordBs.newInstance().replace(text);
         Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
     }
 
@@ -69,8 +69,32 @@ public class SensitiveWordBsTest {
     public void replaceCharTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.getInstance().replace(text, '0');
+        String result = SensitiveWordBs.newInstance().replace(text, '0');
         Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
+    }
+
+    /**
+     * 忽略大小写
+     * @since 0.0.4
+     */
+    @Test
+    public void ignoreCaseTest() {
+        final String text = "fuCK the bad words.";
+
+        String word = SensitiveWordBs.newInstance().findFirst(text);
+        Assert.assertEquals("fuCK", word);
+    }
+
+    /**
+     * 忽略半角圆角
+     * @since 0.0.4
+     */
+    @Test
+    public void ignoreWidthTest() {
+        final String text = "ｆｕｃｋ the bad words.";
+
+        String word = SensitiveWordBs.newInstance().findFirst(text);
+        Assert.assertEquals("ｆｕｃｋ", word);
     }
 
 }

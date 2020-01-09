@@ -5,7 +5,7 @@ package com.github.houbb.sensitive.word.constant.enums;
  * <p> create on 2020/1/7 22:46 </p>
  *
  * @author Administrator
- * @since 1.0.0
+ * @since 0.0.1
  */
 public enum ValidModeEnum {
 

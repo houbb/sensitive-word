@@ -43,8 +43,8 @@ public class CheckSensitiveWordResult {
         return sensitiveWordSize;
     }
 
-    public CheckSensitiveWordResult sentiveWordSize(int sentiveWordSize) {
-        this.sensitiveWordSize = sentiveWordSize;
+    public CheckSensitiveWordResult sentiveWordSize(int sensitiveWordSize) {
+        this.sensitiveWordSize = sensitiveWordSize;
         return this;
     }
 

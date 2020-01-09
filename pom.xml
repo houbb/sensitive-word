@@ -52,6 +52,10 @@
                         <groupId>com.github.houbb</groupId>
                         <artifactId>heaven</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>com.huaban</groupId>
+                        <artifactId>jieba-analysis</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <!--============================== OTHER ==============================-->
