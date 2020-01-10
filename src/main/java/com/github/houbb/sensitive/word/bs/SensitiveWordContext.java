@@ -2,6 +2,8 @@ package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.sensitive.word.api.IWordContext;
 
+import java.util.Map;
+
 /**
  * 上下文
  * @author binbin.hou
@@ -21,6 +23,23 @@ public class SensitiveWordContext implements IWordContext {
      */
     private boolean ignoreWidth;
 
+    /**
+     * 是否忽略数字格式
+     * @since 0.0.5
+     */
+    private boolean ignoreNumStyle;
+
+    /**
+     * 敏感词信息
+     * @since 0.0.5
+     */
+    private Map sensitiveWordMap;
+
+    /**
+     * 是否进行敏感数字检测
+     * @since 0.0.6
+     */
+    private boolean sensitiveNumCheck;
     /**
      * 私有化构造器
      * @since 0.0.4
@@ -59,22 +78,37 @@ public class SensitiveWordContext implements IWordContext {
         return this;
     }
 
-    private static class ContextHolder {
-        private static final SensitiveWordContext INSTANCE = new SensitiveWordContext();
-
-        static {
-            INSTANCE.ignoreCase(true);
-            INSTANCE.ignoreWidth(true);
-        }
+    @Override
+    public boolean ignoreNumStyle() {
+        return ignoreNumStyle;
     }
 
-    /**
-     * 默认配置
-     * @return 结果
-     * @since 0.0.4
-     */
-    private static SensitiveWordContext defaultContext() {
-        return ContextHolder.INSTANCE;
+    @Override
+    public SensitiveWordContext ignoreNumStyle(boolean ignoreNumStyle) {
+        this.ignoreNumStyle = ignoreNumStyle;
+        return this;
+    }
+
+    @Override
+    public Map sensitiveWordMap() {
+        return sensitiveWordMap;
+    }
+
+    @Override
+    public SensitiveWordContext sensitiveWordMap(Map sensitiveWordMap) {
+        this.sensitiveWordMap = sensitiveWordMap;
+        return this;
+    }
+
+    @Override
+    public boolean sensitiveNumCheck() {
+        return sensitiveNumCheck;
+    }
+
+    @Override
+    public SensitiveWordContext sensitiveNumCheck(boolean sensitiveNumCheck) {
+        this.sensitiveNumCheck = sensitiveNumCheck;
+        return this;
     }
 
     @Override
@@ -82,6 +116,8 @@ public class SensitiveWordContext implements IWordContext {
         return "SensitiveWordContext{" +
                 "ignoreCase=" + ignoreCase +
                 ", ignoreWidth=" + ignoreWidth +
+                ", ignoreNumStyle=" + ignoreNumStyle +
+                ", sensitiveNumCheck=" + sensitiveNumCheck +
                 '}';
     }
 

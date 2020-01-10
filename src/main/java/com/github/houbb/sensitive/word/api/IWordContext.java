@@ -1,5 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
+import java.util.Map;
+
 /**
  * @author binbin.hou
  * @since 0.0.4
@@ -21,6 +23,14 @@ public interface IWordContext {
     boolean ignoreWidth();
 
     /**
+     * 是否忽略数字格式
+     * @return 是否
+     * @since 0.0.5
+     */
+    boolean ignoreNumStyle();
+
+
+    /**
      * 设置是否忽略大小写
      * @param ignoreCase 是否忽略大小写
      * @return this
@@ -35,5 +45,42 @@ public interface IWordContext {
      * @since 0.0.4
      */
     IWordContext ignoreWidth(boolean ignoreWidth);
+
+    /**
+     * 设置是否忽略半角圆角
+     * @param ignoreNumStyle 是否忽略半角圆角
+     * @return this
+     * @since 0.0.5
+     */
+    IWordContext ignoreNumStyle(boolean ignoreNumStyle);
+
+    /**
+     * 获取敏感词信息
+     * @return 敏感词
+     * @since 0.0.5
+     */
+    Map sensitiveWordMap();
+
+    /**
+     * 敏感词信息
+     * @param map map 信息
+     * @return this
+     * @since 0.0.5
+     */
+    IWordContext sensitiveWordMap(final Map map);
+
+    /**
+     * 敏感数字检测
+     * @return 数字检测
+     * @since 0.0.5
+     */
+    boolean sensitiveNumCheck();
+
+    /**
+     * 设置敏感数字检测
+     * @return 数字检测
+     * @since 0.0.5
+     */
+    IWordContext sensitiveNumCheck(final boolean sensitiveNumCheck);
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.1
  */
-public interface IWordMap {
+public interface IWordMap extends ISensitiveCheck {
 
 
     /**

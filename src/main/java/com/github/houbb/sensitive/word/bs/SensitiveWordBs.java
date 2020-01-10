@@ -79,8 +79,13 @@ public class SensitiveWordBs {
      */
     private static IWordContext buildDefaultContext() {
         IWordContext wordContext = SensitiveWordContext.newInstance();
+        // 格式统一化
         wordContext.ignoreCase(true);
         wordContext.ignoreWidth(true);
+        wordContext.ignoreNumStyle(true);
+
+        // 开启校验
+        wordContext.sensitiveNumCheck(true);
 
         return wordContext;
     }

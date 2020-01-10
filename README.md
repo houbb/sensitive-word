@@ -30,6 +30,8 @@
 
 - 支持英文大小写互换
 
+- 支持数字各种形式的互换
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
@@ -48,7 +50,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 
@@ -134,9 +136,18 @@ String word = SensitiveWordBs.newInstance().findFirst(text);
 Assert.assertEquals("ｆｕｃｋ", word);
 ```
 
-# 后期 road-map
+## 忽略数字的写法
 
-- 数字的转换处理
+这里实现了数字常见形式的转换。
+
+```java
+final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
+```
+
+# 后期 road-map
 
 - 繁简体互换
 
