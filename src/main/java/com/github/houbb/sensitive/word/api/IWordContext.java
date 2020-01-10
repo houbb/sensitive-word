@@ -99,6 +99,21 @@ public interface IWordContext {
     IWordContext sensitiveNumCheck(final boolean sensitiveNumCheck);
 
     /**
+     * 是否进行邮箱检测
+     * @return this
+     * @since 0.0.9
+     */
+    boolean sensitiveEmailCheck();
+
+    /**
+     * 设置敏感邮箱检测
+     * @param sensitiveEmailCheck 是否检测
+     * @return this
+     * @since 0.0.9
+     */
+    IWordContext sensitiveEmailCheck(final boolean sensitiveEmailCheck);
+
+    /**
      * 忽略英文的写法
      * @return 数字检测
      * @since 0.0.6

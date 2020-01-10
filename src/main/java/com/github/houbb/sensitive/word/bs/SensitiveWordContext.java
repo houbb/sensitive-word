@@ -60,6 +60,12 @@ public class SensitiveWordContext implements IWordContext {
     private boolean ignoreRepeat;
 
     /**
+     * 是否进行邮箱测试
+     * @since 0.0.9
+     */
+    private boolean sensitiveEmailCheck;
+
+    /**
      * 私有化构造器
      * @since 0.0.4
      */
@@ -160,6 +166,17 @@ public class SensitiveWordContext implements IWordContext {
     @Override
     public SensitiveWordContext ignoreRepeat(boolean ignoreRepeat) {
         this.ignoreRepeat = ignoreRepeat;
+        return this;
+    }
+
+    @Override
+    public boolean sensitiveEmailCheck() {
+        return sensitiveEmailCheck;
+    }
+
+    @Override
+    public SensitiveWordContext sensitiveEmailCheck(boolean sensitiveEmailCheck) {
+        this.sensitiveEmailCheck = sensitiveEmailCheck;
         return this;
     }
 

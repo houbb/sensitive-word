@@ -35,6 +35,8 @@ public class SensitiveWordCheck implements ISensitiveCheck {
                 lengthCount++;
 
                 // 判断是否是敏感词的结尾字，如果是结尾字则判断是否继续检测
+                System.out.println("chat is : " + i +"==="+txt.charAt(i));
+                System.out.println("now map: " + nowMap.get(AppConst.IS_END));
                 boolean isEnd = (boolean) nowMap.get(AppConst.IS_END);
                 if (isEnd) {
                     // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。

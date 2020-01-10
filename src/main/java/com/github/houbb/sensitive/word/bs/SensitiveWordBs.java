@@ -89,6 +89,7 @@ public class SensitiveWordBs {
 
         // 开启校验
         wordContext.sensitiveNumCheck(true);
+        wordContext.sensitiveEmailCheck(true);
 
         return wordContext;
     }
