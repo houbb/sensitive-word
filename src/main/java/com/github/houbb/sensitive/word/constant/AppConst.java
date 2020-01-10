@@ -31,4 +31,16 @@ public final class AppConst {
      */
     public static final int DICT_EN_SIZE = 12;
 
+    /**
+     * 拒绝的词语
+     * @since 0.0.8
+     */
+    public static final String SENSITIVE_WORD_DENY_PATH = "/sensitive_word_deny.txt";
+
+    /**
+     * 用户允许的词语
+     * @since 0.0.8
+     */
+    public static final String SENSITIVE_WORD_ALLOW_PATH = "/sensitive_word_allow.txt";
+
 }

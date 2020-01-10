@@ -36,6 +36,8 @@
 
 - 支持英文常见形式的互换
 
+- 支持用户自定义敏感词和白名单
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
@@ -54,7 +56,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
 </dependency>
 ```
 
@@ -178,13 +180,35 @@ List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
 
+# 用户自定义
+
+## 敏感词和白名单
+
+直接在 resource 目录下新建文件，每一行对应一个敏感词。
+
+`sensitive_word_deny.txt` 代表用户自定义敏感词文件。
+
+`sensitive_word_allow.txt` 代表用户自定义白名单文件。
+
+## 测试
+
+我们在敏感词文件中加入一行，内容为 `自定义敏感词`，同时在白名单文件中加入一行，
+内容为 `gender` 作为用户不认为是敏感词的信息。
+
+- 测试代码
+
+```java
+final String text = "gender 我们认为应该通过，自定义敏感词我们认为应该拒绝。";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[自定义敏感词]", wordList.toString());
+```
+
 # 后期 road-map
 
 - 停顿词
 
 - 拼音互换
-
-- 用户自定义敏感词和白名单
 
 - 文字镜像翻转
 
