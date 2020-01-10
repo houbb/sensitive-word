@@ -83,6 +83,8 @@ public class SensitiveWordBs {
         wordContext.ignoreCase(true);
         wordContext.ignoreWidth(true);
         wordContext.ignoreNumStyle(true);
+        wordContext.ignoreChineseStyle(true);
+        wordContext.ignoreEnglishStyle(true);
 
         // 开启校验
         wordContext.sensitiveNumCheck(true);

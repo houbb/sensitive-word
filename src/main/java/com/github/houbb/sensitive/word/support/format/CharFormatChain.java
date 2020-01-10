@@ -21,15 +21,20 @@ public class CharFormatChain implements ICharFormat {
         char result = original;
 
         List<ICharFormat> charFormats = Guavas.newArrayList();
+        if(context.ignoreEnglishStyle()) {
+            charFormats.add(Instances.singleton(IgnoreEnglishStyleFormat.class));
+        }
         if(context.ignoreCase()) {
             charFormats.add(Instances.singleton(IgnoreCaseCharFormat.class));
-
         }
         if(context.ignoreWidth()) {
             charFormats.add(Instances.singleton(IgnoreWidthCharFormat.class));
         }
         if(context.ignoreNumStyle()) {
             charFormats.add(Instances.singleton(IgnoreNumStyleCharFormat.class));
+        }
+        if(context.ignoreChineseStyle()) {
+            charFormats.add(Instances.singleton(IgnoreChineseStyleFormat.class));
         }
 
         // 循环执行

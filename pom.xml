@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -46,7 +46,6 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>opencc4j</artifactId>
                 <version>${opencc4j.version}</version>
-                <optional>true</optional>
                 <exclusions>
                     <exclusion>
                         <groupId>com.github.houbb</groupId>

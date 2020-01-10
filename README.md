@@ -30,7 +30,11 @@
 
 - 支持英文大小写互换
 
-- 支持数字各种形式的互换
+- 支持数字常见形式的互换
+
+- 支持中文繁简体互换
+
+- 支持英文常见形式的互换
 
 ## 变更日志
 
@@ -50,7 +54,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 </dependency>
 ```
 
@@ -147,9 +151,25 @@ List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
 Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
 ```
 
-# 后期 road-map
+## 忽略繁简体
 
-- 繁简体互换
+```java
+final String text = "我爱我的祖国和五星紅旗。";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[五星紅旗]", wordList.toString());
+```
+
+## 忽略英文的书写格式
+
+```java
+final String text = "Ⓕⓤc⒦ the bad words";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
+```
+
+# 后期 road-map
 
 - 重复词
 

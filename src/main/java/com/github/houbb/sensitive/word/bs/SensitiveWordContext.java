@@ -40,6 +40,19 @@ public class SensitiveWordContext implements IWordContext {
      * @since 0.0.6
      */
     private boolean sensitiveNumCheck;
+
+    /**
+     * 是否忽略中文繁简体
+     * @since 0.0.6
+     */
+    private boolean ignoreChineseStyle;
+
+    /**
+     * 是否忽略英文的写法
+     * @since 0.0.6
+     */
+    private boolean ignoreEnglishStyle;
+
     /**
      * 私有化构造器
      * @since 0.0.4
@@ -112,12 +125,37 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
+    public boolean ignoreChineseStyle() {
+        return ignoreChineseStyle;
+    }
+
+    @Override
+    public SensitiveWordContext ignoreChineseStyle(boolean ignoreChineseStyle) {
+        this.ignoreChineseStyle = ignoreChineseStyle;
+        return this;
+    }
+
+    @Override
+    public boolean ignoreEnglishStyle() {
+        return ignoreEnglishStyle;
+    }
+
+    @Override
+    public SensitiveWordContext ignoreEnglishStyle(boolean ignoreEnglishStyle) {
+        this.ignoreEnglishStyle = ignoreEnglishStyle;
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "SensitiveWordContext{" +
                 "ignoreCase=" + ignoreCase +
                 ", ignoreWidth=" + ignoreWidth +
                 ", ignoreNumStyle=" + ignoreNumStyle +
+                ", sensitiveWordMap=" + sensitiveWordMap +
                 ", sensitiveNumCheck=" + sensitiveNumCheck +
+                ", ignoreChineseStyle=" + ignoreChineseStyle +
+                ", ignoreEnglishStyle=" + ignoreEnglishStyle +
                 '}';
     }
 

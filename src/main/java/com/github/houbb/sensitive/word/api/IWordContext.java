@@ -55,6 +55,22 @@ public interface IWordContext {
     IWordContext ignoreNumStyle(boolean ignoreNumStyle);
 
     /**
+     * 忽略中文繁简体格式
+     * @return 是否
+     * @since 0.0.6
+     */
+    boolean ignoreChineseStyle();
+
+    /**
+     * 设置是否忽略中文繁简体格式
+     * @param ignoreChineseStyle 是否忽略
+     * @return 是否
+     * @since 0.0.6
+     */
+    IWordContext ignoreChineseStyle(final boolean ignoreChineseStyle);
+
+
+    /**
      * 获取敏感词信息
      * @return 敏感词
      * @since 0.0.5
@@ -78,9 +94,24 @@ public interface IWordContext {
 
     /**
      * 设置敏感数字检测
+     * @param sensitiveNumCheck 数字格式检测
      * @return 数字检测
      * @since 0.0.5
      */
     IWordContext sensitiveNumCheck(final boolean sensitiveNumCheck);
+
+    /**
+     * 忽略英文的写法
+     * @return 数字检测
+     * @since 0.0.6
+     */
+    boolean ignoreEnglishStyle();
+
+    /**
+     * 设置忽略英文的写法
+     * @return 数字检测
+     * @since 0.0.6
+     */
+    IWordContext ignoreEnglishStyle(final boolean ignoreEnglishStyle);
 
 }
