@@ -109,6 +109,7 @@ public interface IWordContext {
 
     /**
      * 设置忽略英文的写法
+     * @param ignoreEnglishStyle 是否忽略
      * @return 数字检测
      * @since 0.0.6
      */
