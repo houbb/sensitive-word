@@ -23,7 +23,12 @@ public class CharFormatChain implements ICharFormat {
         List<ICharFormat> charFormats = Guavas.newArrayList();
         if(context.ignoreCase()) {
             charFormats.add(Instances.singleton(IgnoreCaseCharFormat.class));
+
+        }
+        if(context.ignoreWidth()) {
             charFormats.add(Instances.singleton(IgnoreWidthCharFormat.class));
+        }
+        if(context.ignoreNumStyle()) {
             charFormats.add(Instances.singleton(IgnoreNumStyleCharFormat.class));
         }
 

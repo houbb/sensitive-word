@@ -2,12 +2,11 @@ package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
-import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.format.CharFormatChain;
-import com.github.houbb.sensitive.word.utils.NumUtils;
+import com.github.houbb.sensitive.word.support.format.IgnoreNumStyleCharFormat;
 
 /**
  * 敏感词监测实现

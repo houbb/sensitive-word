@@ -35,7 +35,7 @@ public class DictSlimTest {
     @Ignore
     public void formatTest() {
         final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
-        final String targetFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict_format.txt";
+        final String targetFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
 
@@ -68,7 +68,7 @@ public class DictSlimTest {
     @Test
     @Ignore
     public void removeTest() {
-        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict_format.txt";
+        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
         final String targetFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
