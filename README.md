@@ -54,7 +54,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
 </dependency>
 ```
 
@@ -169,9 +169,16 @@ List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
 Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```
 
-# 后期 road-map
+## 忽略重复词
 
-- 重复词
+```java
+final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
+```
+
+# 后期 road-map
 
 - 停顿词
 

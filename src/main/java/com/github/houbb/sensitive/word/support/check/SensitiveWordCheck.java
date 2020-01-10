@@ -2,7 +2,6 @@ package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
-import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
@@ -29,12 +28,9 @@ public class SensitiveWordCheck implements ISensitiveCheck {
         int actualLength = 0;
 
         for (int i = beginIndex; i < txt.length(); i++) {
-            char c = txt.charAt(i);
-            char charKey = Instances.singleton(CharFormatChain.class).format(c, context);
+            // 获取当前的 map 信息
+            nowMap = getNowMap(nowMap, context, txt, i);
 
-            // 判断该字是否存在于敏感词库中
-            // 并且将 nowMap 替换为新的 map，进入下一层的循环。
-            nowMap = (Map) nowMap.get(charKey);
             if (ObjectUtil.isNotNull(nowMap)) {
                 lengthCount++;
 
@@ -58,6 +54,40 @@ public class SensitiveWordCheck implements ISensitiveCheck {
         }
 
         return actualLength;
+    }
+
+    /**
+     * 获取当前的 Map
+     * @param nowMap 原始的当前 map
+     * @param context 上下文
+     * @param txt 文本信息
+     * @param index 下标
+     * @return 实际的当前 map
+     * @since 0.0.7
+     */
+    private Map getNowMap(Map nowMap,
+                          final IWordContext context,
+                          final String txt,
+                          final int index) {
+        char c = txt.charAt(index);
+        char mappingChar = Instances.singleton(CharFormatChain.class).format(c, context);
+
+        // 这里做一次重复词的处理
+        Map currentMap = (Map) nowMap.get(mappingChar);
+        // 启用忽略重复&当前下标不是第一个
+        if(context.ignoreRepeat()
+            && index > 0) {
+            char preChar = txt.charAt(index-1);
+            char preMappingChar = Instances.singleton(CharFormatChain.class)
+                    .format(preChar, context);
+
+            // 直接赋值为上一个 map
+            if(preMappingChar == mappingChar) {
+                currentMap = nowMap;
+            }
+        }
+
+        return currentMap;
     }
 
 }

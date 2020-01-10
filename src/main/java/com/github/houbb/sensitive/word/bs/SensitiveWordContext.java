@@ -54,6 +54,12 @@ public class SensitiveWordContext implements IWordContext {
     private boolean ignoreEnglishStyle;
 
     /**
+     * 忽略重复词
+     * @since 0.0.7
+     */
+    private boolean ignoreRepeat;
+
+    /**
      * 私有化构造器
      * @since 0.0.4
      */
@@ -147,16 +153,14 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public String toString() {
-        return "SensitiveWordContext{" +
-                "ignoreCase=" + ignoreCase +
-                ", ignoreWidth=" + ignoreWidth +
-                ", ignoreNumStyle=" + ignoreNumStyle +
-                ", sensitiveWordMap=" + sensitiveWordMap +
-                ", sensitiveNumCheck=" + sensitiveNumCheck +
-                ", ignoreChineseStyle=" + ignoreChineseStyle +
-                ", ignoreEnglishStyle=" + ignoreEnglishStyle +
-                '}';
+    public boolean ignoreRepeat() {
+        return ignoreRepeat;
+    }
+
+    @Override
+    public SensitiveWordContext ignoreRepeat(boolean ignoreRepeat) {
+        this.ignoreRepeat = ignoreRepeat;
+        return this;
     }
 
 }
