@@ -180,6 +180,15 @@ List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
 
+## 邮箱检测
+
+```java
+final String text = "楼主好人，邮箱 sensitiveword@xx.com";
+
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
+```
+
 # 用户自定义
 
 ## 敏感词和白名单
@@ -208,11 +217,17 @@ Assert.assertEquals("[自定义敏感词]", wordList.toString());
 
 - 停顿词
 
-- 拼音互换
+- 同音字处理
+
+- 形近字处理
 
 - 文字镜像翻转
 
+- 文字降噪处理
+
 - 敏感词标签支持
+
+- 邮箱后缀检测
 
 # 拓展阅读
 

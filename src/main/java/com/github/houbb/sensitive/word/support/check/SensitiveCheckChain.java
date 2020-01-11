@@ -38,9 +38,7 @@ public class SensitiveCheckChain implements ISensitiveCheck {
         }
 
         // 循环调用
-        //TODO: 这里同时满足两个条件，会出现 BUG
         for(ISensitiveCheck sensitiveCheck : sensitiveChecks) {
-            System.out.println(sensitiveCheck.getClass().getSimpleName()+"check start");
             int result = sensitiveCheck.checkSensitive(txt, beginIndex, validModeEnum, context);
 
             if(result > 0) {

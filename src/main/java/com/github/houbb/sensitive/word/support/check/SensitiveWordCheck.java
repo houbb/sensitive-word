@@ -35,9 +35,7 @@ public class SensitiveWordCheck implements ISensitiveCheck {
                 lengthCount++;
 
                 // 判断是否是敏感词的结尾字，如果是结尾字则判断是否继续检测
-                System.out.println("chat is : " + i +"==="+txt.charAt(i));
-                System.out.println("now map: " + nowMap.get(AppConst.IS_END));
-                boolean isEnd = (boolean) nowMap.get(AppConst.IS_END);
+                boolean isEnd = isEnd(nowMap);
                 if (isEnd) {
                     // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。
                     // eg: 敏感词 敏感词xxx
@@ -59,6 +57,25 @@ public class SensitiveWordCheck implements ISensitiveCheck {
     }
 
     /**
+     * 判断是否结束
+     * BUG-FIX: 避免出现敏感词库中没有的文字。
+     * @param map map 信息
+     * @return 是否结束
+     * @since 0.0.9
+     */
+    private static boolean isEnd(final Map map) {
+        if(ObjectUtil.isNull(map)) {
+            return false;
+        }
+
+        Object value = map.get(AppConst.IS_END);
+        if(ObjectUtil.isNull(value)) {
+            return false;
+        }
+
+        return (boolean)value;
+    }
+    /**
      * 获取当前的 Map
      * @param nowMap 原始的当前 map
      * @param context 上下文
@@ -75,6 +92,7 @@ public class SensitiveWordCheck implements ISensitiveCheck {
         char mappingChar = Instances.singleton(CharFormatChain.class).format(c, context);
 
         // 这里做一次重复词的处理
+        //TODO: 这里可以优化，是否获取一次。
         Map currentMap = (Map) nowMap.get(mappingChar);
         // 启用忽略重复&当前下标不是第一个
         if(context.ignoreRepeat()
