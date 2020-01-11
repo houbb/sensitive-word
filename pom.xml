@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.9</version>
+    <version>0.0.10</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -25,7 +25,7 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.69-SNAPSHOT</heaven.version>
+        <heaven.version>0.1.69</heaven.version>
         <opencc4j.version>1.2.0</opencc4j.version>
 
         <!--============================== OTHER ==============================-->
