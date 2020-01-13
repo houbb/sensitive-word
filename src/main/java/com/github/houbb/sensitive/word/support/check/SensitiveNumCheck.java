@@ -2,11 +2,16 @@ package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
+import com.github.houbb.heaven.util.io.FileUtil;
+import com.github.houbb.heaven.util.lang.NumUtil;
+import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 import com.github.houbb.sensitive.word.support.format.IgnoreNumStyleCharFormat;
+
+import java.util.List;
 
 /**
  * 敏感词监测实现
@@ -55,12 +60,13 @@ public class SensitiveNumCheck implements ISensitiveCheck {
 
     /**
      * 这里指定一个阈值条件
+     * TODO: 这里有一个问题，会把一些 url 中的数字替换掉。
      * @param lengthCount 长度
      * @return 是否满足条件
      * @since 0.0.5
      */
     private boolean isCondition(final int lengthCount) {
-        return lengthCount >= 6;
+        return lengthCount >= 8;
     }
 
 }
