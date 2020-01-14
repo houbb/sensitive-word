@@ -75,7 +75,7 @@ public class SensitiveWordBs {
 
         SensitiveWordBs bs = new SensitiveWordBs();
         bs.context = buildDefaultContext();
-        bs.context.sensitiveNumCheck(bs.enableNumCheck);
+
         return bs;
     }
 
@@ -85,9 +85,9 @@ public class SensitiveWordBs {
      * @since 0.0.11
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
-        this.enableNumCheck = enableNumCheck;
+        this.context.sensitiveNumCheck(enableNumCheck);
         return this;
-    }
+}
 
     /**
      * 构建默认的上下文
@@ -105,7 +105,7 @@ public class SensitiveWordBs {
         wordContext.ignoreRepeat(true);
 
         // 开启校验
-        wordContext.sensitiveNumCheck();
+        wordContext.sensitiveNumCheck(true);
         wordContext.sensitiveEmailCheck(true);
 
         return wordContext;

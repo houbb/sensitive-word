@@ -5,7 +5,7 @@ import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 /**
  * 敏感信息监测接口
  * （1）敏感词
- * （2）数字（连续6位及其以上）
+ * （2）数字（连续8位及其以上）
  * （3）邮箱
  * （4）URL
  *
