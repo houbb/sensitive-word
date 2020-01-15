@@ -23,7 +23,7 @@ public class SensitiveWordBsNumTest {
         final String text = "这个是我的微信：9989123456";
 
         List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[9989123456]", wordList.toString());
+        Assert.assertEquals("[微信, 9989123456]", wordList.toString());
     }
 
     /**
@@ -35,7 +35,7 @@ public class SensitiveWordBsNumTest {
         final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
 
         List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
-        Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
+        Assert.assertEquals("[微信, 9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
     }
 
 }
