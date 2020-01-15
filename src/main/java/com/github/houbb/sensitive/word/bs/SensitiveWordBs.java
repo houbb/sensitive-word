@@ -35,6 +35,12 @@ public class SensitiveWordBs {
     private volatile IWordContext context;
 
     /**
+     * 是否启用数字校验
+     * @since 0.0.11
+     */
+    private boolean enableNumCheck = true;
+
+    /**
      * DCL 初始化 wordMap 信息
      * @return 初始化后的结果
      * @since 0.0.4
@@ -69,8 +75,19 @@ public class SensitiveWordBs {
 
         SensitiveWordBs bs = new SensitiveWordBs();
         bs.context = buildDefaultContext();
+
         return bs;
     }
+
+    /**
+     * 设置是否启动数字检测
+     * @param enableNumCheck 数字检测
+     * @since 0.0.11
+     */
+    public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
+        this.context.sensitiveNumCheck(enableNumCheck);
+        return this;
+}
 
     /**
      * 构建默认的上下文
