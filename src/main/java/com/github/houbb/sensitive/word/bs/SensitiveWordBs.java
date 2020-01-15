@@ -156,12 +156,13 @@ public class SensitiveWordBs {
 
     /**
      * 替换所有内容
+     * 1. 默认使用空格替换，避免星号改变 md 的格式。
      * @param target 目标字符串
      * @return 替换后结果
      * @since 0.0.2
      */
     public String replace(final String target) {
-        return this.replace(target, CharConst.STAR);
+        return this.replace(target, CharConst.BLANK);
     }
 
 }
