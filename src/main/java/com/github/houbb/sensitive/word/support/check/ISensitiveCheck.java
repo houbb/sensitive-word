@@ -1,5 +1,6 @@
-package com.github.houbb.sensitive.word.api;
+package com.github.houbb.sensitive.word.support.check;
 
+import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 
 /**
@@ -33,9 +34,9 @@ public interface ISensitiveCheck {
      * @return 敏感信息对应的长度
      * @since 0.0.5
      */
-    int checkSensitive(final String txt,
-                       final int beginIndex,
-                       final ValidModeEnum validModeEnum,
-                       final IWordContext context);
+    SensitiveCheckResult sensitiveCheck(final String txt,
+                                        final int beginIndex,
+                                        final ValidModeEnum validModeEnum,
+                                        final IWordContext context);
 
 }

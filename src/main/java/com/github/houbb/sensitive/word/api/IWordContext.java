@@ -88,30 +88,45 @@ public interface IWordContext {
      * @return 数字检测
      * @since 0.0.5
      */
-    boolean sensitiveNumCheck();
+    boolean sensitiveCheckNum();
 
     /**
      * 设置敏感数字检测
-     * @param sensitiveNumCheck 数字格式检测
+     * @param sensitiveCheckNum 数字格式检测
      * @return this
      * @since 0.0.5
      */
-    IWordContext sensitiveNumCheck(final boolean sensitiveNumCheck);
+    IWordContext sensitiveCheckNum(final boolean sensitiveCheckNum);
 
     /**
      * 是否进行邮箱检测
      * @return this
      * @since 0.0.9
      */
-    boolean sensitiveEmailCheck();
+    boolean sensitiveCheckEmail();
 
     /**
      * 设置敏感邮箱检测
-     * @param sensitiveEmailCheck 是否检测
+     * @param sensitiveCheckEmail 是否检测
      * @return this
      * @since 0.0.9
      */
-    IWordContext sensitiveEmailCheck(final boolean sensitiveEmailCheck);
+    IWordContext sensitiveCheckEmail(final boolean sensitiveCheckEmail);
+
+    /**
+     * 敏感链接检测
+     * @return 是否启用
+     * @since 0.
+     */
+    boolean sensitiveCheckUrl();
+
+    /**
+     * 设置敏感邮箱检测
+     * @param sensitiveCheckUrl 是否检测
+     * @return this
+     * @since 0.0.9
+     */
+    IWordContext sensitiveCheckUrl(final boolean sensitiveCheckUrl);
 
     /**
      * 忽略英文的写法

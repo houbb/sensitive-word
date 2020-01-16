@@ -1,17 +1,12 @@
-package com.github.houbb.sensitive.word.support.check;
+package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
-import com.github.houbb.heaven.util.io.FileUtil;
-import com.github.houbb.heaven.util.lang.NumUtil;
-import com.github.houbb.heaven.util.lang.StringUtil;
-import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.format.CharFormatChain;
-import com.github.houbb.sensitive.word.support.format.IgnoreNumStyleCharFormat;
-
-import java.util.List;
 
 /**
  * 敏感词监测实现
@@ -21,10 +16,10 @@ import java.util.List;
  * @since 0.0.5
  */
 @ThreadSafe
-public class SensitiveNumCheck implements ISensitiveCheck {
+public class SensitiveCheckNum implements ISensitiveCheck {
 
     @Override
-    public int checkSensitive(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
+    public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 记录敏感词的长度
         int lengthCount = 0;
         int actualLength = 0;
@@ -55,7 +50,7 @@ public class SensitiveNumCheck implements ISensitiveCheck {
             }
         }
 
-        return actualLength;
+        return SensitiveCheckResult.of(actualLength, SensitiveCheckNum.class);
     }
 
     /**

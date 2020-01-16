@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 敏感词引导类
+ *
  * @author binbin.hou
  * @since 0.0.1
  */
@@ -18,37 +19,36 @@ public class SensitiveWordBs {
 
     /**
      * 私有化构造器
+     *
      * @since 0.0.1
      */
-    private SensitiveWordBs(){}
+    private SensitiveWordBs() {
+    }
 
     /**
      * 敏感词 map
+     *
      * @since 0.0.1
      */
     private static volatile IWordMap sensitiveWordMap;
 
     /**
      * 默认的执行上下文
+     *
      * @since 0.0.4
      */
     private volatile IWordContext context;
 
     /**
-     * 是否启用数字校验
-     * @since 0.0.11
-     */
-    private boolean enableNumCheck = true;
-
-    /**
      * DCL 初始化 wordMap 信息
+     *
      * @return 初始化后的结果
      * @since 0.0.4
      */
     private static IWordMap initWordMap() {
-        if(sensitiveWordMap == null) {
+        if (sensitiveWordMap == null) {
             synchronized (IWordMap.class) {
-                if(sensitiveWordMap == null) {
+                if (sensitiveWordMap == null) {
                     // 加载配置信息
                     IWordData wordData = new SensitiveWordData();
                     List<String> lines = wordData.getWordData();
@@ -65,8 +65,9 @@ public class SensitiveWordBs {
 
     /**
      * 新建验证实例
-     *
+     * <p>
      * double-lock
+     *
      * @return this
      * @since 0.0.1
      */
@@ -81,16 +82,40 @@ public class SensitiveWordBs {
 
     /**
      * 设置是否启动数字检测
+     *
      * @param enableNumCheck 数字检测
      * @since 0.0.11
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
-        this.context.sensitiveNumCheck(enableNumCheck);
+        this.context.sensitiveCheckNum(enableNumCheck);
         return this;
-}
+    }
+
+    /**
+     * 设置是否启动 email 检测
+     *
+     * @param enableEmailCheck email 检测
+     * @since 0.0.11
+     */
+    public SensitiveWordBs enableEmailCheck(boolean enableEmailCheck) {
+        this.context.sensitiveCheckEmail(enableEmailCheck);
+        return this;
+    }
+
+    /**
+     * 设置是否启动 url 检测
+     *
+     * @param enableUrlCheck url 检测
+     * @since 0.0.12
+     */
+    public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
+        this.context.sensitiveCheckUrl(enableUrlCheck);
+        return this;
+    }
 
     /**
      * 构建默认的上下文
+     *
      * @return 结果
      * @since 0.0.4
      */
@@ -105,13 +130,16 @@ public class SensitiveWordBs {
         wordContext.ignoreRepeat(true);
 
         // 开启校验
-        wordContext.sensitiveNumCheck(true);
-        wordContext.sensitiveEmailCheck(true);
+        wordContext.sensitiveCheckNum(true);
+        wordContext.sensitiveCheckEmail(true);
+        wordContext.sensitiveCheckUrl(true);
 
         return wordContext;
     }
+
     /**
      * 是否包含敏感词
+     *
      * @param target 目标字符串
      * @return 是否
      * @since 0.0.1
@@ -124,6 +152,7 @@ public class SensitiveWordBs {
      * 返回所有的敏感词
      * 1. 这里是默认去重的，且是有序的。
      * 2. 如果不存在，返回空列表
+     *
      * @param target 目标字符串
      * @return 敏感词列表
      * @since 0.0.1
@@ -135,6 +164,7 @@ public class SensitiveWordBs {
     /**
      * 返回第一个敏感词
      * （1）如果不存在，则返回 {@code null}
+     *
      * @param target 目标字符串
      * @return 敏感词
      * @since 0.0.1
@@ -145,7 +175,8 @@ public class SensitiveWordBs {
 
     /**
      * 替换所有内容
-     * @param target 目标字符串
+     *
+     * @param target      目标字符串
      * @param replaceChar 替换为的 char
      * @return 替换后结果
      * @since 0.0.2
@@ -157,12 +188,13 @@ public class SensitiveWordBs {
     /**
      * 替换所有内容
      * 1. 默认使用空格替换，避免星号改变 md 的格式。
+     *
      * @param target 目标字符串
      * @return 替换后结果
      * @since 0.0.2
      */
     public String replace(final String target) {
-        return this.replace(target, CharConst.BLANK);
+        return this.replace(target, CharConst.STAR);
     }
 
 }

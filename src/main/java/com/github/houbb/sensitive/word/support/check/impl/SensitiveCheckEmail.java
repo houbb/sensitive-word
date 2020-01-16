@@ -1,12 +1,13 @@
-package com.github.houbb.sensitive.word.support.check;
+package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.util.regex.RegexUtil;
-import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 
 /**
@@ -25,10 +26,10 @@ import com.github.houbb.sensitive.word.support.format.CharFormatChain;
  * @since 0.0.9
  */
 @ThreadSafe
-public class SensitiveEmailCheck implements ISensitiveCheck {
+public class SensitiveCheckEmail implements ISensitiveCheck {
 
     @Override
-    public int checkSensitive(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
+    public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 记录敏感词的长度
         int lengthCount = 0;
         int actualLength = 0;
@@ -59,7 +60,7 @@ public class SensitiveEmailCheck implements ISensitiveCheck {
             }
         }
 
-        return actualLength;
+        return SensitiveCheckResult.of(actualLength, SensitiveCheckEmail.class);
     }
 
     /**

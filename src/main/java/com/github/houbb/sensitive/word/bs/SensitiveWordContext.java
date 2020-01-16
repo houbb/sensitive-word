@@ -39,7 +39,7 @@ public class SensitiveWordContext implements IWordContext {
      * 是否进行敏感数字检测
      * @since 0.0.6
      */
-    private boolean sensitiveNumCheck;
+    private boolean sensitiveCheckNum;
 
     /**
      * 是否忽略中文繁简体
@@ -63,7 +63,13 @@ public class SensitiveWordContext implements IWordContext {
      * 是否进行邮箱测试
      * @since 0.0.9
      */
-    private boolean sensitiveEmailCheck;
+    private boolean sensitiveCheckEmail;
+
+    /**
+     * 是否进行 url 测试
+     * @since 0.0.12
+     */
+    private boolean sensitiveCheckUrl;
 
     /**
      * 私有化构造器
@@ -126,13 +132,13 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public boolean sensitiveNumCheck() {
-        return sensitiveNumCheck;
+    public boolean sensitiveCheckNum() {
+        return sensitiveCheckNum;
     }
 
     @Override
-    public SensitiveWordContext sensitiveNumCheck(boolean sensitiveNumCheck) {
-        this.sensitiveNumCheck = sensitiveNumCheck;
+    public SensitiveWordContext sensitiveCheckNum(boolean sensitiveCheckNum) {
+        this.sensitiveCheckNum = sensitiveCheckNum;
         return this;
     }
 
@@ -170,14 +176,24 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public boolean sensitiveEmailCheck() {
-        return sensitiveEmailCheck;
+    public boolean sensitiveCheckEmail() {
+        return sensitiveCheckEmail;
     }
 
     @Override
-    public SensitiveWordContext sensitiveEmailCheck(boolean sensitiveEmailCheck) {
-        this.sensitiveEmailCheck = sensitiveEmailCheck;
+    public SensitiveWordContext sensitiveCheckEmail(boolean sensitiveCheckEmail) {
+        this.sensitiveCheckEmail = sensitiveCheckEmail;
         return this;
     }
 
+    @Override
+    public boolean sensitiveCheckUrl() {
+        return sensitiveCheckUrl;
+    }
+
+    @Override
+    public SensitiveWordContext sensitiveCheckUrl(boolean sensitiveCheckUrl) {
+        this.sensitiveCheckUrl = sensitiveCheckUrl;
+        return this;
+    }
 }

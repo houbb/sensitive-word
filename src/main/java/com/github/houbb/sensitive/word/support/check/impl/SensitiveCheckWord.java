@@ -1,12 +1,13 @@
-package com.github.houbb.sensitive.word.support.check;
+package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
-import com.github.houbb.sensitive.word.api.ISensitiveCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 
 import java.util.Map;
@@ -17,10 +18,10 @@ import java.util.Map;
  * @since 0.0.5
  */
 @ThreadSafe
-public class SensitiveWordCheck implements ISensitiveCheck {
+public class SensitiveCheckWord implements ISensitiveCheck {
 
     @Override
-    public int checkSensitive(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
+    public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         Map nowMap = context.sensitiveWordMap();
 
         // 记录敏感词的长度
@@ -53,7 +54,7 @@ public class SensitiveWordCheck implements ISensitiveCheck {
             }
         }
 
-        return actualLength;
+        return SensitiveCheckResult.of(actualLength, SensitiveCheckWord.class);
     }
 
     /**

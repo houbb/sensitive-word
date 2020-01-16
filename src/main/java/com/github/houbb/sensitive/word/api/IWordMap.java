@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Collection;
 import java.util.List;

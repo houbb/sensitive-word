@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.map;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.io.FileUtil;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
@@ -12,7 +13,9 @@ import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
-import com.github.houbb.sensitive.word.support.check.SensitiveCheckChain;
+import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
+import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckChain;
+import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckUrl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -118,9 +121,9 @@ public class SensitiveWordMap implements IWordMap {
         }
 
         for (int i = 0; i < string.length(); i++) {
-            int checkResult = checkSensitive(string, i, ValidModeEnum.FAIL_FAST, context);
+            SensitiveCheckResult checkResult = sensitiveCheck(string, i, ValidModeEnum.FAIL_FAST, context);
             // 快速返回
-            if (checkResult > 0) {
+            if (checkResult.index() > 0) {
                 return true;
             }
         }
@@ -178,9 +181,9 @@ public class SensitiveWordMap implements IWordMap {
 
         List<String> resultList = Guavas.newArrayList();
         for (int i = 0; i < text.length(); i++) {
-            int wordLength = checkSensitive(text, i, ValidModeEnum.FAIL_OVER, context);
-
+            SensitiveCheckResult checkResult = sensitiveCheck(text, i, ValidModeEnum.FAIL_OVER, context);
             // 命中
+            int wordLength = checkResult.index();
             if (wordLength > 0) {
                 // 保存敏感词
                 String sensitiveWord = text.substring(i, i + wordLength);
@@ -223,12 +226,22 @@ public class SensitiveWordMap implements IWordMap {
         for (int i = 0; i < target.length(); i++) {
             char currentChar = target.charAt(i);
             // 内层直接从 i 开始往后遍历，这个算法的，获取第一个匹配的单词
-            int wordLength = checkSensitive(target, i, ValidModeEnum.FAIL_OVER, context);
+            SensitiveCheckResult checkResult = sensitiveCheck(target, i, ValidModeEnum.FAIL_OVER, context);
 
             // 敏感词
+            int wordLength = checkResult.index();
             if(wordLength > 0) {
-                String replaceStr = CharUtil.repeat(replaceChar, wordLength);
-                resultBuilder.append(replaceStr);
+                // 是否执行替换
+                Class checkClass = checkResult.checkClass();
+                String string = target.substring(i, i+wordLength);
+                if(SensitiveCheckUrl.class.equals(checkClass)
+                    && FileUtil.isImage(string)) {
+                    // 直接使用原始内容，避免 markdown 图片转换失败
+                    resultBuilder.append(string);
+                } else {
+                    String replaceStr = CharUtil.repeat(replaceChar, wordLength);
+                    resultBuilder.append(replaceStr);
+                }
 
                 // 直接跳过敏感词的长度
                 i += wordLength-1;
@@ -242,13 +255,13 @@ public class SensitiveWordMap implements IWordMap {
     }
 
     @Override
-    public int checkSensitive(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
+    public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 默认执行敏感词操作
         context.sensitiveWordMap(innerWordMap);
 
         // 责任链模式调用
         return Instances.singleton(SensitiveCheckChain.class)
-                .checkSensitive(txt, beginIndex, validModeEnum, context);
+                .sensitiveCheck(txt, beginIndex, validModeEnum, context);
     }
 
 }
