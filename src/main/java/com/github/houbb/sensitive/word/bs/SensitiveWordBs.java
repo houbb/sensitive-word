@@ -85,6 +85,7 @@ public class SensitiveWordBs {
      *
      * @param enableNumCheck 数字检测
      * @since 0.0.11
+     * @return this
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
         this.context.sensitiveCheckNum(enableNumCheck);
@@ -96,6 +97,7 @@ public class SensitiveWordBs {
      *
      * @param enableEmailCheck email 检测
      * @since 0.0.11
+     * @return this
      */
     public SensitiveWordBs enableEmailCheck(boolean enableEmailCheck) {
         this.context.sensitiveCheckEmail(enableEmailCheck);
@@ -107,6 +109,7 @@ public class SensitiveWordBs {
      *
      * @param enableUrlCheck url 检测
      * @since 0.0.12
+     * @return this
      */
     public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
         this.context.sensitiveCheckUrl(enableUrlCheck);
