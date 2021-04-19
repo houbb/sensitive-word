@@ -56,7 +56,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.10</version>
+    <version>0.0.12</version>
 </dependency>
 ```
 
