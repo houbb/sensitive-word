@@ -3,7 +3,7 @@
 [sensitive-word](https://github.com/houbb/sensitive-word) 基于 DFA 算法实现的高性能敏感词工具。
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.houbb/sensitive-word/badge.svg)](http://mvnrepository.com/artifact/com.github.houbb/sensitive-word)
-
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/houbb/sensitive-word)
 [![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/houbb/sensitive-word/blob/master/LICENSE.txt)
 
 ## 创作目的
@@ -56,17 +56,16 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.12</version>
+    <version>0.0.13</version>
 </dependency>
 ```
 
 ## api 概览
 
-`SensitiveWordBs` 作为敏感词的引导类，核心方法如下：
+`SensitiveWordHelper` 作为敏感词的工具类，核心方法如下：
 
 | 方法 | 参数 | 返回值| 说明 |
 |:---|:---|:---|:---|
-| newInstance() | 无 | 引导类 | 初始化引导类 |
 | contains(String) | 待验证的字符串 | 布尔值 | 验证字符串是否包含敏感词 |
 | findAll(String) | 待验证的字符串 | 字符串列表 | 返回字符串中所有敏感词 |
 | replace(String, char) | 使用指定的 char 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
@@ -74,14 +73,14 @@
 
 ## 使用实例
 
-所有测试案例参见 [SensitiveWordBsTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/bs/SensitiveWordBsTest.java)
+所有测试案例参见 [SensitiveWordHelperTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/core/SensitiveWordHelperTest.java)
 
 ### 判断是否包含敏感词
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-Assert.assertTrue(SensitiveWordBs.newInstance().contains(text));
+Assert.assertTrue(SensitiveWordHelper.contains(text));
 ```
 
 ### 返回第一个敏感词
@@ -89,7 +88,7 @@ Assert.assertTrue(SensitiveWordBs.newInstance().contains(text));
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-String word = SensitiveWordBs.newInstance().findFirst(text);
+String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("五星红旗", word);
 ```
 
@@ -98,7 +97,7 @@ Assert.assertEquals("五星红旗", word);
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
 ```
 
@@ -106,7 +105,7 @@ Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString())
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-String result = SensitiveWordBs.newInstance().replace(text);
+String result = SensitiveWordHelper.replace(text);
 Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
 ```
 
@@ -114,7 +113,7 @@ Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result)
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-String result = SensitiveWordBs.newInstance().replace(text, '0');
+String result = SensitiveWordHelper.replace(text, '0');
 Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
 ```
 
@@ -129,7 +128,7 @@ Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result)
 ```java
 final String text = "fuCK the bad words.";
 
-String word = SensitiveWordBs.newInstance().findFirst(text);
+String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("fuCK", word);
 ```
 
@@ -138,7 +137,7 @@ Assert.assertEquals("fuCK", word);
 ```java
 final String text = "ｆｕｃｋ the bad words.";
 
-String word = SensitiveWordBs.newInstance().findFirst(text);
+String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("ｆｕｃｋ", word);
 ```
 
@@ -149,7 +148,7 @@ Assert.assertEquals("ｆｕｃｋ", word);
 ```java
 final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
 ```
 
@@ -158,7 +157,7 @@ Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString())
 ```java
 final String text = "我爱我的祖国和五星紅旗。";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[五星紅旗]", wordList.toString());
 ```
 
@@ -167,7 +166,7 @@ Assert.assertEquals("[五星紅旗]", wordList.toString());
 ```java
 final String text = "Ⓕⓤc⒦ the bad words";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```
 
@@ -176,7 +175,7 @@ Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```java
 final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
 
@@ -185,7 +184,7 @@ Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```java
 final String text = "楼主好人，邮箱 sensitiveword@xx.com";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
@@ -209,9 +208,83 @@ Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```java
 final String text = "gender 我们认为应该通过，自定义敏感词我们认为应该拒绝。";
 
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[自定义敏感词]", wordList.toString());
 ```
+
+# 动态加载
+
+## 情景说明
+
+有时候我们希望将敏感词的加载设计成动态的，比如控台修改，然后可以实时生效。
+
+v0.0.13 支持了这种特性。
+
+## 接口说明
+
+为了实现这个特性，并且兼容以前的功能，我们定义了两个接口。
+
+### IWordDeny
+
+接口如下，可以自定义自己的实现。
+
+```java
+/**
+ * 拒绝出现的数据-返回的内容被当做是敏感词
+ * @author binbin.hou
+ * @since 0.0.13
+ */
+public interface IWordDeny {
+
+    /**
+     * 获取结果
+     * @return 结果
+     * @since 0.0.13
+     */
+    List<String> deny();
+
+}
+```
+
+### IWordAllow
+
+接口如下，可以自定义自己的实现。
+
+```java
+/**
+ * 允许的内容-返回的内容不被当做敏感词
+ * @author binbin.hou
+ * @since 0.0.13
+ */
+public interface IWordAllow {
+
+    /**
+     * 获取结果
+     * @return 结果
+     * @since 0.0.13
+     */
+    List<String> allow();
+
+}
+```
+
+## 配置使用
+
+为了让使用更加优雅，我们设计了引导类 `SensitiveWordBs`。
+
+可以通过 wordDeny() 指定敏感词，wordAllow() 指定非敏感词，通过 init() 初始化敏感词字典。
+
+```java
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+        .wordDeny(WordDenys.system())
+        .wordAllow(WordAllows.system())
+        .init();
+
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+Assert.assertTrue(wordBs.contains(text));
+```
+
+备注：init() 对于敏感词 DFA 的构建是比较耗时的，一般建议在应用初始化的时候**只初始化一次**。而不是重复初始化！
 
 # 后期 road-map
 

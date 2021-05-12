@@ -7,6 +7,7 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.1
  */
+@Deprecated
 public interface IWordData {
 
     /**
