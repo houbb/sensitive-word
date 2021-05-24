@@ -29,7 +29,7 @@
         <opencc4j.version>1.2.0</opencc4j.version>
 
         <!--============================== OTHER ==============================-->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencyManagement>
