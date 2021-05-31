@@ -188,6 +188,46 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
+# 特性配置
+
+## 说明
+
+上面的特性默认都是开启的，有时业务需要灵活定义相关的配置特性。
+
+所以 v0.0.14 开放了属性配置。
+
+## 配置方法
+
+为了让使用更加优雅，统一使用 fluent-api 的方式定义。
+
+用户可以使用 `SensitiveWordBs` 进行如下定义：
+
+```java
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+        .ignoreCase(true)
+        .ignoreWidth(true)
+        .ignoreNumStyle(true)
+        .ignoreChineseStyle(true)
+        .ignoreEnglishStyle(true)
+        .ignoreRepeat(true)
+        .init();
+
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+Assert.assertTrue(wordBs.contains(text));
+```
+## 配置说明
+
+其中各项配置的说明如下：
+
+| 序号 | 方法 | 说明 |
+|:---|:---|:---|
+| 1 | ignoreCase | 忽略大小写 |
+| 2 | ignoreWidth | 忽略半角圆角 |
+| 3 | ignoreNumStyle | 忽略数字的写法 |
+| 4 | ignoreChineseStyle | 忽略中文的书写格式 |
+| 5 | ignoreEnglishStyle | 忽略英文的书写格式 |
+| 6 | ignoreRepeat | 忽略重复词 |
+
 # 用户自定义
 
 ## 敏感词和白名单

@@ -3,10 +3,11 @@ package com.github.houbb.sensitive.word.bs;
 import com.github.houbb.heaven.constant.CharConst;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.sensitive.word.api.*;
-import com.github.houbb.sensitive.word.exception.SensitiveWordException;
+import com.github.houbb.sensitive.word.api.IWordAllow;
+import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.IWordDeny;
+import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
-import com.github.houbb.sensitive.word.support.data.SensitiveWordData;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
 
@@ -153,6 +154,72 @@ public class SensitiveWordBs {
      */
     public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
         this.context.sensitiveCheckUrl(enableUrlCheck);
+        return this;
+    }
+
+    /**
+     * 是否忽略大小写
+     * @param ignoreCase 大小写
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreCase(boolean ignoreCase) {
+        this.context.ignoreCase(ignoreCase);
+        return this;
+    }
+
+    /**
+     * 是否忽略半角全角
+     * @param ignoreWidth 半角全角
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreWidth(boolean ignoreWidth) {
+        this.context.ignoreWidth(ignoreWidth);
+        return this;
+    }
+
+    /**
+     * 是否忽略数字格式
+     * @param ignoreNumStyle 数字格式
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreNumStyle(boolean ignoreNumStyle) {
+        this.context.ignoreNumStyle(ignoreNumStyle);
+        return this;
+    }
+
+    /**
+     * 是否忽略中文样式
+     * @param ignoreChineseStyle 中文样式
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreChineseStyle(boolean ignoreChineseStyle) {
+        this.context.ignoreChineseStyle(ignoreChineseStyle);
+        return this;
+    }
+
+    /**
+     * 是否忽略英文样式
+     * @param ignoreEnglishStyle 英文样式
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreEnglishStyle(boolean ignoreEnglishStyle) {
+        this.context.ignoreEnglishStyle(ignoreEnglishStyle);
+        return this;
+    }
+
+    /**
+     * 是否忽略重复
+     * @param ignoreRepeat 忽略重复
+     * @return this
+     * @since 0.0.14
+     */
+    public SensitiveWordBs ignoreRepeat(boolean ignoreRepeat) {
+        this.context.ignoreRepeat(ignoreRepeat);
         return this;
     }
 
