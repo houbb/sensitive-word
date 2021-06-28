@@ -210,6 +210,9 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .ignoreChineseStyle(true)
         .ignoreEnglishStyle(true)
         .ignoreRepeat(true)
+        .enableNumCheck(true)
+        .enableEmailCheck(true)
+        .enableUrlCheck(true)
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
@@ -227,6 +230,9 @@ Assert.assertTrue(wordBs.contains(text));
 | 4 | ignoreChineseStyle | 忽略中文的书写格式 |
 | 5 | ignoreEnglishStyle | 忽略英文的书写格式 |
 | 6 | ignoreRepeat | 忽略重复词 |
+| 7 | enableNumCheck | 是否启用数字检测。默认连续 8 位数字认为是敏感词 |
+| 8 | enableEmailCheck | 是有启用邮箱检测 |
+| 9 | enableUrlCheck | 是否启用链接检测 |
 
 # 用户自定义
 
