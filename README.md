@@ -234,31 +234,7 @@ Assert.assertTrue(wordBs.contains(text));
 | 8 | enableEmailCheck | 是有启用邮箱检测 |
 | 9 | enableUrlCheck | 是否启用链接检测 |
 
-# 用户自定义
-
-## 敏感词和白名单
-
-直接在 resource 目录下新建文件，每一行对应一个敏感词。
-
-`sensitive_word_deny.txt` 代表用户自定义敏感词文件。
-
-`sensitive_word_allow.txt` 代表用户自定义白名单文件。
-
-## 测试
-
-我们在敏感词文件中加入一行，内容为 `自定义敏感词`，同时在白名单文件中加入一行，
-内容为 `gender` 作为用户不认为是敏感词的信息。
-
-- 测试代码
-
-```java
-final String text = "gender 我们认为应该通过，自定义敏感词我们认为应该拒绝。";
-
-List<String> wordList = SensitiveWordHelper.findAll(text);
-Assert.assertEquals("[自定义敏感词]", wordList.toString());
-```
-
-# 动态加载
+# 动态加载（用户自定义）
 
 ## 情景说明
 
@@ -273,6 +249,8 @@ v0.0.13 支持了这种特性。
 ### IWordDeny
 
 接口如下，可以自定义自己的实现。
+
+返回的列表，表示这个词是一个敏感词。
 
 ```java
 /**
@@ -292,9 +270,24 @@ public interface IWordDeny {
 }
 ```
 
+比如：
+
+```java
+public class MyWordDeny implements IWordDeny {
+
+    @Override
+    public List<String> deny() {
+        return Arrays.asList("我的自定义敏感词");
+    }
+
+}
+```
+
 ### IWordAllow
 
 接口如下，可以自定义自己的实现。
+
+返回的列表，表示这个词不是一个敏感词。
 
 ```java
 /**
@@ -314,11 +307,28 @@ public interface IWordAllow {
 }
 ```
 
+如：
+
+```java
+public class MyWordAllow implements IWordAllow {
+
+    @Override
+    public List<String> allow() {
+        return Arrays.asList("五星红旗");
+    }
+
+}
+```
+
 ## 配置使用
+
+**接口自定义之后，当然需要指定才能生效。**
 
 为了让使用更加优雅，我们设计了引导类 `SensitiveWordBs`。
 
 可以通过 wordDeny() 指定敏感词，wordAllow() 指定非敏感词，通过 init() 初始化敏感词字典。
+
+### 系统的默认配置
 
 ```java
 SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
@@ -331,6 +341,55 @@ Assert.assertTrue(wordBs.contains(text));
 ```
 
 备注：init() 对于敏感词 DFA 的构建是比较耗时的，一般建议在应用初始化的时候**只初始化一次**。而不是重复初始化！
+
+### 指定自己的实现
+
+我们可以测试一下自定义的实现，如下:
+
+```java
+String text = "这是一个测试，我的自定义敏感词。";
+
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+        .wordDeny(new MyWordDeny())
+        .wordAllow(new MyWordAllow())
+        .init();
+
+Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString());
+```
+
+这里只有 `我的自定义敏感词` 是敏感词，而 `测试` 不是敏感词。
+
+当然，这里是全部使用我们自定义的实现，一般建议使用系统的默认配置+自定义配置。
+
+可以使用下面的方式。
+
+### 同时配置多个
+
+- 多个敏感词
+
+`WordDenys.chains()` 方法，将多个实现合并为同一个 IWordDeny。
+
+- 多个白名单
+
+`WordAllows.chains()` 方法，将多个实现合并为同一个 IWordAllow。
+
+例子：
+
+```java
+String text = "这是一个测试。我的自定义敏感词。";
+
+IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDeny());
+IWordAllow wordAllow = WordAllows.chains(WordAllows.system(), new MyWordAllow());
+
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+        .wordDeny(wordDeny)
+        .wordAllow(wordAllow)
+        .init();
+
+Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString());
+```
+
+这里都是同时使用了系统默认配置，和自定义的配置。
 
 # 后期 road-map
 
