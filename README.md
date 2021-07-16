@@ -399,7 +399,7 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 
 实际使用中，比如可以在页面配置修改，然后实时生效。
 
-数据存储在数据库中，下面是一个伪代码的例子，可以参考 [SpringSensitiveWordConfig.java]()
+数据存储在数据库中，下面是一个伪代码的例子，可以参考 [SpringSensitiveWordConfig.java](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/spring/SpringSensitiveWordConfig.java)
 
 要求，版本 v0.0.15 及其以上。
 
