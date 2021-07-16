@@ -50,15 +50,10 @@ public class SensitiveWordMap implements IWordMap {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void initWordMap(Collection<String> collection) {
-        // 避免重复加载
-        if (MapUtil.isNotEmpty(innerWordMap)) {
-            return;
-        }
-
+    public synchronized void initWordMap(Collection<String> collection) {
         long startTime = System.currentTimeMillis();
         // 避免扩容带来的消耗
-        innerWordMap = new HashMap(collection.size());
+        Map newInnerWordMap = new HashMap(collection.size());
 
         for (String key : collection) {
             if (StringUtil.isEmpty(key)) {
@@ -70,7 +65,7 @@ public class SensitiveWordMap implements IWordMap {
             final int size = chars.length;
 
             // 每一个新词的循环，直接将结果设置为当前 map，所有变化都会体现在结果的 map 中
-            Map currentMap = innerWordMap;
+            Map currentMap = newInnerWordMap;
 
             for (int i = 0; i < size; i++) {
                 // 截取敏感词当中的字，在敏感词库中字为HashMap对象的Key键值
@@ -100,6 +95,9 @@ public class SensitiveWordMap implements IWordMap {
                 }
             }
         }
+
+        // 最后更新为新的 map，保证更新过程中旧的数据可用
+        this.innerWordMap = newInnerWordMap;
 
         long endTime = System.currentTimeMillis();
         System.out.println("Init sensitive word map end! Cost time: " + (endTime - startTime) + "ms");

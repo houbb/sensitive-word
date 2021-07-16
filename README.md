@@ -38,6 +38,8 @@
 
 - 支持用户自定义敏感词和白名单
 
+- 支持数据的数据动态更新，实时生效
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
@@ -56,7 +58,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 
@@ -390,6 +392,88 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 ```
 
 这里都是同时使用了系统默认配置，和自定义的配置。
+
+# spring 整合
+
+## 背景
+
+实际使用中，比如可以在页面配置修改，然后实时生效。
+
+数据存储在数据库中，下面是一个伪代码的例子，可以参考 [SpringSensitiveWordConfig.java]()
+
+要求，版本 v0.0.15 及其以上。
+
+## 自定义数据源
+
+简化伪代码如下，数据的源头为数据库。
+
+MyDdWordAllow 和 MyDdWordDeny 是基于数据库为源头的自定义实现类。
+
+```java
+@Configuration
+public class SpringSensitiveWordConfig {
+
+    @Autowired
+    private MyDdWordAllow myDdWordAllow;
+
+    @Autowired
+    private MyDdWordDeny myDdWordDeny;
+
+    /**
+     * 初始化引导类
+     * @return 初始化引导类
+     * @since 1.0.0
+     */
+    @Bean
+    public SensitiveWordBs sensitiveWordBs() {
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .wordAllow(WordAllows.chains(WordAllows.system(), myDdWordAllow))
+                .wordDeny(myDdWordDeny)
+                // 各种其他配置
+                .init();
+
+        return sensitiveWordBs;
+    }
+
+}
+```
+
+敏感词库的初始化较为耗时，建议程序启动时做一次 init 初始化。
+
+## 动态变更
+
+为了保证敏感词修改可以实时生效且保证接口的尽可能简化，此处没有新增 add/remove 的方法。
+
+而是在调用 `sensitiveWordBs.init()` 的时候，根据 IWordDeny+IWordAllow 重新构建敏感词库。
+
+因为初始化可能耗时较长（秒级别），所有优化为 init 未完成时**不影响旧的词库功能，完成后以新的为准**。
+
+```java
+@Component
+public class SensitiveWordService {
+
+    @Autowired
+    private SensitiveWordBs sensitiveWordBs;
+
+    /**
+     * 更新词库
+     *
+     * 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法。
+     * 如果需要生效，则调用这个方法。
+     *
+     * 说明：重新初始化不影响旧的方法使用。初始化完成后，会以新的为准。
+     */
+    public void refresh() {
+        // 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法，然后调用这个方法。
+        sensitiveWordBs.init();
+    }
+
+}
+```
+
+如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `sensitiveWordBs.init();`。
+
+其他使用保持不变，无需重启应用。
 
 # 后期 road-map
 

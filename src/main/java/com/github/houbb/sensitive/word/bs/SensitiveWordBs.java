@@ -68,7 +68,10 @@ public class SensitiveWordBs {
         List<String> results = CollectionUtil.difference(denyList, allowList);
 
         // 初始化 DFA 信息
-        sensitiveWordMap = new SensitiveWordMap();
+        if(sensitiveWordMap == null) {
+            sensitiveWordMap = new SensitiveWordMap();
+        }
+        // 便于可以多次初始化
         sensitiveWordMap.initWordMap(results);
     }
 
@@ -321,8 +324,13 @@ public class SensitiveWordBs {
      * @since 0.0.13
      */
     private void statusCheck(){
+        //DLC
         if(sensitiveWordMap == null) {
-            this.init();
+            synchronized (this) {
+                if(sensitiveWordMap == null) {
+                    this.init();
+                }
+            }
         }
     }
 
