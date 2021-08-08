@@ -230,7 +230,9 @@ Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```java
 final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordBs.newInstance()
+        .ignoreRepeat(true)
+        .findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
 
