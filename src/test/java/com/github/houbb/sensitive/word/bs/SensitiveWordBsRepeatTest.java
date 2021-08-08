@@ -22,7 +22,9 @@ public class SensitiveWordBsRepeatTest {
     public void ignoreChineseStyleTest() {
         final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .ignoreRepeat(true)
+                .findAll(text);
         Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
     }
 

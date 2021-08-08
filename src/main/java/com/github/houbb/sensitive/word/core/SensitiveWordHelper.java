@@ -88,6 +88,7 @@ public final class SensitiveWordHelper {
      *
      * @param target  目标字符串
      * @param handler 结果处理类
+     * @param <R> 泛型
      * @return 敏感词列表
      * @since 0.1.0
      */
