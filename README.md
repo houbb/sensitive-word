@@ -44,6 +44,12 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
+v0.1.0 变更：
+
+- 返回敏感词对应的开始结束下标信息
+
+- 优化词库
+
 # 快速开始
 
 ## 准备
@@ -58,7 +64,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.0.15</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -69,9 +75,24 @@
 | 方法 | 参数 | 返回值| 说明 |
 |:---|:---|:---|:---|
 | contains(String) | 待验证的字符串 | 布尔值 | 验证字符串是否包含敏感词 |
-| findAll(String) | 待验证的字符串 | 字符串列表 | 返回字符串中所有敏感词 |
 | replace(String, char) | 使用指定的 char 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
 | replace(String) | 使用 `*` 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
+| findAll(String) | 待验证的字符串 | 字符串列表 | 返回字符串中所有敏感词 |
+| findFirst(String) | 待验证的字符串 | 字符串 | 返回字符串中第一个敏感词 |
+| findAll(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串列表 | 返回字符串中所有敏感词 |
+| findFirst(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串 | 返回字符串中第一个敏感词 |
+
+IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定义。
+
+内置实现见 `WordResultHandlers` 工具类：
+
+- WordResultHandlers.word()
+
+只保留敏感词单词本身。
+
+- WordResultHandlers.raw()
+
+保留敏感词相关信息，包含敏感词，开始和结束下标。
 
 ## 使用实例
 
@@ -94,6 +115,21 @@ String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("五星红旗", word);
 ```
 
+SensitiveWordHelper.findFirst(text) 等价于：
+
+```java
+String word = SensitiveWordHelper.findFirst(text, WordResultHandlers.word());
+```
+
+WordResultHandlers.raw() 可以保留对应的下标信息：
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
+Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
+```
+
 ### 返回所有敏感词
 
 ```java
@@ -101,6 +137,23 @@ final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天�
 
 List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
+```
+
+返回所有敏感词用法上类似于 SensitiveWordHelper.findFirst()，同样也支持指定结果处理类。
+
+SensitiveWordHelper.findAll(text) 等价于：
+
+```java
+List<String> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.word());
+```
+
+WordResultHandlers.raw() 可以保留对应的下标信息：
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
 ```
 
 ### 默认的替换策略

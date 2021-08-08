@@ -1,5 +1,7 @@
 package com.github.houbb.sensitive.word.core;
 
+import com.github.houbb.sensitive.word.api.IWordResult;
+import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,6 +40,31 @@ public class SensitiveWordHelperTest {
     }
 
     /**
+     * 返回所有敏感词
+     * @since 0.1.0
+     */
+    @Test
+    public void findAllWordTest() {
+        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+        List<String> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.word());
+        Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
+    }
+
+    /**
+     * 返回所有敏感词-包含下标志
+     * @since 0.1.0
+     */
+    @Test
+    public void findAllRawTest() {
+        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+        List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+        Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
+    }
+
+
+    /**
      * 返回所有第一个匹配的敏感词
      * @since 0.0.1
      */
@@ -47,6 +74,30 @@ public class SensitiveWordHelperTest {
 
         String word = SensitiveWordHelper.findFirst(text);
         Assert.assertEquals("五星红旗", word);
+    }
+
+    /**
+     * 返回所有第一个匹配的敏感词
+     * @since 0.0.1
+     */
+    @Test
+    public void findFirstWordTest() {
+        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+        String word = SensitiveWordHelper.findFirst(text, WordResultHandlers.word());
+        Assert.assertEquals("五星红旗", word);
+    }
+
+    /**
+     * 返回所有第一个匹配的敏感词
+     * @since 0.0.1
+     */
+    @Test
+    public void findFirstRawTest() {
+        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+        IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
+        Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
     }
 
     /**

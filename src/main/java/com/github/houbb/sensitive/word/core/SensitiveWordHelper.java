@@ -1,20 +1,24 @@
 package com.github.houbb.sensitive.word.core;
 
+import com.github.houbb.sensitive.word.api.IWordResultHandler;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 
 import java.util.List;
 
 /**
  * 敏感词工具类
+ *
  * @author binbin.hou
  * @since 0.0.13
  */
 public final class SensitiveWordHelper {
 
-    private SensitiveWordHelper(){}
+    private SensitiveWordHelper() {
+    }
 
     /**
      * 默认的实现
+     *
      * @since 0.0.13
      */
     private static final SensitiveWordBs WORD_BS = SensitiveWordBs.newInstance().init();
@@ -77,6 +81,33 @@ public final class SensitiveWordHelper {
      */
     public static String replace(final String target) {
         return WORD_BS.replace(target);
+    }
+
+    /**
+     * 返回所有的敏感词
+     *
+     * @param target  目标字符串
+     * @param handler 结果处理类
+     * @return 敏感词列表
+     * @since 0.1.0
+     */
+    public static <R> List<R> findAll(final String target,
+                                      final IWordResultHandler<R> handler) {
+        return WORD_BS.findAll(target, handler);
+    }
+
+    /**
+     * 返回第一个敏感词
+     * （1）如果不存在，则返回 {@code null}
+     *
+     * @param target  目标字符串
+     * @param handler 结果处理类
+     * @return 敏感词
+     * @since 0.1.0
+     */
+    public static <R> R findFirst(final String target,
+                                  final IWordResultHandler<R> handler) {
+        return WORD_BS.findFirst(target, handler);
     }
 
 }

@@ -1,15 +1,14 @@
 package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.heaven.constant.CharConst;
+import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.sensitive.word.api.IWordAllow;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordDeny;
-import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
+import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 
 import java.util.List;
 
@@ -240,7 +239,7 @@ public class SensitiveWordBs {
         wordContext.ignoreNumStyle(true);
         wordContext.ignoreChineseStyle(true);
         wordContext.ignoreEnglishStyle(true);
-        wordContext.ignoreRepeat(true);
+        wordContext.ignoreRepeat(false);
 
         // 开启校验
         wordContext.sensitiveCheckNum(true);
@@ -273,9 +272,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public List<String> findAll(final String target) {
-        statusCheck();
-
-        return sensitiveWordMap.findAll(target, context);
+        return findAll(target, WordResultHandlers.word());
     }
 
     /**
@@ -287,10 +284,47 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public String findFirst(final String target) {
+        return findFirst(target, WordResultHandlers.word());
+    }
+
+    /**
+     * 返回所有的敏感词
+     * 1. 这里是默认去重的，且是有序的。
+     * 2. 如果不存在，返回空列表
+     *
+     * @param target 目标字符串
+     * @return 敏感词列表
+     * @since 0.0.1
+     */
+    public <R> List<R> findAll(final String target, final IWordResultHandler<R> handler) {
+        ArgUtil.notNull(handler, "handler");
         statusCheck();
 
-        return sensitiveWordMap.findFirst(target, context);
+        List<IWordResult> wordResults = sensitiveWordMap.findAll(target, context);
+        return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
+            @Override
+            public R handle(IWordResult wordResult) {
+                return handler.handle(wordResult);
+            }
+        });
     }
+
+    /**
+     * 返回第一个敏感词
+     * （1）如果不存在，则返回 {@code null}
+     *
+     * @param target 目标字符串
+     * @return 敏感词
+     * @since 0.0.1
+     */
+    public <R> R findFirst(final String target, final IWordResultHandler<R> handler) {
+        ArgUtil.notNull(handler, "handler");
+        statusCheck();
+
+        IWordResult wordResult = sensitiveWordMap.findFirst(target, context);
+        return handler.handle(wordResult);
+    }
+
 
     /**
      * 替换所有内容

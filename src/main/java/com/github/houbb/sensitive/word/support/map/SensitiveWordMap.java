@@ -11,11 +11,13 @@ import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.heaven.util.util.MapUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckChain;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckUrl;
+import com.github.houbb.sensitive.word.support.result.WordResult;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,20 +133,20 @@ public class SensitiveWordMap implements IWordMap {
     /**
      * 返回所有对应的敏感词
      * （1）结果是有序的
-     * （2）结果是默认去重的
+     * （2）为了保留所有的下标，结果从 v0.1.0 之后不再去重。
      *
      * @param string 原始字符串
      * @return 结果
      * @since 0.0.1
      */
     @Override
-    public List<String> findAll(String string, final IWordContext context) {
+    public List<IWordResult> findAll(String string, final IWordContext context) {
         return getSensitiveWords(string, ValidModeEnum.FAIL_OVER, context);
     }
 
     @Override
-    public String findFirst(String string, final IWordContext context) {
-        List<String> stringList = getSensitiveWords(string, ValidModeEnum.FAIL_FAST, context);
+    public IWordResult findFirst(String string, final IWordContext context) {
+        List<IWordResult> stringList = getSensitiveWords(string, ValidModeEnum.FAIL_FAST, context);
 
         if (CollectionUtil.isEmpty(stringList)) {
             return null;
@@ -170,14 +172,14 @@ public class SensitiveWordMap implements IWordMap {
      * @return 结果列表
      * @since 0.0.1
      */
-    private List<String> getSensitiveWords(final String text, final ValidModeEnum modeEnum,
+    private List<IWordResult> getSensitiveWords(final String text, final ValidModeEnum modeEnum,
                                            final IWordContext context) {
         //1. 是否存在敏感词，如果比存在，直接返回空列表
         if (StringUtil.isEmpty(text)) {
             return Guavas.newArrayList();
         }
 
-        List<String> resultList = Guavas.newArrayList();
+        List<IWordResult> resultList = Guavas.newArrayList();
         for (int i = 0; i < text.length(); i++) {
             SensitiveCheckResult checkResult = sensitiveCheck(text, i, ValidModeEnum.FAIL_OVER, context);
             // 命中
@@ -187,9 +189,11 @@ public class SensitiveWordMap implements IWordMap {
                 String sensitiveWord = text.substring(i, i + wordLength);
 
                 // 添加去重
-                if (!resultList.contains(sensitiveWord)) {
-                    resultList.add(sensitiveWord);
-                }
+                WordResult wordResult = WordResult.newInstance()
+                        .startIndex(i)
+                        .endIndex(i+wordLength)
+                        .word(sensitiveWord);
+                resultList.add(wordResult);
 
                 // 快速返回
                 if (ValidModeEnum.FAIL_FAST.equals(modeEnum)) {

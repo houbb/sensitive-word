@@ -40,7 +40,7 @@ public interface IWordMap extends ISensitiveCheck {
      * @since 0.0.1
      * @see ValidModeEnum#FAIL_OVER 建议使用全部检测返回模式
      */
-    List<String> findAll(final String string,
+    List<IWordResult> findAll(final String string,
                          final IWordContext context);
 
     /**
@@ -50,7 +50,7 @@ public interface IWordMap extends ISensitiveCheck {
      * @return 结果
      * @since 0.0.1
      */
-    String findFirst(final String string,
+    IWordResult findFirst(final String string,
                      final IWordContext context);
 
     /**
