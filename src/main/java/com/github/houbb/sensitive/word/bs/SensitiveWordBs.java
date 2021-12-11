@@ -347,6 +347,8 @@ public class SensitiveWordBs {
      * 2. 如果不存在，返回空列表
      *
      * @param target 目标字符串
+     * @param <R> 泛型
+     * @param handler 处理类
      * @return 敏感词列表
      * @since 0.0.1
      */
