@@ -9,8 +9,9 @@ import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
+import com.github.houbb.sensitive.word.utils.InnerFormatUtils;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 敏感词引导类
@@ -64,7 +65,7 @@ public class SensitiveWordBs {
         // 加载配置信息
         List<String> denyList = wordDeny.deny();
         List<String> allowList = wordAllow.allow();
-        List<String> results = CollectionUtil.difference(denyList, allowList);
+        List<String> results = getActualDenyList(denyList, allowList);
 
         // 初始化 DFA 信息
         if(sensitiveWordMap == null) {
@@ -72,6 +73,59 @@ public class SensitiveWordBs {
         }
         // 便于可以多次初始化
         sensitiveWordMap.initWordMap(results);
+    }
+
+    /**
+     * 获取禁止列表中真正的禁止词汇
+     * @param denyList 禁止
+     * @param allowList 允许
+     * @return 结果
+     * @since 0.1.1
+     */
+    List<String> getActualDenyList(List<String> denyList,
+                                   List<String> allowList) {
+        if(CollectionUtil.isEmpty(denyList)) {
+            return Collections.emptyList();
+        }
+        if(CollectionUtil.isEmpty(allowList)) {
+            return denyList;
+        }
+
+        List<String> formatDenyList = this.formatWordList(denyList);
+        List<String> formatAllowList = this.formatWordList(allowList);
+
+        List<String> resultList = new ArrayList<>();
+        // O(1)
+        Set<String> allowSet = new HashSet<>(formatAllowList);
+
+        for(String deny : formatDenyList) {
+            if(allowSet.contains(deny)) {
+                continue;
+            }
+
+            resultList.add(deny);
+        }
+        return resultList;
+    }
+
+    /**
+     * 数据格式化处理
+     * @param list 列表
+     * @return 结果
+     * @since 0.1.1
+     */
+    private List<String> formatWordList(List<String> list) {
+        if(CollectionUtil.isEmpty(list)) {
+            return list;
+        }
+
+        List<String> resultList = new ArrayList<>(list.size());
+        for(String word : list) {
+            String formatWord = InnerFormatUtils.format(word, this.context);
+            resultList.add(formatWord);
+        }
+
+        return resultList;
     }
 
     /**

@@ -44,11 +44,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
-v0.1.0 变更：
+v0.1.1 变更：
 
-- 返回敏感词对应的开始结束下标信息
-
-- 优化词库
+- 敏感词自定义 Allow/Deny 进行格式化处理
 
 # 快速开始
 
@@ -64,7 +62,7 @@ v0.1.0 变更：
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
