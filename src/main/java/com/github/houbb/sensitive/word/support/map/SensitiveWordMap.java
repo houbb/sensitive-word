@@ -9,14 +9,13 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.heaven.util.util.MapUtil;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordMap;
-import com.github.houbb.sensitive.word.api.IWordResult;
+import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckChain;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckUrl;
+import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceContext;
 import com.github.houbb.sensitive.word.support.result.WordResult;
 
 import java.util.Collection;
@@ -156,12 +155,12 @@ public class SensitiveWordMap implements IWordMap {
     }
 
     @Override
-    public String replace(String target, char replaceChar, final IWordContext context) {
+    public String replace(String target, final ISensitiveWordReplace replace, final IWordContext context) {
         if(StringUtil.isEmpty(target)) {
             return target;
         }
 
-        return this.replaceSensitiveWord(target, replaceChar, context);
+        return this.replaceSensitiveWord(target, replace, context);
     }
 
     /**
@@ -213,11 +212,13 @@ public class SensitiveWordMap implements IWordMap {
     /**
      * 直接替换敏感词，返回替换后的结果
      * @param target           文本信息
+     * @param replace 替换策略
+     * @param context 上下文
      * @return 脱敏后的字符串
      * @since 0.0.2
      */
     private String replaceSensitiveWord(final String target,
-                                        final char replaceChar,
+                                        final ISensitiveWordReplace replace,
                                         final IWordContext context) {
         if(StringUtil.isEmpty(target)) {
             return target;
@@ -241,7 +242,12 @@ public class SensitiveWordMap implements IWordMap {
                     // 直接使用原始内容，避免 markdown 图片转换失败
                     resultBuilder.append(string);
                 } else {
-                    String replaceStr = CharUtil.repeat(replaceChar, wordLength);
+                    // 创建上下文
+                    ISensitiveWordReplaceContext replaceContext = SensitiveWordReplaceContext.newInstance()
+                            .sensitiveWord(string)
+                            .wordLength(wordLength);
+                    String replaceStr = replace.replace(replaceContext);
+
                     resultBuilder.append(replaceStr);
                 }
 

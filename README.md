@@ -44,9 +44,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
-v0.1.1 变更：
+v0.2.0 变更：
 
-- 敏感词自定义 Allow/Deny 进行格式化处理
+- 支持用户自定义替换策略
 
 # 快速开始
 
@@ -62,7 +62,7 @@ v0.1.1 变更：
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.1.1</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -73,6 +73,7 @@ v0.1.1 变更：
 | 方法 | 参数 | 返回值| 说明 |
 |:---|:---|:---|:---|
 | contains(String) | 待验证的字符串 | 布尔值 | 验证字符串是否包含敏感词 |
+| replace(String, ISensitiveWordReplace) | 使用指定的替换策略替换敏感词 | 字符串 | 返回脱敏后的字符串 |
 | replace(String, char) | 使用指定的 char 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
 | replace(String) | 使用 `*` 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
 | findAll(String) | 待验证的字符串 | 字符串列表 | 返回字符串中所有敏感词 |
@@ -169,6 +170,58 @@ final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天�
 String result = SensitiveWordHelper.replace(text, '0');
 Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
 ```
+
+### 自定义替换策略
+
+V0.2.0 支持该特性。
+
+场景说明：有时候我们希望不同的敏感词有不同的替换结果。比如【游戏】替换为【电子竞技】，【失业】替换为【灵活就业】。
+
+诚然，提前使用字符串的正则替换也可以，不过性能一般。
+
+使用例子：
+
+```java
+/**
+ * 自定替换策略
+ * @since 0.2.0
+ */
+@Test
+public void defineReplaceTest() {
+    final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+    ISensitiveWordReplace replace = new MySensitiveWordReplace();
+    String result = SensitiveWordHelper.replace(text, replace);
+
+    Assert.assertEquals("国家旗帜迎风飘扬，教员的画像屹立在***前。", result);
+}
+```
+
+其中 `MySensitiveWordReplace` 是我们自定义的替换策略，实现如下：
+
+```java
+public class MySensitiveWordReplace implements ISensitiveWordReplace {
+
+    @Override
+    public String replace(ISensitiveWordReplaceContext context) {
+        String sensitiveWord = context.sensitiveWord();
+        // 自定义不同的敏感词替换策略，可以从数据库等地方读取
+        if("五星红旗".equals(sensitiveWord)) {
+            return "国家旗帜";
+        }
+        if("毛主席".equals(sensitiveWord)) {
+            return "教员";
+        }
+
+        // 其他默认使用 * 代替
+        int wordLength = context.wordLength();
+        return CharUtil.repeat('*', wordLength);
+    }
+
+}
+```
+
+我们针对其中的部分词做固定映射处理，其他的默认转换为 `*`。
 
 # 更多特性
 
@@ -530,8 +583,6 @@ public class SensitiveWordService {
 
 # 后期 road-map
 
-- 停顿词
-
 - 同音字处理
 
 - 形近字处理
@@ -542,7 +593,7 @@ public class SensitiveWordService {
 
 - 敏感词标签支持
 
-- 邮箱后缀检测
+- [ ] DFA 数据结构的另一种实现
 
 # 拓展阅读
 
@@ -552,4 +603,16 @@ public class SensitiveWordService {
 
 [敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
 
-[停止词的思考记录](https://houbb.github.io/2020/01/07/sensitive-word-stopword)
+[java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
+
+![WECHAT](WECHAT.png)
+
+# 相关开源库
+
+[heaven 基础工具包](https://github.com/houbb/heaven)
+
+[opencc4j 繁简体转换](https://github.com/houbb/opencc4j)
+
+[pinyin 拼音工具](https://github.com/houbb/pinyin)
+
+[nlp-hanzi-similar 汉字相似度工具](https://github.com/houbb/nlp-hanzi-similar)

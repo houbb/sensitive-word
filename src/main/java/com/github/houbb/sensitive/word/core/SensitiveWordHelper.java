@@ -1,5 +1,6 @@
 package com.github.houbb.sensitive.word.core;
 
+import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 
@@ -57,6 +58,18 @@ public final class SensitiveWordHelper {
      */
     public static String findFirst(final String target) {
         return WORD_BS.findFirst(target);
+    }
+
+    /**
+     * 替换所有内容
+     *
+     * @param target      目标字符串
+     * @param replace 替换策略
+     * @return 替换后结果
+     * @since 0.2.0
+     */
+    public static String replace(final String target, final ISensitiveWordReplace replace) {
+        return WORD_BS.replace(target, replace);
     }
 
     /**

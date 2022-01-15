@@ -59,12 +59,13 @@ public interface IWordMap extends ISensitiveCheck {
      * ps: 这里可以添加优化。
      *
      * @param target 目标字符串
-     * @param replaceChar 替换为的 char
+     * @param replace 替换策略
      * @param context 上下文
      * @return 替换后结果
      * @since 0.0.2
      */
-    String replace(final String target, final char replaceChar,
+    String replace(final String target,
+                   final ISensitiveWordReplace replace,
                    final IWordContext context);
 
 }

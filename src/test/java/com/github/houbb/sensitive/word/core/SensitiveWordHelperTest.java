@@ -1,6 +1,8 @@
 package com.github.houbb.sensitive.word.core;
 
+import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
 import com.github.houbb.sensitive.word.api.IWordResult;
+import com.github.houbb.sensitive.word.replace.MySensitiveWordReplace;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -146,6 +148,20 @@ public class SensitiveWordHelperTest {
 
         String word = SensitiveWordHelper.findFirst(text);
         Assert.assertEquals("ｆｕｃｋ", word);
+    }
+
+    /**
+     * 自定替换策略
+     * @since 0.2.0
+     */
+    @Test
+    public void defineReplaceTest() {
+        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+        ISensitiveWordReplace replace = new MySensitiveWordReplace();
+        String result = SensitiveWordHelper.replace(text, replace);
+
+        Assert.assertEquals("国家旗帜迎风飘扬，教员的画像屹立在***前。", result);
     }
 
 }

@@ -8,6 +8,7 @@ import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
+import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceChar;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.utils.InnerFormatUtils;
 
@@ -393,9 +394,23 @@ public class SensitiveWordBs {
      * @since 0.0.2
      */
     public String replace(final String target, final char replaceChar) {
+        ISensitiveWordReplace replace = new SensitiveWordReplaceChar(replaceChar);
+
+        return replace(target, replace);
+    }
+
+    /**
+     * 替换所有内容
+     *
+     * @param target      目标字符串
+     * @param replace 替换策略
+     * @return 替换后结果
+     * @since 0.2.0
+     */
+    public String replace(final String target, final ISensitiveWordReplace replace) {
         statusCheck();
 
-        return sensitiveWordMap.replace(target, replaceChar, context);
+        return sensitiveWordMap.replace(target, replace, context);
     }
 
     /**
