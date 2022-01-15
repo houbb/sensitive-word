@@ -605,7 +605,7 @@ public class SensitiveWordService {
 
 [java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
 
-![WECHAT](WECHAT.png)
+![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # 相关开源库
 
