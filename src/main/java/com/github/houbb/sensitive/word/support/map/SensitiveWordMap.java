@@ -89,12 +89,9 @@ public class SensitiveWordMap implements IWordMap {
                     // 将新节点设置为当前节点，方便下一次节点的循环。
                     currentMap = newWordMap;
                 }
-
-                // 判断是否为最后一个，添加是否结束的标识。
-                if (i == size - 1) {
-                    currentMap.put(AppConst.IS_END, true);
-                }
             }
+
+            currentMap.put(AppConst.IS_END, true);
         }
 
         // 最后更新为新的 map，保证更新过程中旧的数据可用
