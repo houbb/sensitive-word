@@ -581,6 +581,11 @@ public class SensitiveWordService {
 
 其他使用保持不变，无需重启应用。
 
+
+## STAR
+
+[![Stargazers over time](https://starchart.cc/houbb/sensitive-word.svg)](https://starchart.cc/houbb/sensitive-word)
+
 # 后期 road-map
 
 - 同音字处理
