@@ -6,6 +6,8 @@
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/houbb/sensitive-word)
 [![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/houbb/sensitive-word/blob/master/LICENSE.txt)
 
+> [在线体验](https://houbb.github.io/opensource/sensitive-word)
+
 ## 创作目的
 
 实现一款好用敏感词工具。
