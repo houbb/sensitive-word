@@ -158,4 +158,19 @@ public interface IWordContext {
      */
     IWordContext ignoreRepeat(final boolean ignoreRepeat);
 
+    /**
+     * 敏感数字检测
+     * @return 数字检测
+     * @since 0.2.1
+     */
+    int sensitiveCheckNumLen();
+
+    /**
+     * 设置敏感数字检测长度
+     * @param sensitiveCheckNumLen 数字格式检测长度
+     * @return this
+     * @since 0.2.1
+     */
+    IWordContext sensitiveCheckNumLen(final int sensitiveCheckNumLen);
+
 }

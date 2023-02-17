@@ -72,6 +72,12 @@ public class SensitiveWordContext implements IWordContext {
     private boolean sensitiveCheckUrl;
 
     /**
+     * 敏感数字检测对应的长度限制
+     * @since 0.2.1
+     */
+    private int sensitiveCheckNumLen;
+
+    /**
      * 私有化构造器
      * @since 0.0.4
      */
@@ -196,4 +202,16 @@ public class SensitiveWordContext implements IWordContext {
         this.sensitiveCheckUrl = sensitiveCheckUrl;
         return this;
     }
+
+    @Override
+    public int sensitiveCheckNumLen() {
+        return sensitiveCheckNumLen;
+    }
+
+    @Override
+    public SensitiveWordContext sensitiveCheckNumLen(int sensitiveCheckNumLen) {
+        this.sensitiveCheckNumLen = sensitiveCheckNumLen;
+        return this;
+    }
+
 }

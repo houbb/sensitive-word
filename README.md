@@ -46,9 +46,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
-v0.2.0 变更：
+v0.2.1 变更：
 
-- 支持用户自定义替换策略
+- 支持用户自定义数字检测的长度
 
 # 快速开始
 
@@ -64,7 +64,7 @@ v0.2.0 变更：
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 </dependency>
 ```
 
@@ -298,6 +298,26 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
+## 连续数字检测
+
+一般用于过滤手机号/QQ等广告信息。
+
+V0.2.1 之后，支持通过 `numCheckLen(长度)` 自定义检测的长度。
+
+```java
+final String text = "你懂得：12345678";
+
+// 默认检测 8 位
+List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+Assert.assertEquals("[12345678]", wordList.toString());
+
+// 指定数字的长度，避免误杀
+List<String> wordList2 = SensitiveWordBs.newInstance()
+        .numCheckLen(9)
+        .findAll(text);
+Assert.assertEquals("[]", wordList2.toString());
+```
+
 # 特性配置
 
 ## 说明
@@ -319,10 +339,11 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .ignoreNumStyle(true)
         .ignoreChineseStyle(true)
         .ignoreEnglishStyle(true)
-        .ignoreRepeat(true)
+        .ignoreRepeat(false)
         .enableNumCheck(true)
         .enableEmailCheck(true)
         .enableUrlCheck(true)
+        .numCheckLen(8)
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
@@ -332,17 +353,18 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法 | 说明 |
-|:---|:---|:---|
-| 1 | ignoreCase | 忽略大小写 |
-| 2 | ignoreWidth | 忽略半角圆角 |
-| 3 | ignoreNumStyle | 忽略数字的写法 |
-| 4 | ignoreChineseStyle | 忽略中文的书写格式 |
-| 5 | ignoreEnglishStyle | 忽略英文的书写格式 |
-| 6 | ignoreRepeat | 忽略重复词 |
-| 7 | enableNumCheck | 是否启用数字检测。默认连续 8 位数字认为是敏感词 |
-| 8 | enableEmailCheck | 是有启用邮箱检测 |
-| 9 | enableUrlCheck | 是否启用链接检测 |
+| 序号  | 方法 | 说明            |
+|:----|:---|:--------------|
+| 1   | ignoreCase | 忽略大小写         |
+| 2   | ignoreWidth | 忽略半角圆角        |
+| 3   | ignoreNumStyle | 忽略数字的写法       |
+| 4   | ignoreChineseStyle | 忽略中文的书写格式     |
+| 5   | ignoreEnglishStyle | 忽略英文的书写格式     |
+| 6   | ignoreRepeat | 忽略重复词         |
+| 7   | enableNumCheck | 是否启用数字检测。     |
+| 8   | enableEmailCheck | 是有启用邮箱检测      |
+| 9   | enableUrlCheck | 是否启用链接检测      |
+| 10  | numCheckLen | 数字检测，自定义指定长度。默认连续 8 位数字认为是敏感词 |
 
 # 动态加载（用户自定义）
 

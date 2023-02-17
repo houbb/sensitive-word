@@ -34,7 +34,7 @@ public class SensitiveCheckNum implements ISensitiveCheck {
                 lengthCount++;
 
                 // 满足结束的条件
-                boolean isCondition = isCondition(lengthCount);
+                boolean isCondition = isCondition(lengthCount, context);
                 if (isCondition) {
                     // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。
                     actualLength = lengthCount;
@@ -57,11 +57,13 @@ public class SensitiveCheckNum implements ISensitiveCheck {
      * 这里指定一个阈值条件
      * TODO: 这里有一个问题，会把一些 url 中的数字替换掉。
      * @param lengthCount 长度
+     * @param context 上下文
      * @return 是否满足条件
      * @since 0.0.5
      */
-    private boolean isCondition(final int lengthCount) {
-        return lengthCount >= 8;
+    protected boolean isCondition(final int lengthCount,
+                                final IWordContext context) {
+        return lengthCount >= context.sensitiveCheckNumLen();
     }
 
 }

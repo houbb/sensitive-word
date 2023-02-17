@@ -191,6 +191,17 @@ public class SensitiveWordBs {
     }
 
     /**
+     * 检测敏感词对应的长度限制，便于用户灵活定义
+     * @param numCheckLen 长度
+     * @return this
+     * @since 0.2.1
+     */
+    public SensitiveWordBs numCheckLen(int numCheckLen) {
+        this.context.sensitiveCheckNumLen(numCheckLen);
+        return this;
+    }
+
+    /**
      * 设置是否启动 email 检测
      *
      * @param enableEmailCheck email 检测
@@ -300,6 +311,9 @@ public class SensitiveWordBs {
         wordContext.sensitiveCheckNum(true);
         wordContext.sensitiveCheckEmail(true);
         wordContext.sensitiveCheckUrl(true);
+
+        // 额外配置
+        wordContext.sensitiveCheckNumLen(8);
 
         return wordContext;
     }

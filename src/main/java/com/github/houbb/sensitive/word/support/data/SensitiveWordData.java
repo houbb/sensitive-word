@@ -41,7 +41,6 @@ public class SensitiveWordData implements IWordData {
             defaultLines = CollectionUtil.difference(defaultLines, allowList);
 
             long end = System.currentTimeMillis();
-            System.out.println("Sensitive data loaded!, cost time: " + (end - start) + "ms");
         }
     }
 

@@ -26,6 +26,7 @@ public class SensitiveWordBsConfigTest {
                 .enableNumCheck(true)
                 .enableEmailCheck(true)
                 .enableUrlCheck(true)
+                .numCheckLen(8)
                 .init();
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";

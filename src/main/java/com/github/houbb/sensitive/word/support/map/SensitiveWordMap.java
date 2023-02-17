@@ -101,7 +101,6 @@ public class SensitiveWordMap implements IWordMap {
         this.innerWordMap = newInnerWordMap;
 
         long endTime = System.currentTimeMillis();
-        System.out.println("Init sensitive word map end! Cost time: " + (endTime - startTime) + "ms");
     }
 
     /**
