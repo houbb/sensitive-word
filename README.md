@@ -353,18 +353,18 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号  | 方法 | 说明            |
-|:----|:---|:--------------|
-| 1   | ignoreCase | 忽略大小写         |
-| 2   | ignoreWidth | 忽略半角圆角        |
-| 3   | ignoreNumStyle | 忽略数字的写法       |
-| 4   | ignoreChineseStyle | 忽略中文的书写格式     |
-| 5   | ignoreEnglishStyle | 忽略英文的书写格式     |
-| 6   | ignoreRepeat | 忽略重复词         |
-| 7   | enableNumCheck | 是否启用数字检测。     |
-| 8   | enableEmailCheck | 是有启用邮箱检测      |
-| 9   | enableUrlCheck | 是否启用链接检测      |
-| 10  | numCheckLen | 数字检测，自定义指定长度。默认连续 8 位数字认为是敏感词 |
+| 序号  | 方法 | 说明            | 默认值   |
+|:----|:---|:--------------|:------|
+| 1   | ignoreCase | 忽略大小写         | true  |
+| 2   | ignoreWidth | 忽略半角圆角        | true  |
+| 3   | ignoreNumStyle | 忽略数字的写法       | true  |
+| 4   | ignoreChineseStyle | 忽略中文的书写格式     | true  |
+| 5   | ignoreEnglishStyle | 忽略英文的书写格式     | true  |
+| 6   | ignoreRepeat | 忽略重复词         | false |
+| 7   | enableNumCheck | 是否启用数字检测。     | true  |
+| 8   | enableEmailCheck | 是有启用邮箱检测      | true  |
+| 9   | enableUrlCheck | 是否启用链接检测      | true  |
+| 10  | numCheckLen | 数字检测，自定义指定长度。| 8     |
 
 # 动态加载（用户自定义）
 
