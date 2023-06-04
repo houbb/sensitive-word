@@ -16,18 +16,16 @@ import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceConte
 import com.github.houbb.sensitive.word.support.result.WordResult;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 敏感词 map
+ * 敏感词处理器
  *
  * @author binbin.hou
  * @since 0.0.1
  */
 @ThreadSafe
-public class SensitiveWordMap implements IWordMap {
+public class SensitiveWordDefaultHandler implements IWordHandler {
 
     /**
      * 脱敏单词
@@ -48,7 +46,7 @@ public class SensitiveWordMap implements IWordMap {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized void initWordMap(Collection<String> collection) {
+    public synchronized void initWord(Collection<String> collection) {
         rootNode = new NodeTree();
         for (String key : collection) {
             if (StringUtil.isEmpty(key)) {

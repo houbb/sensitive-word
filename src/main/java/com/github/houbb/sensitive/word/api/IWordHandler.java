@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 敏感词 map
+ * 敏感词处理器
  * @author binbin.hou
  * @since 0.0.1
  */
-public interface IWordMap extends ISensitiveCheck {
+public interface IWordHandler extends ISensitiveCheck {
 
 
     /**
@@ -19,7 +19,7 @@ public interface IWordMap extends ISensitiveCheck {
      * @param collection 集合信息
      * @since 0.0.1
      */
-    void initWordMap(Collection<String> collection);
+    void initWord(Collection<String> collection);
 
     /**
      * 是否包含敏感词

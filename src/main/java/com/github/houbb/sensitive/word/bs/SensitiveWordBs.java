@@ -7,7 +7,7 @@ import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
-import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
+import com.github.houbb.sensitive.word.support.map.SensitiveWordDefaultHandler;
 import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceChar;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.utils.InnerFormatUtils;
@@ -35,7 +35,7 @@ public class SensitiveWordBs {
      *
      * @since 0.0.1
      */
-    private IWordMap sensitiveWordMap;
+    private IWordHandler iWordHandler;
 
     /**
      * 默认的执行上下文
@@ -69,11 +69,11 @@ public class SensitiveWordBs {
         List<String> results = getActualDenyList(denyList, allowList);
 
         // 初始化 DFA 信息
-        if(sensitiveWordMap == null) {
-            sensitiveWordMap = new SensitiveWordMap();
+        if(iWordHandler == null) {
+            iWordHandler = new SensitiveWordDefaultHandler();
         }
         // 便于可以多次初始化
-        sensitiveWordMap.initWordMap(results);
+        iWordHandler.initWord(results);
     }
 
     /**
@@ -328,7 +328,7 @@ public class SensitiveWordBs {
     public boolean contains(final String target) {
         statusCheck();
 
-        return sensitiveWordMap.contains(target, context);
+        return iWordHandler.contains(target, context);
     }
 
     /**
@@ -371,7 +371,7 @@ public class SensitiveWordBs {
         ArgUtil.notNull(handler, "handler");
         statusCheck();
 
-        List<IWordResult> wordResults = sensitiveWordMap.findAll(target, context);
+        List<IWordResult> wordResults = iWordHandler.findAll(target, context);
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
@@ -394,7 +394,7 @@ public class SensitiveWordBs {
         ArgUtil.notNull(handler, "handler");
         statusCheck();
 
-        IWordResult wordResult = sensitiveWordMap.findFirst(target, context);
+        IWordResult wordResult = iWordHandler.findFirst(target, context);
         return handler.handle(wordResult);
     }
 
@@ -424,7 +424,7 @@ public class SensitiveWordBs {
     public String replace(final String target, final ISensitiveWordReplace replace) {
         statusCheck();
 
-        return sensitiveWordMap.replace(target, replace, context);
+        return iWordHandler.replace(target, replace, context);
     }
 
     /**
@@ -446,9 +446,9 @@ public class SensitiveWordBs {
      */
     private void statusCheck(){
         //DLC
-        if(sensitiveWordMap == null) {
+        if(iWordHandler == null) {
             synchronized (this) {
-                if(sensitiveWordMap == null) {
+                if(iWordHandler == null) {
                     this.init();
                 }
             }
