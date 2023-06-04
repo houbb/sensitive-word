@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
-import java.util.Map;
+import com.github.houbb.sensitive.word.core.NodeTree;
+
 
 /**
  * @author binbin.hou
@@ -70,18 +71,18 @@ public interface IWordContext {
 
     /**
      * 获取敏感词信息
-     * @return 敏感词
+     * @return 敏感词树
      * @since 0.0.5
      */
-    Map sensitiveWordMap();
+    NodeTree sensitiveWordInfo();
 
     /**
      * 敏感词信息
-     * @param map map 信息
+     * @param nodeTree 敏感词树
      * @return this
      * @since 0.0.5
      */
-    IWordContext sensitiveWordMap(final Map map);
+    IWordContext sensitiveWordInfo(final NodeTree nodeTree);
 
     /**
      * 敏感数字检测

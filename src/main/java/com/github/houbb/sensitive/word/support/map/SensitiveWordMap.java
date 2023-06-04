@@ -4,14 +4,11 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.FileUtil;
-import com.github.houbb.heaven.util.lang.CharUtil;
-import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.heaven.util.util.MapUtil;
 import com.github.houbb.sensitive.word.api.*;
-import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.core.NodeTree;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckChain;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckUrl;
@@ -33,11 +30,11 @@ import java.util.Map;
 public class SensitiveWordMap implements IWordMap {
 
     /**
-     * 脱敏单词 map
+     * 脱敏单词
      *
      * @since 0.0.1
      */
-    private Map innerWordMap;
+    private NodeTree rootNode;
 
     /**
      * 读取敏感词库，将敏感词放入HashSet中，构建一个DFA算法模型：
@@ -52,55 +49,29 @@ public class SensitiveWordMap implements IWordMap {
     @Override
     @SuppressWarnings("unchecked")
     public synchronized void initWordMap(Collection<String> collection) {
-        long startTime = System.currentTimeMillis();
-        // 避免扩容带来的消耗
-        Map newInnerWordMap = new HashMap(collection.size());
-
+        rootNode = new NodeTree();
         for (String key : collection) {
             if (StringUtil.isEmpty(key)) {
                 continue;
             }
-
-            // 用来按照相应的格式保存敏感词库数据
-            char[] chars = key.toCharArray();
-            final int size = chars.length;
-
-            // 每一个新词的循环，直接将结果设置为当前 map，所有变化都会体现在结果的 map 中
-            Map currentMap = newInnerWordMap;
-
-            for (int i = 0; i < size; i++) {
-                // 截取敏感词当中的字，在敏感词库中字为HashMap对象的Key键值
-                char charKey = chars[i];
-                // 如果集合存在
-                Object wordMap = currentMap.get(charKey);
-
-                // 如果集合存在
-                if (ObjectUtil.isNotNull(wordMap)) {
-                    // 直接将获取到的 map 当前当前 map 进行继续的操作
-                    currentMap = (Map) wordMap;
-                } else {
-                    //不存在则，则构建一个新的map，同时将isEnd设置为0，因为他不是最后一
-                    Map<String, Boolean> newWordMap = new HashMap<>(8);
-                    newWordMap.put(AppConst.IS_END, false);
-
-                    // 将新的节点放入当前 map 中
-                    currentMap.put(charKey, newWordMap);
-
-                    // 将新节点设置为当前节点，方便下一次节点的循环。
-                    currentMap = newWordMap;
+            NodeTree tempNode = rootNode;
+            for (int i = 0; i < key.length(); i++) {
+                char c = key.charAt(i);
+                NodeTree subNode = tempNode.getSubNode(c);
+                if (subNode == null) {
+                    // 初始化子节点
+                    subNode = new NodeTree();
+                    tempNode.addSubNode(c, subNode);
                 }
-
-                // 判断是否为最后一个，添加是否结束的标识。
-                if (i == size - 1) {
-                    currentMap.put(AppConst.IS_END, true);
+                // 指向子节点,进入下一轮循环
+                tempNode = subNode;
+                // 设置结束标识
+                if (i == key.length() - 1) {
+                    tempNode.setKeywordEnd(true);
                 }
             }
+
         }
-
-        // 最后更新为新的 map，保证更新过程中旧的数据可用
-        this.innerWordMap = newInnerWordMap;
-
-        long endTime = System.currentTimeMillis();
     }
 
     /**
@@ -264,7 +235,7 @@ public class SensitiveWordMap implements IWordMap {
     @Override
     public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 默认执行敏感词操作
-        context.sensitiveWordMap(innerWordMap);
+        context.sensitiveWordInfo(rootNode);
 
         // 责任链模式调用
         return Instances.singleton(SensitiveCheckChain.class)

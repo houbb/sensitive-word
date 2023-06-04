@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.core.NodeTree;
 
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class SensitiveWordContext implements IWordContext {
      * 敏感词信息
      * @since 0.0.5
      */
-    private Map sensitiveWordMap;
+    private NodeTree rootNode;
 
     /**
      * 是否进行敏感数字检测
@@ -127,13 +128,13 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public Map sensitiveWordMap() {
-        return sensitiveWordMap;
+    public NodeTree sensitiveWordInfo() {
+        return rootNode;
     }
 
     @Override
-    public SensitiveWordContext sensitiveWordMap(Map sensitiveWordMap) {
-        this.sensitiveWordMap = sensitiveWordMap;
+    public SensitiveWordContext sensitiveWordInfo(NodeTree rootNode) {
+        this.rootNode = rootNode;
         return this;
     }
 
