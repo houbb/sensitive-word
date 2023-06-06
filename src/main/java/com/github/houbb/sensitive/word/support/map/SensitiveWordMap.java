@@ -1,19 +1,15 @@
 package com.github.houbb.sensitive.word.support.map;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.FileUtil;
-import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.heaven.util.util.MapUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
-import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckChain;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveCheckUrl;
 import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceContext;
 import com.github.houbb.sensitive.word.support.result.WordResult;
@@ -52,7 +48,6 @@ public class SensitiveWordMap implements IWordMap {
     @Override
     @SuppressWarnings("unchecked")
     public synchronized void initWordMap(Collection<String> collection) {
-        long startTime = System.currentTimeMillis();
         // 避免扩容带来的消耗
         Map newInnerWordMap = new HashMap(collection.size());
 
@@ -99,8 +94,6 @@ public class SensitiveWordMap implements IWordMap {
 
         // 最后更新为新的 map，保证更新过程中旧的数据可用
         this.innerWordMap = newInnerWordMap;
-
-        long endTime = System.currentTimeMillis();
     }
 
     /**
@@ -154,12 +147,12 @@ public class SensitiveWordMap implements IWordMap {
     }
 
     @Override
-    public String replace(String target, final ISensitiveWordReplace replace, final IWordContext context) {
+    public String replace(String target, final IWordContext context) {
         if(StringUtil.isEmpty(target)) {
             return target;
         }
 
-        return this.replaceSensitiveWord(target, replace, context);
+        return this.replaceSensitiveWord(target, context);
     }
 
     /**
@@ -211,13 +204,11 @@ public class SensitiveWordMap implements IWordMap {
     /**
      * 直接替换敏感词，返回替换后的结果
      * @param target           文本信息
-     * @param replace 替换策略
      * @param context 上下文
      * @return 脱敏后的字符串
      * @since 0.0.2
      */
     private String replaceSensitiveWord(final String target,
-                                        final ISensitiveWordReplace replace,
                                         final IWordContext context) {
         if(StringUtil.isEmpty(target)) {
             return target;
@@ -245,7 +236,7 @@ public class SensitiveWordMap implements IWordMap {
                     ISensitiveWordReplaceContext replaceContext = SensitiveWordReplaceContext.newInstance()
                             .sensitiveWord(string)
                             .wordLength(wordLength);
-                    String replaceStr = replace.replace(replaceContext);
+                    String replaceStr = context.sensitiveWordReplace().replace(replaceContext);
 
                     resultBuilder.append(replaceStr);
                 }
@@ -267,7 +258,7 @@ public class SensitiveWordMap implements IWordMap {
         context.sensitiveWordMap(innerWordMap);
 
         // 责任链模式调用
-        return Instances.singleton(SensitiveCheckChain.class)
+        return context.sensitiveCheck()
                 .sensitiveCheck(txt, beginIndex, validModeEnum, context);
     }
 

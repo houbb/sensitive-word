@@ -1,12 +1,10 @@
 package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
-import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 
 /**
  * 敏感词监测实现
@@ -18,6 +16,15 @@ import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 @ThreadSafe
 public class SensitiveCheckNum implements ISensitiveCheck {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final ISensitiveCheck INSTANCE = new SensitiveCheckNum();
+
+    public static ISensitiveCheck getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 记录敏感词的长度
@@ -26,7 +33,7 @@ public class SensitiveCheckNum implements ISensitiveCheck {
 
         for (int i = beginIndex; i < txt.length(); i++) {
             char c = txt.charAt(i);
-            char charKey = Instances.singleton(CharFormatChain.class).format(c, context);
+            char charKey = context.charFormat().format(c, context);
 
             // 如果是数字
             // 满足进入的条件

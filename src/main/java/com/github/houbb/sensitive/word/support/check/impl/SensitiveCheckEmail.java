@@ -1,14 +1,12 @@
 package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.util.regex.RegexUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
-import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 
 /**
  * email 正则表达式检测实现。
@@ -28,6 +26,15 @@ import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 @ThreadSafe
 public class SensitiveCheckEmail implements ISensitiveCheck {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final ISensitiveCheck INSTANCE = new SensitiveCheckEmail();
+
+    public static ISensitiveCheck getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
         // 记录敏感词的长度
@@ -40,7 +47,7 @@ public class SensitiveCheckEmail implements ISensitiveCheck {
         // 后期如果有想法，对 DFA 进一步深入学习后，将进行优化。
         for(int i = beginIndex; i < txt.length(); i++) {
             char currentChar = txt.charAt(i);
-            char mappingChar = Instances.singleton(CharFormatChain.class)
+            char mappingChar = context.charFormat()
                     .format(currentChar, context);
 
             if(CharUtil.isEmilChar(mappingChar)) {

@@ -24,6 +24,7 @@ public class SensitiveWordBsRepeatTest {
 
         List<String> wordList = SensitiveWordBs.newInstance()
                 .ignoreRepeat(true)
+                .init()
                 .findAll(text);
         Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
     }

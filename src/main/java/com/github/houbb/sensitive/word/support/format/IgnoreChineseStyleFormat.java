@@ -7,12 +7,18 @@ import com.github.houbb.sensitive.word.api.ICharFormat;
 import com.github.houbb.sensitive.word.api.IWordContext;
 
 /**
- * 忽略大小写
+ * 忽略中文样式
  * @author binbin.hou
  * @since 0.0.5
  */
 @ThreadSafe
 public class IgnoreChineseStyleFormat implements ICharFormat {
+
+    private static final ICharFormat INSTANCE = new IgnoreChineseStyleFormat();
+
+    public static ICharFormat getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public char format(char original, IWordContext context) {

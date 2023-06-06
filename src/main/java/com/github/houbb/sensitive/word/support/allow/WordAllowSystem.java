@@ -15,6 +15,15 @@ import java.util.List;
 @ThreadSafe
 public class WordAllowSystem implements IWordAllow {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final WordAllowSystem INSTANCE = new WordAllowSystem();
+
+    public static WordAllowSystem getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public List<String> allow() {
         return StreamUtil.readAllLines("/sensitive_word_allow.txt");

@@ -22,7 +22,7 @@ public class SensitiveWordBsEnglishTest {
     public void ignoreEnglishStyleTest() {
         final String text = "Ⓕⓤc⒦ the bad words";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
         Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
     }
 

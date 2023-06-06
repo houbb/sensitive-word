@@ -1,6 +1,5 @@
 package com.github.houbb.sensitive.word.support.deny;
 
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.sensitive.word.api.IWordDeny;
@@ -43,7 +42,7 @@ public final class WordDenys {
      * @since 0.0.13
      */
     public static IWordDeny system() {
-        return Instances.singleton(WordDenySystem.class);
+        return WordDenySystem.getInstance();
     }
 
 }

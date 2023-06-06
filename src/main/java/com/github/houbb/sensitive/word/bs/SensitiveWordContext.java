@@ -1,6 +1,9 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.sensitive.word.api.ICharFormat;
+import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
 import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Map;
 
@@ -76,6 +79,44 @@ public class SensitiveWordContext implements IWordContext {
      * @since 0.2.1
      */
     private int sensitiveCheckNumLen;
+
+    /**
+     * 检测策略
+     * @since 0.3.0
+     */
+    private ISensitiveCheck sensitiveCheck;
+
+    /**
+     * 替换策略
+     * @since 0.3.0
+     */
+    private ISensitiveWordReplace sensitiveWordReplace;
+
+    /**
+     * 格式化
+     * @since 0.3.0
+     */
+    private ICharFormat charFormat;
+
+    @Override
+    public ISensitiveWordReplace sensitiveWordReplace() {
+        return sensitiveWordReplace;
+    }
+
+    public SensitiveWordContext sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
+        this.sensitiveWordReplace = sensitiveWordReplace;
+        return this;
+    }
+
+    @Override
+    public ISensitiveCheck sensitiveCheck() {
+        return sensitiveCheck;
+    }
+
+    public SensitiveWordContext sensitiveCheck(ISensitiveCheck sensitiveCheck) {
+        this.sensitiveCheck = sensitiveCheck;
+        return this;
+    }
 
     /**
      * 私有化构造器
@@ -214,4 +255,13 @@ public class SensitiveWordContext implements IWordContext {
         return this;
     }
 
+    @Override
+    public ICharFormat charFormat() {
+        return charFormat;
+    }
+
+    public SensitiveWordContext charFormat(ICharFormat charFormat) {
+        this.charFormat = charFormat;
+        return this;
+    }
 }

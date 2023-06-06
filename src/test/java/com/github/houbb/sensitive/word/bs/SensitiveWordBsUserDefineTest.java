@@ -22,7 +22,7 @@ public class SensitiveWordBsUserDefineTest {
     public void allowAndDenyTest() {
         final String text = "gender 我们认为应该通过，自定义敏感词我们认为应该拒绝。";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
         Assert.assertEquals("[自定义敏感词]", wordList.toString());
     }
 

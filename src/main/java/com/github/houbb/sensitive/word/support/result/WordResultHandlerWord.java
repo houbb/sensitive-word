@@ -13,6 +13,15 @@ import com.github.houbb.sensitive.word.api.IWordResultHandler;
 @ThreadSafe
 public class WordResultHandlerWord implements IWordResultHandler<String> {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final WordResultHandlerWord INSTANCE = new WordResultHandlerWord();
+
+    public static WordResultHandlerWord getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public String handle(IWordResult wordResult) {
         if(wordResult == null) {

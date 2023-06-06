@@ -12,9 +12,9 @@ import java.util.Map;
  * @author Administrator
  * @since 0.0.4
  */
-public final class CharUtils {
+public final class InnerCharUtils {
 
-    private CharUtils() {
+    private InnerCharUtils() {
     }
 
     /**

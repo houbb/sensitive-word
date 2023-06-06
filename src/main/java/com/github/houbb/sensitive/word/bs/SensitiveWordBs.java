@@ -1,18 +1,20 @@
 package com.github.houbb.sensitive.word.bs;
 
-import com.github.houbb.heaven.constant.CharConst;
 import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+import com.github.houbb.sensitive.word.support.check.impl.SensitiveChecks;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
-import com.github.houbb.sensitive.word.support.map.SensitiveWordMap;
-import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceChar;
+import com.github.houbb.sensitive.word.support.format.CharFormats;
+import com.github.houbb.sensitive.word.support.map.WordMaps;
+import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
-import com.github.houbb.sensitive.word.utils.InnerFormatUtils;
+import com.github.houbb.sensitive.word.utils.InnerWordDataUtils;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * 敏感词引导类
@@ -30,19 +32,63 @@ public class SensitiveWordBs {
     private SensitiveWordBs() {
     }
 
+
+    //------------------------------------------------------------- 基本属性 START
+    // 格式统一化
+    /**
+     * 是否忽略大小写
+     */
+    private boolean ignoreCase = true;
+    /**
+     * 是否忽略全角、半角
+     */
+    private boolean ignoreWidth = true;
+    /**
+     * 是否忽略数字样式
+     */
+    private boolean ignoreNumStyle = true;
+    /**
+     * 是否忽略中文样式
+     */
+    private boolean ignoreChineseStyle = true;
+    /**
+     * 是否忽略英文样式
+     */
+    private boolean ignoreEnglishStyle = true;
+    /**
+     * 是否忽略重复
+     */
+    private boolean ignoreRepeat = false;
+
+    // 开启校验
+    /**
+     * 启用数字检测
+     */
+    private boolean sensitiveCheckNum = true;
+    /**
+     * 启用邮箱检测
+     */
+    private boolean sensitiveCheckEmail = true;
+    /**
+     * 启用 URL 检测
+     */
+    private boolean sensitiveCheckUrl = true;
+
+    // 额外配置
+    /**
+     * 检测数字时的长度
+     */
+    private int sensitiveCheckNumLen = 8;
+
+    //------------------------------------------------------------- 基本属性 END
     /**
      * 敏感词 map
      *
+     * TODO: 暂时定义为 final，后续放开抽象。
+     *
      * @since 0.0.1
      */
-    private IWordMap sensitiveWordMap;
-
-    /**
-     * 默认的执行上下文
-     *
-     * @since 0.0.4
-     */
-    private final IWordContext context = buildDefaultContext();
+    private final IWordMap wordMap = WordMaps.defaults();
 
     /**
      * 禁止的单词
@@ -57,76 +103,21 @@ public class SensitiveWordBs {
     private IWordAllow wordAllow = WordAllows.system();
 
     /**
-     * DCL 初始化 wordMap 信息
-     *
-     * 注意：map 的构建是一个比较耗时的动作
-     * @since 0.0.4
+     * 替换策略
+     * @since 0.3.0
      */
-    private synchronized void initWordMap() {
-        // 加载配置信息
-        List<String> denyList = wordDeny.deny();
-        List<String> allowList = wordAllow.allow();
-        List<String> results = getActualDenyList(denyList, allowList);
-
-        // 初始化 DFA 信息
-        if(sensitiveWordMap == null) {
-            sensitiveWordMap = new SensitiveWordMap();
-        }
-        // 便于可以多次初始化
-        sensitiveWordMap.initWordMap(results);
-    }
+    private ISensitiveWordReplace sensitiveWordReplace = SensitiveWordReplaces.chars();
 
     /**
-     * 获取禁止列表中真正的禁止词汇
-     * @param denyList 禁止
-     * @param allowList 允许
-     * @return 结果
-     * @since 0.1.1
+     * 上下文
+     * @since 0.3.0
      */
-    List<String> getActualDenyList(List<String> denyList,
-                                   List<String> allowList) {
-        if(CollectionUtil.isEmpty(denyList)) {
-            return Collections.emptyList();
-        }
-        if(CollectionUtil.isEmpty(allowList)) {
-            return denyList;
-        }
+    private IWordContext context = SensitiveWordContext.newInstance();
 
-        List<String> formatDenyList = this.formatWordList(denyList);
-        List<String> formatAllowList = this.formatWordList(allowList);
-
-        List<String> resultList = new ArrayList<>();
-        // O(1)
-        Set<String> allowSet = new HashSet<>(formatAllowList);
-
-        for(String deny : formatDenyList) {
-            if(allowSet.contains(deny)) {
-                continue;
-            }
-
-            resultList.add(deny);
-        }
-        return resultList;
-    }
-
-    /**
-     * 数据格式化处理
-     * @param list 列表
-     * @return 结果
-     * @since 0.1.1
-     */
-    private List<String> formatWordList(List<String> list) {
-        if(CollectionUtil.isEmpty(list)) {
-            return list;
-        }
-
-        List<String> resultList = new ArrayList<>(list.size());
-        for(String word : list) {
-            String formatWord = InnerFormatUtils.format(word, this.context);
-            resultList.add(formatWord);
-        }
-
-        return resultList;
+    public SensitiveWordBs sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
+        ArgUtil.notNull(sensitiveWordReplace, "sensitiveWordReplace");
+        this.sensitiveWordReplace = sensitiveWordReplace;
+        return this;
     }
 
     /**
@@ -149,9 +140,66 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs init() {
+        // 初始化 context
+        this.initContext();
+
+        // 替换策略
+        final ICharFormat charFormat = CharFormats.initCharFormat(context);
+        context.charFormat(charFormat);
+
+        // 3. 初始化对应的 sensitiveCheck
+        final ISensitiveCheck sensitiveCheck = SensitiveChecks.initSensitiveCheck(context);
+        context.sensitiveCheck(sensitiveCheck);
+
+        //2. 初始化 word
         this.initWordMap();
 
         return this;
+    }
+
+    /**
+     * 构建默认的上下文
+     *
+     * @return 结果
+     * @since 0.0.4
+     */
+    private IWordContext initContext() {
+        this.context = SensitiveWordContext.newInstance();
+
+        // 格式统一化
+        context.ignoreCase(ignoreCase);
+        context.ignoreWidth(ignoreWidth);
+        context.ignoreNumStyle(ignoreNumStyle);
+        context.ignoreChineseStyle(ignoreChineseStyle);
+        context.ignoreEnglishStyle(ignoreEnglishStyle);
+        context.ignoreRepeat(ignoreRepeat);
+
+        // 开启校验
+        context.sensitiveCheckNum(sensitiveCheckNum);
+        context.sensitiveCheckEmail(sensitiveCheckEmail);
+        context.sensitiveCheckUrl(sensitiveCheckUrl);
+
+        // 额外配置
+        context.sensitiveCheckNumLen(sensitiveCheckNumLen);
+        context.sensitiveWordReplace(sensitiveWordReplace);
+
+        return context;
+    }
+
+    /**
+     * DCL 初始化 wordMap 信息
+     *
+     * 注意：map 的构建是一个比较耗时的动作
+     * @since 0.0.4
+     */
+    private synchronized void initWordMap() {
+        // 加载配置信息
+        List<String> denyList = wordDeny.deny();
+        List<String> allowList = wordAllow.allow();
+        List<String> results = InnerWordDataUtils.getActualDenyList(denyList, allowList, context);
+
+        // 便于可以多次初始化
+        wordMap.initWordMap(results);
     }
 
     /**
@@ -186,7 +234,7 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
-        this.context.sensitiveCheckNum(enableNumCheck);
+        this.sensitiveCheckNum = enableNumCheck;
         return this;
     }
 
@@ -197,7 +245,7 @@ public class SensitiveWordBs {
      * @since 0.2.1
      */
     public SensitiveWordBs numCheckLen(int numCheckLen) {
-        this.context.sensitiveCheckNumLen(numCheckLen);
+        this.sensitiveCheckNumLen = numCheckLen;
         return this;
     }
 
@@ -209,7 +257,7 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs enableEmailCheck(boolean enableEmailCheck) {
-        this.context.sensitiveCheckEmail(enableEmailCheck);
+        this.sensitiveCheckEmail = enableEmailCheck;
         return this;
     }
 
@@ -221,7 +269,7 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
-        this.context.sensitiveCheckUrl(enableUrlCheck);
+        this.sensitiveCheckUrl = enableUrlCheck;
         return this;
     }
 
@@ -232,7 +280,7 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreCase(boolean ignoreCase) {
-        this.context.ignoreCase(ignoreCase);
+        this.ignoreCase = ignoreCase;
         return this;
     }
 
@@ -243,7 +291,7 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreWidth(boolean ignoreWidth) {
-        this.context.ignoreWidth(ignoreWidth);
+        this.ignoreWidth = ignoreWidth;
         return this;
     }
 
@@ -254,7 +302,7 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreNumStyle(boolean ignoreNumStyle) {
-        this.context.ignoreNumStyle(ignoreNumStyle);
+        this.ignoreNumStyle = ignoreNumStyle;
         return this;
     }
 
@@ -265,7 +313,7 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreChineseStyle(boolean ignoreChineseStyle) {
-        this.context.ignoreChineseStyle(ignoreChineseStyle);
+        this.ignoreChineseStyle = ignoreChineseStyle;
         return this;
     }
 
@@ -276,7 +324,7 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreEnglishStyle(boolean ignoreEnglishStyle) {
-        this.context.ignoreEnglishStyle(ignoreEnglishStyle);
+        this.ignoreEnglishStyle = ignoreEnglishStyle;
         return this;
     }
 
@@ -287,37 +335,11 @@ public class SensitiveWordBs {
      * @since 0.0.14
      */
     public SensitiveWordBs ignoreRepeat(boolean ignoreRepeat) {
-        this.context.ignoreRepeat(ignoreRepeat);
+        this.ignoreRepeat = ignoreRepeat;
         return this;
     }
 
-    /**
-     * 构建默认的上下文
-     *
-     * @return 结果
-     * @since 0.0.4
-     */
-    private IWordContext buildDefaultContext() {
-        IWordContext wordContext = SensitiveWordContext.newInstance();
-        // 格式统一化
-        wordContext.ignoreCase(true);
-        wordContext.ignoreWidth(true);
-        wordContext.ignoreNumStyle(true);
-        wordContext.ignoreChineseStyle(true);
-        wordContext.ignoreEnglishStyle(true);
-        wordContext.ignoreRepeat(false);
-
-        // 开启校验
-        wordContext.sensitiveCheckNum(true);
-        wordContext.sensitiveCheckEmail(true);
-        wordContext.sensitiveCheckUrl(true);
-
-        // 额外配置
-        wordContext.sensitiveCheckNumLen(8);
-
-        return wordContext;
-    }
-
+    //------------------------------------------------------------------------------------ 公开方法 START
     /**
      * 是否包含敏感词
      *
@@ -326,9 +348,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public boolean contains(final String target) {
-        statusCheck();
-
-        return sensitiveWordMap.contains(target, context);
+        return wordMap.contains(target, context);
     }
 
     /**
@@ -369,9 +389,8 @@ public class SensitiveWordBs {
      */
     public <R> List<R> findAll(final String target, final IWordResultHandler<R> handler) {
         ArgUtil.notNull(handler, "handler");
-        statusCheck();
 
-        List<IWordResult> wordResults = sensitiveWordMap.findAll(target, context);
+        List<IWordResult> wordResults = wordMap.findAll(target, context);
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
@@ -392,67 +411,22 @@ public class SensitiveWordBs {
      */
     public <R> R findFirst(final String target, final IWordResultHandler<R> handler) {
         ArgUtil.notNull(handler, "handler");
-        statusCheck();
 
-        IWordResult wordResult = sensitiveWordMap.findFirst(target, context);
+        IWordResult wordResult = wordMap.findFirst(target, context);
         return handler.handle(wordResult);
     }
 
-
     /**
      * 替换所有内容
      *
      * @param target      目标字符串
-     * @param replaceChar 替换为的 char
-     * @return 替换后结果
-     * @since 0.0.2
-     */
-    public String replace(final String target, final char replaceChar) {
-        ISensitiveWordReplace replace = new SensitiveWordReplaceChar(replaceChar);
-
-        return replace(target, replace);
-    }
-
-    /**
-     * 替换所有内容
-     *
-     * @param target      目标字符串
-     * @param replace 替换策略
      * @return 替换后结果
      * @since 0.2.0
      */
-    public String replace(final String target, final ISensitiveWordReplace replace) {
-        statusCheck();
-
-        return sensitiveWordMap.replace(target, replace, context);
-    }
-
-    /**
-     * 替换所有内容
-     * 1. 默认使用空格替换，避免星号改变 md 的格式。
-     *
-     * @param target 目标字符串
-     * @return 替换后结果
-     * @since 0.0.2
-     */
     public String replace(final String target) {
-        return this.replace(target, CharConst.STAR);
+        return wordMap.replace(target, context);
     }
 
-
-    /**
-     * 状态校验
-     * @since 0.0.13
-     */
-    private void statusCheck(){
-        //DLC
-        if(sensitiveWordMap == null) {
-            synchronized (this) {
-                if(sensitiveWordMap == null) {
-                    this.init();
-                }
-            }
-        }
-    }
+    //------------------------------------------------------------------------------------ 公开方法 END
 
 }

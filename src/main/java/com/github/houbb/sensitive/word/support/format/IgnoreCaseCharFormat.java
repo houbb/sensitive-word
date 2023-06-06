@@ -12,6 +12,12 @@ import com.github.houbb.sensitive.word.api.IWordContext;
 @ThreadSafe
 public class IgnoreCaseCharFormat implements ICharFormat {
 
+    private static final ICharFormat INSTANCE = new IgnoreCaseCharFormat();
+
+    public static ICharFormat getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public char format(char original, IWordContext context) {
         return Character.toLowerCase(original);

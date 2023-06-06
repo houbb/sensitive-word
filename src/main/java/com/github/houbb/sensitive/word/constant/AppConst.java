@@ -43,4 +43,10 @@ public final class AppConst {
      */
     public static final String SENSITIVE_WORD_ALLOW_PATH = "/sensitive_word_allow.txt";
 
+    /**
+     * 最长的网址长度
+     * @since 0.3.0
+     */
+    public static final int MAX_WEB_SITE_LEN = 70;
+
 }

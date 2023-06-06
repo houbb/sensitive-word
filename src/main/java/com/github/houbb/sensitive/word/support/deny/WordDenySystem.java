@@ -16,6 +16,15 @@ import java.util.List;
 @ThreadSafe
 public class WordDenySystem implements IWordDeny {
 
+    /**
+     * @since 0.3.0
+     */
+    private static final IWordDeny INSTANCE = new WordDenySystem();
+
+    public static IWordDeny getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public List<String> deny() {
         List<String> results = StreamUtil.readAllLines("/dict.txt");

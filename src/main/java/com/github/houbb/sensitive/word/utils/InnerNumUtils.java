@@ -15,9 +15,9 @@ import java.util.Map;
  * @author Administrator
  * @since 0.0.4
  */
-public final class NumUtils {
+public final class InnerNumUtils {
 
-    private NumUtils(){}
+    private InnerNumUtils(){}
 
     private static final String NUM_ONE = "⓪０零º₀⓿○" +
             "１２３４５６７８９" +

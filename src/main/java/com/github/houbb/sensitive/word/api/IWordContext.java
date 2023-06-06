@@ -1,5 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
+import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+
 import java.util.Map;
 
 /**
@@ -172,5 +174,52 @@ public interface IWordContext {
      * @since 0.2.1
      */
     IWordContext sensitiveCheckNumLen(final int sensitiveCheckNumLen);
+
+    /**
+     * 设置检测策略
+     * @param sensitiveCheck 检测策略
+     * @return this
+     * @since 0.3.0
+     */
+    IWordContext sensitiveCheck(final ISensitiveCheck sensitiveCheck);
+
+    /**
+     * 获取检测策略
+     * @return 检测策略
+     * @since 0.3.0
+     */
+    ISensitiveCheck sensitiveCheck();
+
+    /**
+     * 设置敏感词替换策略
+     * @param sensitiveWordReplace 策略
+     * @return this
+     * @since 0.3.0
+     */
+    IWordContext sensitiveWordReplace(final ISensitiveWordReplace sensitiveWordReplace);
+
+    /**
+     * 敏感词替换策略
+     * @return 替换策略
+     * @since 0.3.0
+     */
+     ISensitiveWordReplace sensitiveWordReplace();
+
+    /**
+     * 设置统一的字符处理
+     *
+     * @param charFormat 字符处理
+     * @return 结果
+     * @since 0.3.0
+     */
+    IWordContext charFormat(final ICharFormat charFormat);
+
+    /**
+     * 获取格式化策略
+     *
+     * @return 策略
+     * @since 0.3.0
+     */
+    ICharFormat charFormat();
 
 }

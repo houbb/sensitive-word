@@ -1,14 +1,12 @@
 package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
-import com.github.houbb.sensitive.word.support.format.CharFormatChain;
 
 import java.util.Map;
 
@@ -19,6 +17,15 @@ import java.util.Map;
  */
 @ThreadSafe
 public class SensitiveCheckWord implements ISensitiveCheck {
+
+    /**
+     * @since 0.3.0
+     */
+    private static final ISensitiveCheck INSTANCE = new SensitiveCheckWord();
+
+    public static ISensitiveCheck getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
@@ -90,7 +97,7 @@ public class SensitiveCheckWord implements ISensitiveCheck {
                           final String txt,
                           final int index) {
         char c = txt.charAt(index);
-        char mappingChar = Instances.singleton(CharFormatChain.class).format(c, context);
+        char mappingChar = context.charFormat().format(c, context);
 
         // 这里做一次重复词的处理
         //TODO: 这里可以优化，是否获取一次。
@@ -99,7 +106,7 @@ public class SensitiveCheckWord implements ISensitiveCheck {
         if(context.ignoreRepeat()
             && index > 0) {
             char preChar = txt.charAt(index-1);
-            char preMappingChar = Instances.singleton(CharFormatChain.class)
+            char preMappingChar = context.charFormat()
                     .format(preChar, context);
 
             // 直接赋值为上一个 map

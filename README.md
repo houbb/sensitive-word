@@ -46,9 +46,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
 
-v0.2.1 变更：
+v0.3.0 变更：
 
-- 支持用户自定义数字检测的长度
+- 代码实现优化
 
 # 快速开始
 
@@ -64,7 +64,7 @@ v0.2.1 变更：
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -285,6 +285,7 @@ final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
 
 List<String> wordList = SensitiveWordBs.newInstance()
         .ignoreRepeat(true)
+        .init()
         .findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
@@ -308,12 +309,13 @@ V0.2.1 之后，支持通过 `numCheckLen(长度)` 自定义检测的长度。
 final String text = "你懂得：12345678";
 
 // 默认检测 8 位
-List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
 Assert.assertEquals("[12345678]", wordList.toString());
 
 // 指定数字的长度，避免误杀
 List<String> wordList2 = SensitiveWordBs.newInstance()
         .numCheckLen(9)
+        .init()
         .findAll(text);
 Assert.assertEquals("[]", wordList2.toString());
 ```
@@ -353,18 +355,19 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号  | 方法 | 说明            | 默认值   |
-|:----|:---|:--------------|:------|
-| 1   | ignoreCase | 忽略大小写         | true  |
-| 2   | ignoreWidth | 忽略半角圆角        | true  |
-| 3   | ignoreNumStyle | 忽略数字的写法       | true  |
-| 4   | ignoreChineseStyle | 忽略中文的书写格式     | true  |
-| 5   | ignoreEnglishStyle | 忽略英文的书写格式     | true  |
-| 6   | ignoreRepeat | 忽略重复词         | false |
-| 7   | enableNumCheck | 是否启用数字检测。     | true  |
-| 8   | enableEmailCheck | 是有启用邮箱检测      | true  |
-| 9   | enableUrlCheck | 是否启用链接检测      | true  |
-| 10  | numCheckLen | 数字检测，自定义指定长度。| 8     |
+| 序号 | 方法                   | 说明            | 默认值    |
+|:---|:---------------------|:--------------|:-------|
+| 1  | ignoreCase           | 忽略大小写         | true   |
+| 2  | ignoreWidth          | 忽略半角圆角        | true   |
+| 3  | ignoreNumStyle       | 忽略数字的写法       | true   |
+| 4  | ignoreChineseStyle   | 忽略中文的书写格式     | true   |
+| 5  | ignoreEnglishStyle   | 忽略英文的书写格式     | true   |
+| 6  | ignoreRepeat         | 忽略重复词         | false  |
+| 7  | enableNumCheck       | 是否启用数字检测。     | true   |
+| 8  | enableEmailCheck     | 是有启用邮箱检测      | true   |
+| 9  | enableUrlCheck       | 是否启用链接检测      | true   |
+| 10 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
+| 11 | sensitiveWordReplace | 敏感词替换策略       | `*` 替换 |
 
 # 动态加载（用户自定义）
 
@@ -611,6 +614,8 @@ public class SensitiveWordService {
 [![Stargazers over time](https://starchart.cc/houbb/sensitive-word.svg)](https://starchart.cc/houbb/sensitive-word)
 
 # 后期 road-map
+
+- [ ] wordMap 的抽象，便于拓展
 
 - 同音字处理
 
