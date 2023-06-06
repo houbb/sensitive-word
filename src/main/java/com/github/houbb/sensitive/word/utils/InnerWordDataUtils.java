@@ -17,6 +17,7 @@ public final class InnerWordDataUtils {
      * 获取禁止列表中真正的禁止词汇
      * @param denyList 禁止
      * @param allowList 允许
+     * @param context 上下文
      * @return 结果
      * @since 0.3.0
      */
