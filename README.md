@@ -526,6 +526,8 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 
 这里都是同时使用了系统默认配置，和自定义的配置。
 
+注意：**我们初始化了新的 wordBs，那么用新的 wordBs 去判断。而不是用以前的 `SensitiveWordHelper` 工具方法，工具方法配置是默认的！**
+
 # spring 整合
 
 ## 背景
