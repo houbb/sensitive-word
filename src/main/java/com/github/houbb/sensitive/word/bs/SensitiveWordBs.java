@@ -4,6 +4,7 @@ import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
+import com.github.houbb.sensitive.word.core.SensitiveWords;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveChecks;
@@ -82,6 +83,12 @@ public class SensitiveWordBs {
 
     //------------------------------------------------------------- 基本属性 END
     /**
+     * 脱敏策略
+     * @since 0.3.2
+     */
+    private ISensitiveWord sensitiveWord = SensitiveWords.defaults();
+
+    /**
      * 敏感词 map
      *
      * TODO: 暂时定义为 final，后续放开抽象。
@@ -114,12 +121,6 @@ public class SensitiveWordBs {
      */
     private IWordContext context = SensitiveWordContext.newInstance();
 
-    public SensitiveWordBs sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
-        ArgUtil.notNull(sensitiveWordReplace, "sensitiveWordReplace");
-        this.sensitiveWordReplace = sensitiveWordReplace;
-        return this;
-    }
-
     /**
      * 新建验证实例
      * <p>
@@ -131,6 +132,7 @@ public class SensitiveWordBs {
     public static SensitiveWordBs newInstance() {
         return new SensitiveWordBs();
     }
+
 
     /**
      * 初始化
@@ -182,6 +184,7 @@ public class SensitiveWordBs {
         // 额外配置
         context.sensitiveCheckNumLen(sensitiveCheckNumLen);
         context.sensitiveWordReplace(sensitiveWordReplace);
+        context.wordMap(wordMap);
 
         return context;
     }
@@ -200,6 +203,24 @@ public class SensitiveWordBs {
 
         // 便于可以多次初始化
         wordMap.initWordMap(results);
+    }
+
+    public SensitiveWordBs sensitiveWord(ISensitiveWord sensitiveWord) {
+        ArgUtil.notNull(sensitiveWord, "sensitiveWord");
+
+        this.sensitiveWord = sensitiveWord;
+        return this;
+    }
+
+    /**
+     * 设置替换策略
+     * @param sensitiveWordReplace 替换
+     * @return 结果
+     */
+    public SensitiveWordBs sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
+        ArgUtil.notNull(sensitiveWordReplace, "sensitiveWordReplace");
+        this.sensitiveWordReplace = sensitiveWordReplace;
+        return this;
     }
 
     /**
@@ -348,7 +369,7 @@ public class SensitiveWordBs {
      * @since 0.0.1
      */
     public boolean contains(final String target) {
-        return wordMap.contains(target, context);
+        return sensitiveWord.contains(target, context);
     }
 
     /**
@@ -390,7 +411,7 @@ public class SensitiveWordBs {
     public <R> List<R> findAll(final String target, final IWordResultHandler<R> handler) {
         ArgUtil.notNull(handler, "handler");
 
-        List<IWordResult> wordResults = wordMap.findAll(target, context);
+        List<IWordResult> wordResults = sensitiveWord.findAll(target, context);
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
@@ -412,7 +433,7 @@ public class SensitiveWordBs {
     public <R> R findFirst(final String target, final IWordResultHandler<R> handler) {
         ArgUtil.notNull(handler, "handler");
 
-        IWordResult wordResult = wordMap.findFirst(target, context);
+        IWordResult wordResult = sensitiveWord.findFirst(target, context);
         return handler.handle(wordResult);
     }
 
@@ -424,7 +445,7 @@ public class SensitiveWordBs {
      * @since 0.2.0
      */
     public String replace(final String target) {
-        return wordMap.replace(target, context);
+        return sensitiveWord.replace(target, context);
     }
 
     //------------------------------------------------------------------------------------ 公开方法 END

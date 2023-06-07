@@ -46,7 +46,7 @@ public class SensitiveWordBsUrlTest {
         List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
         Assert.assertEquals("[www.big-image.png]", wordList.toString());
 
-        Assert.assertEquals(text, SensitiveWordBs.newInstance().init().replace(text));
+        Assert.assertEquals("双击查看大图 *****************查看", SensitiveWordBs.newInstance().init().replace(text));
     }
 
 }

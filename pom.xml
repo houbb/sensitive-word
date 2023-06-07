@@ -25,8 +25,8 @@
         <project.compiler.level>1.7</project.compiler.level>
 
         <!--============================== INTER ==============================-->
-        <heaven.version>0.1.154</heaven.version>
-        <opencc4j.version>1.7.2</opencc4j.version>
+        <heaven.version>0.2.7</heaven.version>
+        <opencc4j.version>1.8.1</opencc4j.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.13.1</junit.version>

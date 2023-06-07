@@ -1,8 +1,6 @@
 package com.github.houbb.sensitive.word.bs;
 
-import com.github.houbb.sensitive.word.api.ICharFormat;
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
-import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Map;
@@ -36,6 +34,7 @@ public class SensitiveWordContext implements IWordContext {
      * 敏感词信息
      * @since 0.0.5
      */
+    @Deprecated
     private Map sensitiveWordMap;
 
     /**
@@ -97,6 +96,22 @@ public class SensitiveWordContext implements IWordContext {
      * @since 0.3.0
      */
     private ICharFormat charFormat;
+
+    /**
+     * 单词 map 信息
+     *
+     * @since 0.3.2
+     */
+    private IWordMap wordMap;
+
+    public IWordMap wordMap() {
+        return wordMap;
+    }
+
+    public SensitiveWordContext wordMap(IWordMap wordMap) {
+        this.wordMap = wordMap;
+        return this;
+    }
 
     @Override
     public ISensitiveWordReplace sensitiveWordReplace() {

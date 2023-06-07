@@ -1,5 +1,6 @@
 package com.github.houbb.sensitive.word.api;
 
+import com.github.houbb.sensitive.word.bs.SensitiveWordContext;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Map;
@@ -221,5 +222,20 @@ public interface IWordContext {
      * @since 0.3.0
      */
     ICharFormat charFormat();
+
+    /**
+     * 获取 wordMap 策略
+     * @return 策略
+     * @since 0.3.2
+     */
+    IWordMap wordMap();
+
+    /**
+     * 设置 wordMap 策略
+     * @param wordMap 策略
+     * @return this
+     * @since 0.3.2
+     */
+    IWordContext wordMap(IWordMap wordMap);
 
 }

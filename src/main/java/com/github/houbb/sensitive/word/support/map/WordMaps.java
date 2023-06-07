@@ -18,7 +18,7 @@ public final class WordMaps {
      * @since 0.3.0
      */
     public static IWordMap defaults() {
-        return new SensitiveWordMap();
+        return new WordMap();
     }
 
 }
