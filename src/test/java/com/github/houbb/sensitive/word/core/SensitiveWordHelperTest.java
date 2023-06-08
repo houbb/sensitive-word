@@ -62,7 +62,7 @@ public class SensitiveWordHelperTest {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
         List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-        Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
+        Assert.assertEquals("[WordResult{startIndex=0, endIndex=4}, WordResult{startIndex=9, endIndex=12}, WordResult{startIndex=18, endIndex=21}]", wordList.toString());
     }
 
 
@@ -99,7 +99,7 @@ public class SensitiveWordHelperTest {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
         IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
-        Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
+        Assert.assertEquals("WordResult{startIndex=0, endIndex=4}", word.toString());
     }
 
     /**

@@ -94,28 +94,30 @@ public class WordMap implements IWordMap {
      * （1）直接遍历所有
      * （2）如果遇到，则直接返回 true
      *
-     * @param string 字符串
+     * @param stringBuilder 字符串
      * @return 是否包含
      * @since 0.0.1
      */
     @Override
-    public WordContainsTypeEnum contains(String string, final IWordContext context) {
-        if (StringUtil.isEmpty(string)) {
+    public WordContainsTypeEnum contains(StringBuilder stringBuilder, final IWordContext context) {
+        if (stringBuilder == null
+            || stringBuilder.length() <= 0) {
             return WordContainsTypeEnum.NOT_FOUND;
         }
 
-        return innerContainsSensitive(string, context);
+        return innerContainsSensitive(stringBuilder, context);
     }
 
-    private WordContainsTypeEnum innerContainsSensitive(String txt,
+    private WordContainsTypeEnum innerContainsSensitive(StringBuilder stringBuilder,
                                            IWordContext context) {
         // 初始化为当前的 map
         Map nowMap = this.innerWordMap;
 
         // 记录敏感词的长度
-        for (int i = 0; i < txt.length(); i++) {
+        final int len = stringBuilder.length();
+        for (int i = 0; i < len; i++) {
             // 获取当前的 map 信息
-            nowMap = getNowMap(nowMap, context, txt, i);
+            nowMap = getNowMap(nowMap, context, stringBuilder, i);
 
             // 如果不为空，则判断是否为结尾。
             if (ObjectUtil.isNull(nowMap)) {
@@ -155,16 +157,16 @@ public class WordMap implements IWordMap {
      * 获取当前的 Map
      * @param nowMap 原始的当前 map
      * @param context 上下文
-     * @param txt 文本信息
+     * @param stringBuilder 文本缓存
      * @param index 下标
      * @return 实际的当前 map
      * @since 0.0.7
      */
     private Map getNowMap(Map nowMap,
                           final IWordContext context,
-                          final String txt,
+                          final StringBuilder stringBuilder,
                           final int index) {
-        char c = txt.charAt(index);
+        char c = stringBuilder.charAt(index);
         char mappingChar = context.charFormat().format(c, context);
 
         // 这里做一次重复词的处理
@@ -173,7 +175,7 @@ public class WordMap implements IWordMap {
         // 启用忽略重复&当前下标不是第一个
         if(context.ignoreRepeat()
                 && index > 0) {
-            char preChar = txt.charAt(index-1);
+            char preChar = stringBuilder.charAt(index-1);
             char preMappingChar = context.charFormat().format(preChar, context);
 
             // 直接赋值为上一个 map

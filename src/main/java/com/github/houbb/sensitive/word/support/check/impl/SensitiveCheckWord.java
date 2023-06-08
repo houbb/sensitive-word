@@ -45,7 +45,7 @@ public class SensitiveCheckWord extends AbstractSensitiveCheck {
             stringBuilder.append(mappingChar);
 
             // 判断是否存在
-            WordContainsTypeEnum wordContainsTypeEnum = wordMap.contains(stringBuilder.toString(), context);
+            WordContainsTypeEnum wordContainsTypeEnum = wordMap.contains(stringBuilder, context);
             if(WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnum)) {
                 actualLength = stringBuilder.length();
 

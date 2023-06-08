@@ -7,14 +7,18 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @Ignore
-public class BasicTest {
+public class BenchmarkBasicTest {
 
     /**
      *
      *
      * 100*100 耗时：926ms，性能較差。
      *
-     * 100*100000 的字符：12942ms 第一次优化。
+     * 100*100000 的字符：
+     *
+     * 12942ms 第一次优化。
+     * 12983ms 添加对应的 contains 优化，性能无太大变化。
+     *
      */
     @Test
     public void costTimeTest() {
@@ -34,6 +38,10 @@ public class BasicTest {
     /**
      *
      * 100*100000 的字符：12440ms
+     *
+     * 12111 第一次优化
+     *
+     * 1133 只有单词校验
      */
     @Test
     public void costTimeOnlyWordTest() {
@@ -43,7 +51,10 @@ public class BasicTest {
         // 1W 次
         long start = System.currentTimeMillis();
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
-                .enableWordCheck(false)
+//                .enableWordCheck(false)
+                .enableNumCheck(false)
+                .enableUrlCheck(false)
+                .enableEmailCheck(false)
                 .init();
 
         for(int i = 0; i < 10000; i++) {

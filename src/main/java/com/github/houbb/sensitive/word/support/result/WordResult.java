@@ -8,24 +8,12 @@ import com.github.houbb.sensitive.word.api.IWordResult;
  */
 public class WordResult implements IWordResult {
 
-    private String word;
-
     private int startIndex;
 
     private int endIndex;
 
     public static WordResult newInstance() {
         return new WordResult();
-    }
-
-    @Override
-    public String word() {
-        return word;
-    }
-
-    public WordResult word(String word) {
-        this.word = word;
-        return this;
     }
 
     @Override
@@ -51,8 +39,7 @@ public class WordResult implements IWordResult {
     @Override
     public String toString() {
         return "WordResult{" +
-                "word='" + word + '\'' +
-                ", startIndex=" + startIndex +
+                "startIndex=" + startIndex +
                 ", endIndex=" + endIndex +
                 '}';
     }

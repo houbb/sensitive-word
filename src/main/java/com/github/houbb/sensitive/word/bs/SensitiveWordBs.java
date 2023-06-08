@@ -434,7 +434,7 @@ public class SensitiveWordBs {
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
-                return handler.handle(wordResult);
+                return handler.handle(wordResult, context, target);
             }
         });
     }
@@ -453,7 +453,7 @@ public class SensitiveWordBs {
         ArgUtil.notNull(handler, "handler");
 
         IWordResult wordResult = sensitiveWord.findFirst(target, context);
-        return handler.handle(wordResult);
+        return handler.handle(wordResult, context, target);
     }
 
     /**

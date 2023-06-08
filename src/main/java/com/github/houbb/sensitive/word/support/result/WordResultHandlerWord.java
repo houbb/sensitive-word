@@ -1,8 +1,10 @@
 package com.github.houbb.sensitive.word.support.result;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
+import com.github.houbb.sensitive.word.utils.InnerCharUtils;
 
 /**
  * 只保留单词
@@ -23,11 +25,13 @@ public class WordResultHandlerWord implements IWordResultHandler<String> {
     }
 
     @Override
-    public String handle(IWordResult wordResult) {
+    public String handle(IWordResult wordResult, IWordContext wordContext, String originalText) {
         if(wordResult == null) {
             return null;
         }
-        return wordResult.word();
+
+        // 截取
+        return InnerCharUtils.getString(originalText.toCharArray(), wordResult);
     }
-    
+
 }

@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.support.result;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
 
@@ -22,7 +23,7 @@ public class WordResultHandlerRaw implements IWordResultHandler<IWordResult> {
     }
 
     @Override
-    public IWordResult handle(IWordResult wordResult) {
+    public IWordResult handle(IWordResult wordResult, IWordContext wordContext, String originalText) {
         return wordResult;
     }
 

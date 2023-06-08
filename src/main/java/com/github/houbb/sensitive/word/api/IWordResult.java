@@ -8,13 +8,6 @@ package com.github.houbb.sensitive.word.api;
 public interface IWordResult {
 
     /**
-     * 敏感词
-     * @return 敏感词
-     * @since 0.1.0
-     */
-    String word();
-
-    /**
      * 开始下标
      * @return 开始下标
      * @since 0.1.0

@@ -2,10 +2,8 @@ package com.github.houbb.sensitive.word.api;
 
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
-import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 敏感词 map
@@ -24,13 +22,13 @@ public interface IWordMap {
 
     /**
      * 是否包含敏感词
-     * @param string 字符串
+     * @param stringBuilder 缓冲
      * @param context 上下文
      * @return 是否包含
-     * @since 0.0.1
+     * @since 0.5.0
      * @see ValidModeEnum#FAIL_FAST 建议使用快速返回模式
      */
-    WordContainsTypeEnum contains(final String string,
+    WordContainsTypeEnum contains(final StringBuilder stringBuilder,
                                   final IWordContext context);
 
 }
