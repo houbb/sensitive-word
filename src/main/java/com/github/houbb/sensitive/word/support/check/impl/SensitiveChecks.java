@@ -28,16 +28,16 @@ public final class SensitiveChecks {
     public static ISensitiveCheck initSensitiveCheck(final IWordContext context) {
         List<ISensitiveCheck> sensitiveCheckList = new ArrayList<>();
 
-        // 默认添加敏感词校验
-        sensitiveCheckList.add(SensitiveChecks.word());
-
-        if(context.sensitiveCheckNum()) {
+        if(context.enableWordCheck()) {
+            sensitiveCheckList.add(SensitiveChecks.word());
+        }
+        if(context.enableNumCheck()) {
             sensitiveCheckList.add(SensitiveChecks.num());
         }
-        if(context.sensitiveCheckEmail()) {
+        if(context.enableEmailCheck()) {
             sensitiveCheckList.add(SensitiveChecks.email());
         }
-        if(context.sensitiveCheckUrl()) {
+        if(context.enableUrlCheck()) {
             sensitiveCheckList.add(SensitiveChecks.url());
         }
 

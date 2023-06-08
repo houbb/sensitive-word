@@ -65,21 +65,27 @@ public class SensitiveWordBs {
     /**
      * 启用数字检测
      */
-    private boolean sensitiveCheckNum = true;
+    private boolean enableNumCheck = true;
     /**
      * 启用邮箱检测
      */
-    private boolean sensitiveCheckEmail = true;
+    private boolean enableEmailCheck = true;
     /**
      * 启用 URL 检测
      */
-    private boolean sensitiveCheckUrl = true;
+    private boolean enableUrlCheck = true;
+
+    /**
+     * 单词校验
+     * @since 0.4.0
+     */
+    private boolean enableWordCheck = true;
 
     // 额外配置
     /**
      * 检测数字时的长度
      */
-    private int sensitiveCheckNumLen = 8;
+    private int numCheckLen = 8;
 
     //------------------------------------------------------------- 基本属性 END
     /**
@@ -177,12 +183,13 @@ public class SensitiveWordBs {
         context.ignoreRepeat(ignoreRepeat);
 
         // 开启校验
-        context.sensitiveCheckNum(sensitiveCheckNum);
-        context.sensitiveCheckEmail(sensitiveCheckEmail);
-        context.sensitiveCheckUrl(sensitiveCheckUrl);
+        context.enableNumCheck(enableNumCheck);
+        context.enableEmailCheck(enableEmailCheck);
+        context.enableUrlCheck(enableUrlCheck);
+        context.enableWordCheck(enableWordCheck);
 
         // 额外配置
-        context.sensitiveCheckNumLen(sensitiveCheckNumLen);
+        context.sensitiveCheckNumLen(numCheckLen);
         context.sensitiveWordReplace(sensitiveWordReplace);
         context.wordMap(wordMap);
 
@@ -250,12 +257,24 @@ public class SensitiveWordBs {
     /**
      * 设置是否启动数字检测
      *
+     * @param enableWordCheck 数字检测
+     * @since 0.0.11
+     * @return this
+     */
+    public SensitiveWordBs enableWordCheck(boolean enableWordCheck) {
+        this.enableWordCheck = enableWordCheck;
+        return this;
+    }
+
+    /**
+     * 设置是否启动数字检测
+     *
      * @param enableNumCheck 数字检测
      * @since 0.0.11
      * @return this
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
-        this.sensitiveCheckNum = enableNumCheck;
+        this.enableNumCheck = enableNumCheck;
         return this;
     }
 
@@ -266,7 +285,7 @@ public class SensitiveWordBs {
      * @since 0.2.1
      */
     public SensitiveWordBs numCheckLen(int numCheckLen) {
-        this.sensitiveCheckNumLen = numCheckLen;
+        this.numCheckLen = numCheckLen;
         return this;
     }
 
@@ -278,7 +297,7 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs enableEmailCheck(boolean enableEmailCheck) {
-        this.sensitiveCheckEmail = enableEmailCheck;
+        this.enableEmailCheck = enableEmailCheck;
         return this;
     }
 
@@ -290,7 +309,7 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
-        this.sensitiveCheckUrl = enableUrlCheck;
+        this.enableUrlCheck = enableUrlCheck;
         return this;
     }
 

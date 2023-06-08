@@ -57,6 +57,7 @@ public class SensitiveWord extends AbstractSensitiveWord {
             int wordLength = checkResult.index();
             if (wordLength > 0) {
                 // 保存敏感词
+                // TODO: 这其实是一个比较消耗的操作，后续可以考虑简化掉。
                 String sensitiveWord = text.substring(i, i + wordLength);
 
                 // 添加去重

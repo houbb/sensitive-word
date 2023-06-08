@@ -20,7 +20,7 @@ import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
  * @since 0.0.9
  */
 @ThreadSafe
-public class SensitiveCheckUrl extends AbstractSensitiveCheck {
+public class SensitiveCheckUrl extends AbstractConditionSensitiveCheck {
 
     /**
      * @since 0.3.0
@@ -39,6 +39,10 @@ public class SensitiveCheckUrl extends AbstractSensitiveCheck {
     @Override
     protected boolean isStringCondition(int index, String rawText, StringBuilder stringBuilder, IWordContext context) {
         int bufferLen = stringBuilder.length();
+        //a.cn
+        if(bufferLen < 4) {
+            return false;
+        }
         if(bufferLen > AppConst.MAX_WEB_SITE_LEN) {
             return false;
         }

@@ -12,7 +12,7 @@ import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
  * @since 0.0.5
  */
 @ThreadSafe
-public class SensitiveCheckNum extends AbstractSensitiveCheck {
+public class SensitiveCheckNum extends AbstractConditionSensitiveCheck {
 
     /**
      * @since 0.3.0

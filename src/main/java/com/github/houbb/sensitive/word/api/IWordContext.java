@@ -1,9 +1,6 @@
 package com.github.houbb.sensitive.word.api;
 
-import com.github.houbb.sensitive.word.bs.SensitiveWordContext;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
-
-import java.util.Map;
 
 /**
  * @author binbin.hou
@@ -72,64 +69,62 @@ public interface IWordContext {
     IWordContext ignoreChineseStyle(final boolean ignoreChineseStyle);
 
     /**
-     * 获取敏感词信息
-     * @return 敏感词
-     * @since 0.0.5
+     * 是否启用单词
+     * @return 是否
      */
-    Map sensitiveWordMap();
+    boolean enableWordCheck();
 
     /**
-     * 敏感词信息
-     * @param map map 信息
-     * @return this
-     * @since 0.0.5
+     * 设置是否启用单词
+     * @param enableWordCheck 是否
+     * @return 结果
      */
-    IWordContext sensitiveWordMap(final Map map);
+    IWordContext enableWordCheck(boolean enableWordCheck);
 
     /**
      * 敏感数字检测
      * @return 数字检测
      * @since 0.0.5
      */
-    boolean sensitiveCheckNum();
+    boolean enableNumCheck();
 
     /**
      * 设置敏感数字检测
-     * @param sensitiveCheckNum 数字格式检测
+     * @param enableNumCheck 数字格式检测
      * @return this
      * @since 0.0.5
      */
-    IWordContext sensitiveCheckNum(final boolean sensitiveCheckNum);
+    IWordContext enableNumCheck(final boolean enableNumCheck);
 
     /**
      * 是否进行邮箱检测
      * @return this
      * @since 0.0.9
      */
-    boolean sensitiveCheckEmail();
+    boolean enableEmailCheck();
 
     /**
      * 设置敏感邮箱检测
-     * @param sensitiveCheckEmail 是否检测
+     * @param enableEmailCheck 是否检测
      * @return this
      * @since 0.0.9
      */
-    IWordContext sensitiveCheckEmail(final boolean sensitiveCheckEmail);
+    IWordContext enableEmailCheck(final boolean enableEmailCheck);
 
     /**
      * 敏感链接检测
      * @return 是否启用
      * @since 0.
      */
-    boolean sensitiveCheckUrl();
+    boolean enableUrlCheck();
 
     /**
      * 设置敏感邮箱检测
-     * @param sensitiveCheckUrl 是否检测
+     * @param enableUrlCheck 是否检测
      * @return this
      * @since 0.0.9
      */
-    IWordContext sensitiveCheckUrl(final boolean sensitiveCheckUrl);
+    IWordContext enableUrlCheck(final boolean enableUrlCheck);
 
     /**
      * 忽略英文的写法

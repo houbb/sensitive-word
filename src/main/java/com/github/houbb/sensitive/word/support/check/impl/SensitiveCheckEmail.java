@@ -4,9 +4,8 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.util.regex.RegexUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
-import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 
 /**
  * email 正则表达式检测实现。
@@ -24,7 +23,7 @@ import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
  * @since 0.0.9
  */
 @ThreadSafe
-public class SensitiveCheckEmail extends AbstractSensitiveCheck {
+public class SensitiveCheckEmail extends AbstractConditionSensitiveCheck {
 
     /**
      * @since 0.3.0
@@ -42,6 +41,16 @@ public class SensitiveCheckEmail extends AbstractSensitiveCheck {
 
     @Override
     protected boolean isStringCondition(int index, String rawText, StringBuilder stringBuilder, IWordContext context) {
+        int bufferLen = stringBuilder.length();
+
+        //x@a.cn
+        if(bufferLen < 6) {
+            return false;
+        }
+        if(bufferLen > AppConst.MAX_EMAIL_LEN) {
+            return false;
+        }
+
         String string = stringBuilder.toString();
         return RegexUtil.isEmail(string);
     }

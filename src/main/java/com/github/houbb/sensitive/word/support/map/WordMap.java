@@ -6,6 +6,7 @@ import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.constant.AppConst;
+import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -98,15 +99,15 @@ public class WordMap implements IWordMap {
      * @since 0.0.1
      */
     @Override
-    public boolean contains(String string, final IWordContext context) {
+    public WordContainsTypeEnum contains(String string, final IWordContext context) {
         if (StringUtil.isEmpty(string)) {
-            return false;
+            return WordContainsTypeEnum.NOT_FOUND;
         }
 
         return innerContainsSensitive(string, context);
     }
 
-    private boolean innerContainsSensitive(String txt,
+    private WordContainsTypeEnum innerContainsSensitive(String txt,
                                            IWordContext context) {
         // 初始化为当前的 map
         Map nowMap = this.innerWordMap;
@@ -118,11 +119,17 @@ public class WordMap implements IWordMap {
 
             // 如果不为空，则判断是否为结尾。
             if (ObjectUtil.isNull(nowMap)) {
-                return false;
+                return WordContainsTypeEnum.NOT_FOUND;
             }
         }
 
-        return isEnd(nowMap);
+        // 是否为结尾，便于快速失败
+        boolean isEnd =  isEnd(nowMap);
+        if(isEnd) {
+            return WordContainsTypeEnum.CONTAINS_END;
+        }
+
+        return WordContainsTypeEnum.CONTAINS_PREFIX;
     }
 
     /**

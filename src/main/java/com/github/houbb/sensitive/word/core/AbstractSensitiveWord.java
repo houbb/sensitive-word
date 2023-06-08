@@ -3,11 +3,9 @@ package com.github.houbb.sensitive.word.core;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
-import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaceContext;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 抽象实现
@@ -42,7 +40,7 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
         // 注意边界
         int startIndex = 0;
-        char[] chars = target.toCharArray();
+        char[] rawChars = target.toCharArray();
 
         for(IWordResult wordResult : allList) {
             final int itemStartIx = wordResult.startIndex();
@@ -50,24 +48,19 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
             // 脱敏的左边
             if(startIndex < itemStartIx) {
-                stringBuilder.append(chars, startIndex, itemStartIx-startIndex);
+                stringBuilder.append(rawChars, startIndex, itemStartIx-startIndex);
             }
 
             // 脱敏部分
-            String word = wordResult.word();
-            ISensitiveWordReplaceContext replaceContext = SensitiveWordReplaceContext.newInstance()
-                    .sensitiveWord(word)
-                    .wordLength(word.length());
-            String replacedText = replace.replace(replaceContext);
-            stringBuilder.append(replacedText);
+            replace.replace(stringBuilder, rawChars, wordResult, context);
 
             // 更新结尾
             startIndex = Math.max(startIndex, itemEndIx);
         }
 
         // 最后部分
-        if (startIndex < chars.length) {
-            stringBuilder.append(chars, startIndex, chars.length-startIndex);
+        if (startIndex < rawChars.length) {
+            stringBuilder.append(rawChars, startIndex, rawChars.length-startIndex);
         }
 
         return stringBuilder.toString();

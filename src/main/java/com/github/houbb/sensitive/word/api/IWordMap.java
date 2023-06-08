@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 import java.util.Collection;
@@ -29,7 +30,7 @@ public interface IWordMap {
      * @since 0.0.1
      * @see ValidModeEnum#FAIL_FAST 建议使用快速返回模式
      */
-    boolean contains(final String string,
-                     final IWordContext context);
+    WordContainsTypeEnum contains(final String string,
+                                  final IWordContext context);
 
 }

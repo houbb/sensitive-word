@@ -1,9 +1,10 @@
 package com.github.houbb.sensitive.word.bs;
 
-import com.github.houbb.sensitive.word.api.*;
+import com.github.houbb.sensitive.word.api.ICharFormat;
+import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
+import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
-
-import java.util.Map;
 
 /**
  * 上下文
@@ -31,17 +32,16 @@ public class SensitiveWordContext implements IWordContext {
     private boolean ignoreNumStyle;
 
     /**
-     * 敏感词信息
-     * @since 0.0.5
+     * 启动单词校验
+     * @since 0.4.0
      */
-    @Deprecated
-    private Map sensitiveWordMap;
+    private boolean enableWordCheck;
 
     /**
      * 是否进行敏感数字检测
      * @since 0.0.6
      */
-    private boolean sensitiveCheckNum;
+    private boolean enableNumCheck;
 
     /**
      * 是否忽略中文繁简体
@@ -65,13 +65,13 @@ public class SensitiveWordContext implements IWordContext {
      * 是否进行邮箱测试
      * @since 0.0.9
      */
-    private boolean sensitiveCheckEmail;
+    private boolean enableEmailCheck;
 
     /**
      * 是否进行 url 测试
      * @since 0.0.12
      */
-    private boolean sensitiveCheckUrl;
+    private boolean enableUrlCheck;
 
     /**
      * 敏感数字检测对应的长度限制
@@ -182,25 +182,23 @@ public class SensitiveWordContext implements IWordContext {
         return this;
     }
 
-    @Override
-    public Map sensitiveWordMap() {
-        return sensitiveWordMap;
+    public boolean enableWordCheck() {
+        return enableWordCheck;
     }
 
-    @Override
-    public SensitiveWordContext sensitiveWordMap(Map sensitiveWordMap) {
-        this.sensitiveWordMap = sensitiveWordMap;
+    public SensitiveWordContext enableWordCheck(boolean enableWordCheck) {
+        this.enableWordCheck = enableWordCheck;
         return this;
     }
 
     @Override
-    public boolean sensitiveCheckNum() {
-        return sensitiveCheckNum;
+    public boolean enableNumCheck() {
+        return enableNumCheck;
     }
 
     @Override
-    public SensitiveWordContext sensitiveCheckNum(boolean sensitiveCheckNum) {
-        this.sensitiveCheckNum = sensitiveCheckNum;
+    public SensitiveWordContext enableNumCheck(boolean enableNumCheck) {
+        this.enableNumCheck = enableNumCheck;
         return this;
     }
 
@@ -238,24 +236,24 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public boolean sensitiveCheckEmail() {
-        return sensitiveCheckEmail;
+    public boolean enableEmailCheck() {
+        return enableEmailCheck;
     }
 
     @Override
-    public SensitiveWordContext sensitiveCheckEmail(boolean sensitiveCheckEmail) {
-        this.sensitiveCheckEmail = sensitiveCheckEmail;
+    public SensitiveWordContext enableEmailCheck(boolean enableEmailCheck) {
+        this.enableEmailCheck = enableEmailCheck;
         return this;
     }
 
     @Override
-    public boolean sensitiveCheckUrl() {
-        return sensitiveCheckUrl;
+    public boolean enableUrlCheck() {
+        return enableUrlCheck;
     }
 
     @Override
-    public SensitiveWordContext sensitiveCheckUrl(boolean sensitiveCheckUrl) {
-        this.sensitiveCheckUrl = sensitiveCheckUrl;
+    public SensitiveWordContext enableUrlCheck(boolean enableUrlCheck) {
+        this.enableUrlCheck = enableUrlCheck;
         return this;
     }
 

@@ -366,8 +366,9 @@ Assert.assertTrue(wordBs.contains(text));
 | 7  | enableNumCheck       | 是否启用数字检测。     | true   |
 | 8  | enableEmailCheck     | 是有启用邮箱检测      | true   |
 | 9  | enableUrlCheck       | 是否启用链接检测      | true   |
-| 10 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
-| 11 | sensitiveWordReplace | 敏感词替换策略       | `*` 替换 |
+| 10 | enableUrlCheck       | 是否启用敏感单词检测    | true   |
+| 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
+| 12 | sensitiveWordReplace | 敏感词替换策略       | `*` 替换 |
 
 # 动态加载（用户自定义）
 
@@ -617,7 +618,11 @@ public class SensitiveWordService {
 
 # 后期 road-map
 
-- [ ] wordMap 的抽象，便于拓展
+- [x] wordMap 的抽象，便于拓展
+
+- [ ] word 的统一性能优化，移除 string 的生成
+
+- [ ] word 策略的优化，统一遍历+转换
 
 - 同音字处理
 

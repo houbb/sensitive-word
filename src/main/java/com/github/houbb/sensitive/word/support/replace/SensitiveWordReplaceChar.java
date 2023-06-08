@@ -5,6 +5,8 @@ import com.github.houbb.heaven.constant.CharConst;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
 import com.github.houbb.sensitive.word.api.ISensitiveWordReplaceContext;
+import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.IWordResult;
 
 /**
  * 指定字符的替换策略
@@ -29,10 +31,11 @@ public class SensitiveWordReplaceChar implements ISensitiveWordReplace {
     }
 
     @Override
-    public String replace(ISensitiveWordReplaceContext context) {
-        int wordLength = context.wordLength();
-
-        return CharUtil.repeat(replaceChar, wordLength);
+    public void replace(StringBuilder stringBuilder, final char[] rawChars, IWordResult wordResult, IWordContext wordContext) {
+        int wordLen = wordResult.endIndex() - wordResult.startIndex();
+        for(int i = 0; i < wordLen; i++) {
+            stringBuilder.append(replaceChar);
+        }
     }
 
 }
