@@ -6,7 +6,7 @@ import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class BenchmarkBasicTest {
 
     /**
@@ -51,10 +51,85 @@ public class BenchmarkBasicTest {
         // 1W 次
         long start = System.currentTimeMillis();
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
-//                .enableWordCheck(false)
+                .enableWordCheck(true)
                 .enableNumCheck(false)
                 .enableUrlCheck(false)
                 .enableEmailCheck(false)
+                .init();
+
+        for(int i = 0; i < 10000; i++) {
+            sensitiveWordBs.findAll(randomText);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("------------------ COST: " + (end-start));
+    }
+
+    /**
+     *
+     * COST: 1540-pc
+     */
+    @Test
+    public void costTimeOnlyNumTest() {
+        String randomText = "你他妈的不要说脏话"+ RandomUtil.randomString("1234567890bcdefghiJKLMNOPQRSTUVWXYZ", 100)
+                + "我们他妈的从来不说脏说";
+
+        // 1W 次
+        long start = System.currentTimeMillis();
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .enableWordCheck(false)
+                .enableNumCheck(true)
+                .enableUrlCheck(false)
+                .enableEmailCheck(false)
+                .init();
+
+        for(int i = 0; i < 10000; i++) {
+            sensitiveWordBs.findAll(randomText);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("------------------ COST: " + (end-start));
+    }
+
+    /**
+     *
+     * COST: 20284-pc
+     */
+    @Test
+    public void costTimeOnlyUrlTest() {
+        String randomText = "你他妈的不要说脏话"+ RandomUtil.randomString("1234567890bcdefghiJKLMNOPQRSTUVWXYZ", 100)
+                + "我们他妈的从来不说脏说";
+
+        // 1W 次
+        long start = System.currentTimeMillis();
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .enableWordCheck(false)
+                .enableNumCheck(false)
+                .enableUrlCheck(true)
+                .enableEmailCheck(false)
+                .init();
+
+        for(int i = 0; i < 10000; i++) {
+            sensitiveWordBs.findAll(randomText);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("------------------ COST: " + (end-start));
+    }
+
+    /**
+     *
+     * COST: 19036-pc
+     */
+    @Test
+    public void costTimeOnlyEmailTest() {
+        String randomText = "你他妈的不要说脏话"+ RandomUtil.randomString("1234567890bcdefghiJKLMNOPQRSTUVWXYZ", 100)
+                + "我们他妈的从来不说脏说";
+
+        // 1W 次
+        long start = System.currentTimeMillis();
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .enableWordCheck(false)
+                .enableNumCheck(false)
+                .enableUrlCheck(false)
+                .enableEmailCheck(true)
                 .init();
 
         for(int i = 0; i < 10000; i++) {

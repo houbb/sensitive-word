@@ -51,8 +51,6 @@ public abstract class AbstractConditionSensitiveCheck extends AbstractSensitiveC
 
         // 采用 ThreadLocal 应该可以提升性能，减少对象的创建。
         StringBuilder stringBuilder = new StringBuilder();
-        // 前一个条件
-        boolean preCondition = false;
         int currentIx = 0;
         for(int i = beginIndex; i < txt.length(); i++) {
             currentIx = i;

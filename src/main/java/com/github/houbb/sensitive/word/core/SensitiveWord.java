@@ -50,6 +50,10 @@ public class SensitiveWord extends AbstractSensitiveWord {
         //1. 是否存在敏感词，如果比存在，直接返回空列表
         final ISensitiveCheck sensitiveCheck = context.sensitiveCheck();
         List<IWordResult> resultList = Guavas.newArrayList();
+
+        //TODO: 这里拆分为2个部分，从而保障性能。但是要注意处理下标的问题。
+        //1. 原始的敏感词部分
+        //2. email/url/num 的单独一次遍历处理。
         for (int i = 0; i < text.length(); i++) {
             SensitiveCheckResult checkResult = sensitiveCheck.sensitiveCheck(text, i, ValidModeEnum.FAIL_OVER, context);
 
