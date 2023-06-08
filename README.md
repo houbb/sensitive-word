@@ -64,7 +64,7 @@ v0.3.0 变更：
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.3.2</version>
+    <version>0.5.0</version>
 </dependency>
 ```
 
@@ -154,7 +154,7 @@ WordResultHandlers.raw() 可以保留对应的下标信息：
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
 List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
+Assert.assertEquals("[WordResult{startIndex=0, endIndex=4}, WordResult{startIndex=9, endIndex=12}, WordResult{startIndex=18, endIndex=21}]", wordList.toString());
 ```
 
 ### 默认的替换策略
@@ -206,18 +206,19 @@ public class MySensitiveWordReplace implements ISensitiveWordReplace {
 
     @Override
     public String replace(ISensitiveWordReplaceContext context) {
-        String sensitiveWord = context.sensitiveWord();
+        String sensitiveWord = InnerCharUtils.getString(rawChars, wordResult);
         // 自定义不同的敏感词替换策略，可以从数据库等地方读取
         if("五星红旗".equals(sensitiveWord)) {
-            return "国家旗帜";
+            stringBuilder.append("国家旗帜");
+        } else if("毛主席".equals(sensitiveWord)) {
+            stringBuilder.append("教员");
+        } else {
+            // 其他默认使用 * 代替
+            int wordLength = wordResult.endIndex() - wordResult.startIndex();
+            for(int i = 0; i < wordLength; i++) {
+                stringBuilder.append('*');
+            }
         }
-        if("毛主席".equals(sensitiveWord)) {
-            return "教员";
-        }
-
-        // 其他默认使用 * 代替
-        int wordLength = context.wordLength();
-        return CharUtil.repeat('*', wordLength);
     }
 
 }
@@ -345,6 +346,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .enableNumCheck(true)
         .enableEmailCheck(true)
         .enableUrlCheck(true)
+        .enableWordCheck(true)
         .numCheckLen(8)
         .init();
 
@@ -366,7 +368,7 @@ Assert.assertTrue(wordBs.contains(text));
 | 7  | enableNumCheck       | 是否启用数字检测。     | true   |
 | 8  | enableEmailCheck     | 是有启用邮箱检测      | true   |
 | 9  | enableUrlCheck       | 是否启用链接检测      | true   |
-| 10 | enableUrlCheck       | 是否启用敏感单词检测    | true   |
+| 10 | enableWordCheck      | 是否启用敏感单词检测    | true   |
 | 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
 | 12 | sensitiveWordReplace | 敏感词替换策略       | `*` 替换 |
 
@@ -620,9 +622,9 @@ public class SensitiveWordService {
 
 - [x] wordMap 的抽象，便于拓展
 
-- [ ] word 的统一性能优化，移除 string 的生成
+- [x] word 的统一性能优化，移除 string 的生成
 
-- [ ] word 策略的优化，统一遍历+转换
+- [ ] word check 策略的优化，统一遍历+转换
 
 - 同音字处理
 
