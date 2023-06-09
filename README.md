@@ -22,27 +22,23 @@
 
 - 6W+ 词库，且不断优化更新
 
-- 基于 DFA 算法，性能较好
-
 - 基于 fluent-api 实现，使用优雅简洁
 
-- 支持敏感词的判断、返回、脱敏等常见操作
+- [基于 DFA 算法，性能为 7W+ QPS，应用无感](https://github.com/houbb/sensitive-word#benchmark)
 
-- 支持全角半角互换
+- [支持敏感词的判断、返回、脱敏等常见操作](https://github.com/houbb/sensitive-word#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B)
 
-- 支持英文大小写互换
+- [支持自定义替换策略](https://github.com/houbb/sensitive-word#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5)
 
-- 支持数字常见形式的互换
+- [支持常见的格式转换](https://github.com/houbb/sensitive-word#%E6%9B%B4%E5%A4%9A%E7%89%B9%E6%80%A7)
 
-- 支持中文繁简体互换
+全角半角互换、英文大小写互换、数字常见形式的互换、中文繁简体互换、英文常见形式的互换
 
-- 支持英文常见形式的互换
+- [支持忽略重复词、邮箱检测、数字检测、网址检测等](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E9%87%8D%E5%A4%8D%E8%AF%8D)
 
-- 支持用户自定义敏感词和白名单
+- [支持用户自定义敏感词和白名单](https://github.com/houbb/sensitive-word#%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8)
 
-- 支持数据的数据动态更新，实时生效
-
-- [只做敏感词过滤时，性能为 7W+ QPS，应用无感](https://github.com/houbb/sensitive-word#benchmark)
+- [支持数据的数据动态更新，实时生效](https://github.com/houbb/sensitive-word#spring-%E6%95%B4%E5%90%88)
 
 ## 变更日志
 
@@ -638,7 +634,7 @@ ps: 不同环境会有差异，但是比例基本稳定。
 | 1 | 只做敏感词，无任何格式转换    | 1470ms，约 7.2W QPS | 追求极致性能，可以这样配置 |
 | 2 | 只做敏感词，支持全部格式转换  | 2744ms，约 3.7W QPS | 满足大部分场景       |
 
-## STAR
+# STAR
 
 [![Stargazers over time](https://starchart.cc/houbb/sensitive-word.svg)](https://starchart.cc/houbb/sensitive-word)
 
@@ -661,6 +657,8 @@ ps: 不同环境会有差异，但是比例基本稳定。
 - 敏感词标签支持
 
 - [ ] DFA 数据结构的另一种实现
+
+放开 wordMap 策略定义
 
 # 拓展阅读
 
