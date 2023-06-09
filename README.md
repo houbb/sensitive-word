@@ -42,6 +42,8 @@
 
 - 支持数据的数据动态更新，实时生效
 
+- 只做敏感词过滤时，性能为 7W+ QPS，应用无感
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
@@ -60,7 +62,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -608,6 +610,24 @@ public class SensitiveWordService {
 如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `sensitiveWordBs.init();`。
 
 其他使用保持不变，无需重启应用。
+
+# Benchmark
+
+V0.6.0 以后，添加对应的 benchmark 测试。
+
+> []()
+
+## 环境
+
+测试环境为普通的笔记本:
+
+```
+处理器	12th Gen Intel(R) Core(TM) i7-1260P   2.10 GHz
+机带 RAM	16.0 GB (15.7 GB 可用)
+系统类型	64 位操作系统, 基于 x64 的处理器
+```
+
+## 测试效果记录
 
 
 ## STAR

@@ -2,8 +2,7 @@ package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 
@@ -25,10 +24,8 @@ public abstract class SensitiveCheckInit implements ISensitiveCheck {
 
 
     @Override
-    public SensitiveCheckResult sensitiveCheck(String txt,
-                                               int beginIndex,
-                                               ValidModeEnum validModeEnum,
-                                               IWordContext context) {
+    public SensitiveCheckResult sensitiveCheck(final int beginIndex,
+                                               final InnerSensitiveContext checkContext) {
 
         Pipeline<ISensitiveCheck> pipeline = new DefaultPipeline<>();
         this.init(pipeline);
@@ -36,7 +33,7 @@ public abstract class SensitiveCheckInit implements ISensitiveCheck {
 
         // 循环调用
         for(ISensitiveCheck sensitiveCheck : sensitiveChecks) {
-            SensitiveCheckResult result = sensitiveCheck.sensitiveCheck(txt, beginIndex, validModeEnum, context);
+            SensitiveCheckResult result = sensitiveCheck.sensitiveCheck(beginIndex, checkContext);
 
             if(result.index() > 0) {
                 return result;

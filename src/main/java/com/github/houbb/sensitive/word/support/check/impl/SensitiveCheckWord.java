@@ -3,9 +3,12 @@ package com.github.houbb.sensitive.word.support.check.impl;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+
+import java.util.Map;
 
 /**
  * 敏感词监测实现
@@ -30,22 +33,27 @@ public class SensitiveCheckWord extends AbstractSensitiveCheck {
     }
 
     @Override
-    protected int doGetActualLength(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
+    protected int getActualLength(int beginIndex, InnerSensitiveContext innerContext) {
+        final String txt = innerContext.originalText();
+        final Map<Character, Character> formatCharMapping = innerContext.formatCharMapping();
+        final ValidModeEnum validModeEnum = innerContext.modeEnum();
+        final IWordContext context = innerContext.wordContext();
+
         // 采用 ThreadLocal 应该可以提升性能，减少对象的创建。
         int actualLength = 0;
         final IWordMap wordMap = context.wordMap();
 
         // 前一个条件
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = beginIndex; i < txt.length(); i++) {
-            char currentChar = txt.charAt(i);
-
+        char[] rawChars = txt.toCharArray();
+        for(int i = beginIndex; i < rawChars.length; i++) {
             // 映射处理
-            char mappingChar = context.charFormat().format(currentChar, context);
+            final char currentChar = rawChars[i];
+            char mappingChar = formatCharMapping.get(currentChar);
             stringBuilder.append(mappingChar);
 
             // 判断是否存在
-            WordContainsTypeEnum wordContainsTypeEnum = wordMap.contains(stringBuilder, context);
+            WordContainsTypeEnum wordContainsTypeEnum = wordMap.contains(stringBuilder, innerContext);
             if(WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnum)) {
                 actualLength = stringBuilder.length();
 

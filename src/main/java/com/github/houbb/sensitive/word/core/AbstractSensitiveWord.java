@@ -2,7 +2,10 @@ package com.github.houbb.sensitive.word.core;
 
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.sensitive.word.api.*;
+import com.github.houbb.sensitive.word.api.ISensitiveWord;
+import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
+import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.IWordResult;
 
 import java.util.Collections;
 import java.util.List;

@@ -2,9 +2,7 @@ package com.github.houbb.sensitive.word.support.replace;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.constant.CharConst;
-import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplaceContext;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 

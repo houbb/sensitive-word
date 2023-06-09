@@ -1,7 +1,6 @@
 package com.github.houbb.sensitive.word.support.check;
 
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 
 /**
  * 敏感信息监测接口
@@ -27,16 +26,12 @@ public interface ISensitiveCheck {
      * 2. 敏感词的长度
      * 3. 正常走过字段的长度（便于后期替换优化，避免不必要的循环重复）
      *
-     * @param txt           文本信息
      * @param beginIndex    开始下标
-     * @param validModeEnum 验证模式
      * @param context       执行上下文
      * @return 敏感信息对应的长度
      * @since 0.0.5
      */
-    SensitiveCheckResult sensitiveCheck(final String txt,
-                                        final int beginIndex,
-                                        final ValidModeEnum validModeEnum,
-                                        final IWordContext context);
+    SensitiveCheckResult sensitiveCheck(final int beginIndex,
+                                        final InnerSensitiveContext context);
 
 }

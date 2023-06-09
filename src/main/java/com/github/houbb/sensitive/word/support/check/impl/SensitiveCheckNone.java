@@ -1,8 +1,7 @@
 package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.SensitiveCheckResult;
 
@@ -29,13 +28,12 @@ public class SensitiveCheckNone implements ISensitiveCheck {
      */
     private static final SensitiveCheckResult NONE_RESULT = SensitiveCheckResult.of(0, SensitiveCheckNone.class);
 
-    @Override
-    public SensitiveCheckResult sensitiveCheck(String txt, int beginIndex, ValidModeEnum validModeEnum, IWordContext context) {
-        return NONE_RESULT;
-    }
-
     public static SensitiveCheckResult getNoneResult() {
         return NONE_RESULT;
     }
 
+    @Override
+    public SensitiveCheckResult sensitiveCheck(int beginIndex, InnerSensitiveContext context) {
+        return NONE_RESULT;
+    }
 }

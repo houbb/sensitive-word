@@ -3,7 +3,7 @@ package com.github.houbb.sensitive.word.support.check.impl;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.util.regex.RegexUtil;
-import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
@@ -32,12 +32,17 @@ public class SensitiveCheckUrl extends AbstractConditionSensitiveCheck {
     }
 
     @Override
-    protected boolean isCharCondition(char mappingChar, int index, String rawText, IWordContext context) {
+    protected Class<? extends ISensitiveCheck> getSensitiveCheckClass() {
+        return SensitiveCheckUrl.class;
+    }
+
+    @Override
+    protected boolean isCharCondition(char mappingChar, int index, InnerSensitiveContext checkContext) {
         return CharUtil.isWebSiteChar(mappingChar);
     }
 
     @Override
-    protected boolean isStringCondition(int index, String rawText, StringBuilder stringBuilder, IWordContext context) {
+    protected boolean isStringCondition(int index, StringBuilder stringBuilder, InnerSensitiveContext checkContext) {
         int bufferLen = stringBuilder.length();
         //a.cn
         if(bufferLen < 4) {
@@ -49,11 +54,6 @@ public class SensitiveCheckUrl extends AbstractConditionSensitiveCheck {
 
         String string = stringBuilder.toString();
         return RegexUtil.isWebSite(string);
-    }
-
-    @Override
-    protected Class<? extends ISensitiveCheck> getSensitiveCheckClass() {
-        return SensitiveCheckUrl.class;
     }
 
 }

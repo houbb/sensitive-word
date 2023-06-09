@@ -5,6 +5,7 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
@@ -95,21 +96,23 @@ public class WordMap implements IWordMap {
      * （2）如果遇到，则直接返回 true
      *
      * @param stringBuilder 字符串
+     * @param innerContext 内部上下文
      * @return 是否包含
      * @since 0.0.1
      */
     @Override
-    public WordContainsTypeEnum contains(StringBuilder stringBuilder, final IWordContext context) {
+    public WordContainsTypeEnum contains(final StringBuilder stringBuilder,
+                                         final InnerSensitiveContext innerContext) {
         if (stringBuilder == null
             || stringBuilder.length() <= 0) {
             return WordContainsTypeEnum.NOT_FOUND;
         }
 
-        return innerContainsSensitive(stringBuilder, context);
+        return innerContainsSensitive(stringBuilder, innerContext);
     }
 
     private WordContainsTypeEnum innerContainsSensitive(StringBuilder stringBuilder,
-                                           IWordContext context) {
+                                                        final InnerSensitiveContext innerContext) {
         // 初始化为当前的 map
         Map nowMap = this.innerWordMap;
 
@@ -117,7 +120,7 @@ public class WordMap implements IWordMap {
         final int len = stringBuilder.length();
         for (int i = 0; i < len; i++) {
             // 获取当前的 map 信息
-            nowMap = getNowMap(nowMap, context, stringBuilder, i);
+            nowMap = getNowMap(nowMap, i, stringBuilder, innerContext);
 
             // 如果不为空，则判断是否为结尾。
             if (ObjectUtil.isNull(nowMap)) {
@@ -156,18 +159,20 @@ public class WordMap implements IWordMap {
     /**
      * 获取当前的 Map
      * @param nowMap 原始的当前 map
-     * @param context 上下文
-     * @param stringBuilder 文本缓存
      * @param index 下标
+     * @param stringBuilder 文本缓存
+     * @param sensitiveContext 上下文
      * @return 实际的当前 map
      * @since 0.0.7
      */
     private Map getNowMap(Map nowMap,
-                          final IWordContext context,
+                          final int index,
                           final StringBuilder stringBuilder,
-                          final int index) {
-        char c = stringBuilder.charAt(index);
-        char mappingChar = context.charFormat().format(c, context);
+                          final InnerSensitiveContext sensitiveContext) {
+        final IWordContext context = sensitiveContext.wordContext();
+
+        // 这里的 char 已经是统一格式化之后的，所以可以不用再次格式化。
+        char mappingChar = stringBuilder.charAt(index);
 
         // 这里做一次重复词的处理
         //TODO: 这里可以优化，是否获取一次。
@@ -175,8 +180,7 @@ public class WordMap implements IWordMap {
         // 启用忽略重复&当前下标不是第一个
         if(context.ignoreRepeat()
                 && index > 0) {
-            char preChar = stringBuilder.charAt(index-1);
-            char preMappingChar = context.charFormat().format(preChar, context);
+            char preMappingChar = stringBuilder.charAt(index-1);
 
             // 直接赋值为上一个 map
             if(preMappingChar == mappingChar) {

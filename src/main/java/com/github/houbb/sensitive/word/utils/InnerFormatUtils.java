@@ -5,8 +5,7 @@ import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.ICharFormat;
 import com.github.houbb.sensitive.word.api.IWordContext;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 内部格式化工具类
@@ -15,6 +14,12 @@ import java.util.List;
 public final class InnerFormatUtils {
 
     private InnerFormatUtils(){}
+
+    /**
+     * 空字符数组
+     * @since 0.6.0
+     */
+    private static final char[] EMPTY_CHARS = new char[0];
 
     /**
      * 格式化
@@ -37,6 +42,33 @@ public final class InnerFormatUtils {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * 字符串统一的格式化处理
+     * @param original 原始文本
+     * @param context 上下文
+     * @return 结果
+     * @since 0.6.0
+     */
+    public static Map<Character, Character> formatCharsMapping(final String original, final IWordContext context) {
+        if(StringUtil.isEmpty(original)) {
+            return Collections.emptyMap();
+        }
+
+        final int len = original.length();
+
+        char[] rawChars = original.toCharArray();
+        Map<Character, Character> map = new HashMap<>(rawChars.length);
+
+        ICharFormat charFormat = context.charFormat();
+        for(int i = 0; i < len; i++) {
+            final char currentChar = rawChars[i];
+            char formatChar = charFormat.format(currentChar, context);
+            map.put(currentChar, formatChar);
+        }
+
+        return map;
     }
 
     /**

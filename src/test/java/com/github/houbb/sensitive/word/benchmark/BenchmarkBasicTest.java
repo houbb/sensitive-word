@@ -6,7 +6,7 @@ import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import org.junit.Ignore;
 import org.junit.Test;
 
-//@Ignore
+@Ignore
 public class BenchmarkBasicTest {
 
     /**
@@ -42,6 +42,8 @@ public class BenchmarkBasicTest {
      * 12111 第一次优化
      *
      * 1133 只有单词校验
+     *
+     * V0.6.0 优化 replace mapping 之后：621ms，性能接近翻倍。
      */
     @Test
     public void costTimeOnlyWordTest() {
