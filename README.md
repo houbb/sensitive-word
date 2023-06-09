@@ -44,11 +44,7 @@
 
 ## 变更日志
 
-[CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
-
-v0.3.0 变更：
-
-- 代码实现优化
+[CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
 # 快速开始
 
