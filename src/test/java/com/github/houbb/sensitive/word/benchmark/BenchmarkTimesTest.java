@@ -44,7 +44,7 @@ public class BenchmarkTimesTest {
     /**
      * 测试基准：100+字符串 * 10W次
      *
-     * V0.6.0: 2744ms
+     * V0.6.0: 2744ms, 约 3.7W QPS
      */
     @Test
     public void onlyWordAndWithReplaceTest() {

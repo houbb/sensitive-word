@@ -615,7 +615,7 @@ public class SensitiveWordService {
 
 V0.6.0 以后，添加对应的 benchmark 测试。
 
-> []()
+> [BenchmarkTimesTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/benchmark/BenchmarkTimesTest.java)
 
 ## 环境
 
@@ -627,8 +627,16 @@ V0.6.0 以后，添加对应的 benchmark 测试。
 系统类型	64 位操作系统, 基于 x64 的处理器
 ```
 
+ps: 不同环境会有差异，但是比例基本稳定。
+
 ## 测试效果记录
 
+测试数据：100+ 字符串，循环 10W 次。
+
+| 序号 | 场景             | 耗时 | 备注            |
+|:----|:---------------|:----|:--------------|
+| 1 | 只做敏感词，无任何格式转换  | 1470ms，约 7.2W QPS | 追求极致性能，可以这样配置 |
+| 2 | 只做敏感词，支持全部格式转换 | 2744ms, 约 3.7W QPS | 满足大部分场景       |
 
 ## STAR
 
