@@ -77,6 +77,8 @@
 | findAll(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串列表 | 返回字符串中所有敏感词 |
 | findFirst(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串 | 返回字符串中第一个敏感词 |
 
+## IWordResultHandler 结果处理类
+
 IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定义。
 
 内置实现见 `WordResultHandlers` 工具类：
