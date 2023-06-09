@@ -26,19 +26,19 @@
 
 - [基于 DFA 算法，性能为 7W+ QPS，应用无感](https://github.com/houbb/sensitive-word#benchmark)
 
-- [支持敏感词的判断、返回、脱敏等常见操作](https://github.com/houbb/sensitive-word#%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B)
-
-- [支持自定义替换策略](https://github.com/houbb/sensitive-word#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5)
+- [支持敏感词的判断、返回、脱敏等常见操作](https://github.com/houbb/sensitive-word#%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95)
 
 - [支持常见的格式转换](https://github.com/houbb/sensitive-word#%E6%9B%B4%E5%A4%9A%E7%89%B9%E6%80%A7)
 
-全角半角互换、英文大小写互换、数字常见形式的互换、中文繁简体互换、英文常见形式的互换
+全角半角互换、英文大小写互换、数字常见形式的互换、中文繁简体互换、英文常见形式的互换、忽略重复词等
 
-- [支持忽略重复词、邮箱检测、数字检测、网址检测等](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E9%87%8D%E5%A4%8D%E8%AF%8D)
+- [支持敏感词检测、邮箱检测、数字检测、网址检测等](https://github.com/houbb/sensitive-word#%E6%9B%B4%E5%A4%9A%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5)
+
+- [支持自定义替换策略](https://github.com/houbb/sensitive-word#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5)
 
 - [支持用户自定义敏感词和白名单](https://github.com/houbb/sensitive-word#%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8)
 
-- [支持数据的数据动态更新，实时生效](https://github.com/houbb/sensitive-word#spring-%E6%95%B4%E5%90%88)
+- [支持数据的数据动态更新（用户自定义），实时生效](https://github.com/houbb/sensitive-word#%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89)
 
 ## 变更日志
 
@@ -62,7 +62,7 @@
 </dependency>
 ```
 
-## api 概览
+## 核心方法
 
 `SensitiveWordHelper` 作为敏感词的工具类，核心方法如下：
 
@@ -226,7 +226,9 @@ public class MySensitiveWordReplace implements ISensitiveWordReplace {
 
 这是一场漫长的攻防之战。
 
-## 忽略大小写
+## 样式处理
+
+### 忽略大小写
 
 ```java
 final String text = "fuCK the bad words.";
@@ -235,7 +237,7 @@ String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("fuCK", word);
 ```
 
-## 忽略半角圆角
+### 忽略半角圆角
 
 ```java
 final String text = "ｆｕｃｋ the bad words.";
@@ -244,7 +246,7 @@ String word = SensitiveWordHelper.findFirst(text);
 Assert.assertEquals("ｆｕｃｋ", word);
 ```
 
-## 忽略数字的写法
+### 忽略数字的写法
 
 这里实现了数字常见形式的转换。
 
@@ -255,7 +257,7 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
 ```
 
-## 忽略繁简体
+### 忽略繁简体
 
 ```java
 final String text = "我爱我的祖国和五星紅旗。";
@@ -264,7 +266,7 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[五星紅旗]", wordList.toString());
 ```
 
-## 忽略英文的书写格式
+### 忽略英文的书写格式
 
 ```java
 final String text = "Ⓕⓤc⒦ the bad words";
@@ -273,7 +275,7 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```
 
-## 忽略重复词
+### 忽略重复词
 
 ```java
 final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
@@ -285,7 +287,9 @@ List<String> wordList = SensitiveWordBs.newInstance()
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```
 
-## 邮箱检测
+## 更多检测策略
+
+### 邮箱检测
 
 ```java
 final String text = "楼主好人，邮箱 sensitiveword@xx.com";
@@ -294,7 +298,7 @@ List<String> wordList = SensitiveWordHelper.findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
-## 连续数字检测
+### 连续数字检测
 
 一般用于过滤手机号/QQ等广告信息。
 
@@ -315,7 +319,23 @@ List<String> wordList2 = SensitiveWordBs.newInstance()
 Assert.assertEquals("[]", wordList2.toString());
 ```
 
-# 特性配置
+### 网址检测
+
+用于过滤常见的网址信息。
+
+```java
+final String text = "点击链接 www.baidu.com查看答案";
+
+List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+Assert.assertEquals("[链接, www.baidu.com]", wordList.toString());
+
+Assert.assertEquals("点击** *************查看答案", SensitiveWordBs
+                .newInstance()
+                .init()
+                .replace(text));
+```
+
+# 引导类特性配置
 
 ## 说明
 
