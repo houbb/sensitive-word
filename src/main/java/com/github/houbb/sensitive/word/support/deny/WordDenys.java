@@ -41,7 +41,7 @@ public final class WordDenys {
      * @return 结果
      * @since 0.0.13
      */
-    public static IWordDeny system() {
+    public static IWordDeny defaults() {
         return WordDenySystem.getInstance();
     }
 

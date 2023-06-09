@@ -1,10 +1,9 @@
-package com.github.houbb.sensitive.word.support.map;
+package com.github.houbb.sensitive.word.support.data;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordMap;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.constant.AppConst;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
@@ -20,7 +19,7 @@ import java.util.Map;
  * @since 0.0.1
  */
 @ThreadSafe
-public class WordMap implements IWordMap {
+public class WordDataHashMap extends AbstractWordData {
 
     /**
      * 脱敏单词 map
@@ -41,7 +40,7 @@ public class WordMap implements IWordMap {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public synchronized void initWordMap(Collection<String> collection) {
+    public synchronized void doInitWordData(Collection<String> collection) {
         // 避免扩容带来的消耗
         Map newInnerWordMap = new HashMap(collection.size());
 
@@ -78,12 +77,10 @@ public class WordMap implements IWordMap {
                     // 将新节点设置为当前节点，方便下一次节点的循环。
                     currentMap = newWordMap;
                 }
-
-                // 判断是否为最后一个，添加是否结束的标识。
-                if (i == size - 1) {
-                    currentMap.put(AppConst.IS_END, true);
-                }
             }
+
+            // 判断是否为最后一个，添加是否结束的标识。
+            currentMap.put(AppConst.IS_END, true);
         }
 
         // 最后更新为新的 map，保证更新过程中旧的数据可用
@@ -101,13 +98,8 @@ public class WordMap implements IWordMap {
      * @since 0.0.1
      */
     @Override
-    public WordContainsTypeEnum contains(final StringBuilder stringBuilder,
+    public WordContainsTypeEnum doContains(final StringBuilder stringBuilder,
                                          final InnerSensitiveContext innerContext) {
-        if (stringBuilder == null
-            || stringBuilder.length() <= 0) {
-            return WordContainsTypeEnum.NOT_FOUND;
-        }
-
         return innerContainsSensitive(stringBuilder, innerContext);
     }
 

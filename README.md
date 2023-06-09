@@ -58,7 +58,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
 </dependency>
 ```
 
@@ -662,11 +662,15 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 # 后期 road-map
 
-- [x] wordMap 的抽象，便于拓展
+- [x] wordData 的内存占用对比 + 优化
 
-- [x] word 的统一性能优化，移除 string 的生成
+- [ ] 用户指定自定义的词组，同时允许指定词组的组合获取，更加灵活
+
+ICharFormat/ISensitiveCheck/Word 方法，允许用户自定义。
 
 - [ ] word check 策略的优化，统一遍历+转换
+
+- [ ] DFA 数据结构的另一种实现
 
 - 同音字处理
 
@@ -677,10 +681,6 @@ ps: 不同环境会有差异，但是比例基本稳定。
 - 文字降噪处理
 
 - 敏感词标签支持
-
-- [ ] DFA 数据结构的另一种实现
-
-放开 wordMap 策略定义
 
 # 拓展阅读
 

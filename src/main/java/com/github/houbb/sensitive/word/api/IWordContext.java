@@ -223,7 +223,7 @@ public interface IWordContext {
      * @return 策略
      * @since 0.3.2
      */
-    IWordMap wordMap();
+    IWordData wordData();
 
     /**
      * 设置 wordMap 策略
@@ -231,6 +231,6 @@ public interface IWordContext {
      * @return this
      * @since 0.3.2
      */
-    IWordContext wordMap(IWordMap wordMap);
+    IWordContext wordData(IWordData wordMap);
 
 }

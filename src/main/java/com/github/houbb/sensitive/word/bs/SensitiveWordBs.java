@@ -10,7 +10,7 @@ import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 import com.github.houbb.sensitive.word.support.check.impl.SensitiveChecks;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.format.CharFormats;
-import com.github.houbb.sensitive.word.support.map.WordMaps;
+import com.github.houbb.sensitive.word.support.data.WordDatas;
 import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.utils.InnerWordDataUtils;
@@ -95,31 +95,29 @@ public class SensitiveWordBs {
     private ISensitiveWord sensitiveWord = SensitiveWords.defaults();
 
     /**
-     * 敏感词 map
-     *
-     * TODO: 暂时定义为 final，后续放开抽象。
+     * 敏感词 Data
      *
      * @since 0.0.1
      */
-    private final IWordMap wordMap = WordMaps.defaults();
+    private IWordData wordData = WordDatas.defaults();
 
     /**
      * 禁止的单词
      * @since 0.0.13
      */
-    private IWordDeny wordDeny = WordDenys.system();
+    private IWordDeny wordDeny = WordDenys.defaults();
 
     /**
      * 允许的单词
      * @since 0.0.13
      */
-    private IWordAllow wordAllow = WordAllows.system();
+    private IWordAllow wordAllow = WordAllows.defaults();
 
     /**
      * 替换策略
      * @since 0.3.0
      */
-    private ISensitiveWordReplace sensitiveWordReplace = SensitiveWordReplaces.chars();
+    private ISensitiveWordReplace sensitiveWordReplace = SensitiveWordReplaces.defaults();
 
     /**
      * 上下文
@@ -191,7 +189,7 @@ public class SensitiveWordBs {
         // 额外配置
         context.sensitiveCheckNumLen(numCheckLen);
         context.sensitiveWordReplace(sensitiveWordReplace);
-        context.wordMap(wordMap);
+        context.wordData(wordData);
 
         return context;
     }
@@ -209,7 +207,20 @@ public class SensitiveWordBs {
         List<String> results = InnerWordDataUtils.getActualDenyList(denyList, allowList, context);
 
         // 便于可以多次初始化
-        wordMap.initWordMap(results);
+        wordData.initWordData(results);
+    }
+
+    /**
+     * 允许指定策略数据
+     * @param wordData 单词数据
+     * @return 结果
+     * @since 0.7.0
+     */
+    public SensitiveWordBs wordData(IWordData wordData) {
+        ArgUtil.notNull(wordData, "wordData");
+
+        this.wordData = wordData;
+        return this;
     }
 
     public SensitiveWordBs sensitiveWord(ISensitiveWord sensitiveWord) {

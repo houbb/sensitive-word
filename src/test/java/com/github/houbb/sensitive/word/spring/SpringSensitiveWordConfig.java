@@ -29,7 +29,7 @@ public class SpringSensitiveWordConfig {
     @Bean
     public SensitiveWordBs sensitiveWordBs() {
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
-                .wordAllow(WordAllows.chains(WordAllows.system(), myDdWordAllow))
+                .wordAllow(WordAllows.chains(WordAllows.defaults(), myDdWordAllow))
                 .wordDeny(myDdWordDeny)
                 // 各种其他配置
                 .init();

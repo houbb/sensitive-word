@@ -13,6 +13,7 @@ public class BenchmarkTimesTest {
      * 测试基准：100+字符串 * 10W次
      *
      * V0.6.0: 1470ms，接近 7.2W QPS
+     * V0.7.0: 1380ms
      */
     @Test
     public void onlyWordAndNoReplaceTest() {
@@ -45,6 +46,7 @@ public class BenchmarkTimesTest {
      * 测试基准：100+字符串 * 10W次
      *
      * V0.6.0: 2744ms, 约 3.7W QPS
+     * V0.7.0: 2723ms
      */
     @Test
     public void onlyWordAndWithReplaceTest() {

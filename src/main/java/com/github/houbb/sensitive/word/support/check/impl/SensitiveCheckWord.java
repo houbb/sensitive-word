@@ -2,7 +2,7 @@ package com.github.houbb.sensitive.word.support.check.impl;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
 import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
@@ -41,7 +41,7 @@ public class SensitiveCheckWord extends AbstractSensitiveCheck {
 
         // 采用 ThreadLocal 应该可以提升性能，减少对象的创建。
         int actualLength = 0;
-        final IWordMap wordMap = context.wordMap();
+        final IWordData wordData = context.wordData();
 
         // 前一个条件
         StringBuilder stringBuilder = new StringBuilder();
@@ -53,7 +53,7 @@ public class SensitiveCheckWord extends AbstractSensitiveCheck {
             stringBuilder.append(mappingChar);
 
             // 判断是否存在
-            WordContainsTypeEnum wordContainsTypeEnum = wordMap.contains(stringBuilder, innerContext);
+            WordContainsTypeEnum wordContainsTypeEnum = wordData.contains(stringBuilder, innerContext);
             if(WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnum)) {
                 actualLength = stringBuilder.length();
 

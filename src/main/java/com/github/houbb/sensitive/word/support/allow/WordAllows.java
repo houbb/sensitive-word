@@ -41,7 +41,7 @@ public final class WordAllows {
      * @return 结果
      * @since 0.0.13
      */
-    public static IWordAllow system() {
+    public static IWordAllow defaults() {
         return WordAllowSystem.getInstance();
     }
 

@@ -3,7 +3,7 @@ package com.github.houbb.sensitive.word.bs;
 import com.github.houbb.sensitive.word.api.ICharFormat;
 import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordMap;
+import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
 
 /**
@@ -102,14 +102,14 @@ public class SensitiveWordContext implements IWordContext {
      *
      * @since 0.3.2
      */
-    private IWordMap wordMap;
+    private IWordData wordData;
 
-    public IWordMap wordMap() {
-        return wordMap;
+    public IWordData wordData() {
+        return wordData;
     }
 
-    public SensitiveWordContext wordMap(IWordMap wordMap) {
-        this.wordMap = wordMap;
+    public SensitiveWordContext wordData(IWordData wordData) {
+        this.wordData = wordData;
         return this;
     }
 

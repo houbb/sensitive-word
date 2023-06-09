@@ -30,8 +30,8 @@ public class SensitiveWordBsDefineTest {
     public void defineChainsTest() {
         String text = "这是一个测试。我的自定义敏感词。";
 
-        IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDeny());
-        IWordAllow wordAllow = WordAllows.chains(WordAllows.system(), new MyWordAllow());
+        IWordDeny wordDeny = WordDenys.chains(WordDenys.defaults(), new MyWordDeny());
+        IWordAllow wordAllow = WordAllows.chains(WordAllows.defaults(), new MyWordAllow());
 
         SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
                 .wordDeny(wordDeny)

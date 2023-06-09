@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author binbin.hou
  * @since 0.0.1
  */
-public interface IWordMap {
+public interface IWordData {
 
 
     /**
@@ -19,7 +19,7 @@ public interface IWordMap {
      * @param collection 集合信息
      * @since 0.0.1
      */
-    void initWordMap(Collection<String> collection);
+    void initWordData(Collection<String> collection);
 
     /**
      * 是否包含敏感词

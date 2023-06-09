@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -68,6 +68,14 @@
                 <optional>true</optional>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>4.0.0</version>
+                <scope>test</scope>
+                <optional>true</optional>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -89,6 +97,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
         </dependency>
 
     </dependencies>

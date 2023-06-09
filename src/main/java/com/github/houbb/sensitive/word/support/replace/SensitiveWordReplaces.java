@@ -31,4 +31,13 @@ public final class SensitiveWordReplaces {
         return new SensitiveWordReplaceChar();
     }
 
+    /**
+     * 字符，默认为 *
+     * @return 结果
+     * @since 0.7.0
+     */
+    public static ISensitiveWordReplace defaults() {
+        return chars();
+    }
+
 }

@@ -10,7 +10,7 @@ public class MyWordDenyChineseTest  {
 
     @Test
     public void test() {
-        IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDenyChineseNum());
+        IWordDeny wordDeny = WordDenys.chains(WordDenys.defaults(), new MyWordDenyChineseNum());
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
                 .wordDeny(wordDeny)// 各种其他配置
                 .init();// init() 初始化敏感词字典

@@ -12,8 +12,8 @@ public class MySensitiveTest {
 
     @Test
     public void test() {
-        IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDeny());
-        IWordAllow wordAllow = WordAllows.chains(WordAllows.system(), new MyWordAllow());
+        IWordDeny wordDeny = WordDenys.chains(WordDenys.defaults(), new MyWordDeny());
+        IWordAllow wordAllow = WordAllows.chains(WordAllows.defaults(), new MyWordAllow());
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
                 .wordAllow(wordAllow)
                 .wordDeny(wordDeny)// 各种其他配置

@@ -106,8 +106,8 @@ public class SensitiveWordBsTest {
     @Test
     public void configTest() {
         SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-                .wordDeny(WordDenys.system())
-                .wordAllow(WordAllows.system())
+                .wordDeny(WordDenys.defaults())
+                .wordAllow(WordAllows.defaults())
                 .init();
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
