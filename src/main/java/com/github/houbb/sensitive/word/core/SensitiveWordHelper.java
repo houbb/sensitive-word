@@ -1,9 +1,9 @@
 package com.github.houbb.sensitive.word.core;
 
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
+import com.github.houbb.sensitive.word.api.IWordReplace;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
-import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaces;
+import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 
 import java.util.List;
 
@@ -69,8 +69,8 @@ public final class SensitiveWordHelper {
      * @return 替换后结果
      * @since 0.2.0
      */
-    public static String replace(final String target, final ISensitiveWordReplace replace) {
-        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().sensitiveWordReplace(replace).init();
+    public static String replace(final String target, final IWordReplace replace) {
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().wordReplace(replace).init();
         return sensitiveWordBs.replace(target);
     }
 
@@ -83,7 +83,7 @@ public final class SensitiveWordHelper {
      * @since 0.0.13
      */
     public static String replace(final String target, final char replaceChar) {
-        final ISensitiveWordReplace replace = SensitiveWordReplaces.chars(replaceChar);
+        final IWordReplace replace = WordReplaces.chars(replaceChar);
 
         return replace(target, replace);
     }

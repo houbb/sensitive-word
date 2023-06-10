@@ -1,9 +1,7 @@
 package com.github.houbb.sensitive.word.support.data;
 
-import com.github.houbb.heaven.util.lang.StringUtil;
-import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordData;
-import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
@@ -21,7 +19,7 @@ public abstract class AbstractWordData implements IWordData {
      * @param innerContext 上下文
      * @return 结果
      */
-    protected abstract WordContainsTypeEnum doContains(StringBuilder stringBuilder, InnerSensitiveContext innerContext);
+    protected abstract WordContainsTypeEnum doContains(StringBuilder stringBuilder, InnerSensitiveWordContext innerContext);
 
     /**
      * 初始化
@@ -37,7 +35,7 @@ public abstract class AbstractWordData implements IWordData {
     }
 
     @Override
-    public WordContainsTypeEnum contains(StringBuilder stringBuilder, InnerSensitiveContext innerContext) {
+    public WordContainsTypeEnum contains(StringBuilder stringBuilder, InnerSensitiveWordContext innerContext) {
         if(stringBuilder == null
             || stringBuilder.length() <= 0) {
             return WordContainsTypeEnum.NOT_FOUND;

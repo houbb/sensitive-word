@@ -4,8 +4,8 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
-import com.github.houbb.sensitive.word.constant.AppConst;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.constant.WordConst;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
@@ -69,7 +69,7 @@ public class WordDataHashMap extends AbstractWordData {
                 } else {
                     //不存在则，则构建一个新的map，同时将isEnd设置为0，因为他不是最后一
                     Map<String, Boolean> newWordMap = new HashMap<>(8);
-                    newWordMap.put(AppConst.IS_END, false);
+                    newWordMap.put(WordConst.IS_END, false);
 
                     // 将新的节点放入当前 map 中
                     currentMap.put(charKey, newWordMap);
@@ -80,7 +80,7 @@ public class WordDataHashMap extends AbstractWordData {
             }
 
             // 判断是否为最后一个，添加是否结束的标识。
-            currentMap.put(AppConst.IS_END, true);
+            currentMap.put(WordConst.IS_END, true);
         }
 
         // 最后更新为新的 map，保证更新过程中旧的数据可用
@@ -99,12 +99,12 @@ public class WordDataHashMap extends AbstractWordData {
      */
     @Override
     public WordContainsTypeEnum doContains(final StringBuilder stringBuilder,
-                                         final InnerSensitiveContext innerContext) {
+                                         final InnerSensitiveWordContext innerContext) {
         return innerContainsSensitive(stringBuilder, innerContext);
     }
 
     private WordContainsTypeEnum innerContainsSensitive(StringBuilder stringBuilder,
-                                                        final InnerSensitiveContext innerContext) {
+                                                        final InnerSensitiveWordContext innerContext) {
         // 初始化为当前的 map
         Map nowMap = this.innerWordMap;
 
@@ -141,7 +141,7 @@ public class WordDataHashMap extends AbstractWordData {
             return false;
         }
 
-        Object value = map.get(AppConst.IS_END);
+        Object value = map.get(WordConst.IS_END);
         if(ObjectUtil.isNull(value)) {
             return false;
         }
@@ -160,7 +160,7 @@ public class WordDataHashMap extends AbstractWordData {
     private Map getNowMap(Map nowMap,
                           final int index,
                           final StringBuilder stringBuilder,
-                          final InnerSensitiveContext sensitiveContext) {
+                          final InnerSensitiveWordContext sensitiveContext) {
         final IWordContext context = sensitiveContext.wordContext();
 
         // 这里的 char 已经是统一格式化之后的，所以可以不用再次格式化。

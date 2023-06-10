@@ -1,7 +1,5 @@
 package com.github.houbb.sensitive.word.api;
 
-import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
-
 /**
  * @author binbin.hou
  * @since 0.0.4
@@ -177,38 +175,38 @@ public interface IWordContext {
      * @return this
      * @since 0.3.0
      */
-    IWordContext sensitiveCheck(final ISensitiveCheck sensitiveCheck);
+    IWordContext sensitiveCheck(final IWordCheck sensitiveCheck);
 
     /**
      * 获取检测策略
      * @return 检测策略
      * @since 0.3.0
      */
-    ISensitiveCheck sensitiveCheck();
+    IWordCheck sensitiveCheck();
 
     /**
      * 设置敏感词替换策略
-     * @param sensitiveWordReplace 策略
+     * @param wordReplace 策略
      * @return this
      * @since 0.3.0
      */
-    IWordContext sensitiveWordReplace(final ISensitiveWordReplace sensitiveWordReplace);
+    IWordContext wordReplace(final IWordReplace wordReplace);
 
     /**
      * 敏感词替换策略
      * @return 替换策略
      * @since 0.3.0
      */
-     ISensitiveWordReplace sensitiveWordReplace();
+     IWordReplace wordReplace();
 
     /**
      * 设置统一的字符处理
      *
-     * @param charFormat 字符处理
+     * @param wordFormat 字符处理
      * @return 结果
      * @since 0.3.0
      */
-    IWordContext charFormat(final ICharFormat charFormat);
+    IWordContext wordFormat(final IWordFormat wordFormat);
 
     /**
      * 获取格式化策略
@@ -216,7 +214,7 @@ public interface IWordContext {
      * @return 策略
      * @since 0.3.0
      */
-    ICharFormat charFormat();
+    IWordFormat wordFormat();
 
     /**
      * 获取 wordMap 策略

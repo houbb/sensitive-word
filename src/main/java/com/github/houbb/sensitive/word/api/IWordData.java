@@ -1,7 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
-import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
@@ -27,9 +27,9 @@ public interface IWordData {
      * @param innerContext 上下文
      * @return 是否包含
      * @since 0.5.0
-     * @see ValidModeEnum#FAIL_FAST 建议使用快速返回模式
+     * @see WordValidModeEnum#FAIL_FAST 建议使用快速返回模式
      */
     WordContainsTypeEnum contains(final StringBuilder stringBuilder,
-                                  final InnerSensitiveContext innerContext);
+                                  final InnerSensitiveWordContext innerContext);
 
 }

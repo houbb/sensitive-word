@@ -4,17 +4,20 @@ import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
+import com.github.houbb.sensitive.word.api.combine.IWordAllowDenyCombine;
+import com.github.houbb.sensitive.word.api.combine.IWordCheckCombine;
+import com.github.houbb.sensitive.word.api.combine.IWordFormatCombine;
 import com.github.houbb.sensitive.word.core.SensitiveWords;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
-import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
-import com.github.houbb.sensitive.word.support.check.impl.SensitiveChecks;
-import com.github.houbb.sensitive.word.support.deny.WordDenys;
-import com.github.houbb.sensitive.word.support.format.CharFormats;
+import com.github.houbb.sensitive.word.support.combine.allowdeny.WordAllowDenyCombines;
+import com.github.houbb.sensitive.word.support.combine.check.WordCheckCombines;
+import com.github.houbb.sensitive.word.support.combine.format.WordFormatCombines;
 import com.github.houbb.sensitive.word.support.data.WordDatas;
-import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaces;
+import com.github.houbb.sensitive.word.support.deny.WordDenys;
+import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
-import com.github.houbb.sensitive.word.utils.InnerWordDataUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -117,13 +120,31 @@ public class SensitiveWordBs {
      * 替换策略
      * @since 0.3.0
      */
-    private ISensitiveWordReplace sensitiveWordReplace = SensitiveWordReplaces.defaults();
+    private IWordReplace wordReplace = WordReplaces.defaults();
 
     /**
      * 上下文
      * @since 0.3.0
      */
     private IWordContext context = SensitiveWordContext.newInstance();
+
+    /**
+     * 单词检测组合策略
+     * @since 0.8.0
+     */
+    private IWordCheckCombine wordCheckCombine = WordCheckCombines.defaults();
+
+    /**
+     * 单词格式化组合策略
+     * @since 0.8.0
+     */
+    private IWordFormatCombine wordFormatCombine = WordFormatCombines.defaults();
+
+    /**
+     * 单词组合策略
+     * @since 0.8.0
+     */
+    private IWordAllowDenyCombine wordAllowDenyCombine = WordAllowDenyCombines.defaults();
 
     /**
      * 新建验证实例
@@ -137,7 +158,6 @@ public class SensitiveWordBs {
         return new SensitiveWordBs();
     }
 
-
     /**
      * 初始化
      *
@@ -146,19 +166,23 @@ public class SensitiveWordBs {
      * @return this
      */
     public SensitiveWordBs init() {
-        // 初始化 context
-        this.initContext();
+        // 1. 初始化 context
+        IWordContext context = this.initContext();
 
-        // 替换策略
-        final ICharFormat charFormat = CharFormats.initCharFormat(context);
-        context.charFormat(charFormat);
+        // 2. 格式化策略
+        final IWordFormat charFormat = wordFormatCombine.initWordFormat(context);
+        context.wordFormat(charFormat);
 
-        // 3. 初始化对应的 sensitiveCheck
-        final ISensitiveCheck sensitiveCheck = SensitiveChecks.initSensitiveCheck(context);
+        // 3. 初始化对应的 Check 策略
+        final IWordCheck sensitiveCheck = wordCheckCombine.initWordCheck(context);
         context.sensitiveCheck(sensitiveCheck);
 
-        //2. 初始化 word
-        this.initWordMap();
+        // 4. 初始化 word
+        Collection<String> denyList  = wordAllowDenyCombine.getActualDenyList(wordAllow, wordDeny, context);
+        wordData.initWordData(denyList);
+
+        //5. 更新 context
+        this.context = context;
 
         return this;
     }
@@ -170,7 +194,7 @@ public class SensitiveWordBs {
      * @since 0.0.4
      */
     private IWordContext initContext() {
-        this.context = SensitiveWordContext.newInstance();
+        IWordContext context = SensitiveWordContext.newInstance();
 
         // 格式统一化
         context.ignoreCase(ignoreCase);
@@ -188,26 +212,31 @@ public class SensitiveWordBs {
 
         // 额外配置
         context.sensitiveCheckNumLen(numCheckLen);
-        context.sensitiveWordReplace(sensitiveWordReplace);
+        context.wordReplace(wordReplace);
         context.wordData(wordData);
 
         return context;
     }
 
-    /**
-     * DCL 初始化 wordMap 信息
-     *
-     * 注意：map 的构建是一个比较耗时的动作
-     * @since 0.0.4
-     */
-    private synchronized void initWordMap() {
-        // 加载配置信息
-        List<String> denyList = wordDeny.deny();
-        List<String> allowList = wordAllow.allow();
-        List<String> results = InnerWordDataUtils.getActualDenyList(denyList, allowList, context);
+    public SensitiveWordBs wordCheckCombine(IWordCheckCombine wordCheckCombine) {
+        ArgUtil.notNull(wordCheckCombine, "wordCheckCombine");
 
-        // 便于可以多次初始化
-        wordData.initWordData(results);
+        this.wordCheckCombine = wordCheckCombine;
+        return this;
+    }
+
+    public SensitiveWordBs wordFormatCombine(IWordFormatCombine wordFormatCombine) {
+        ArgUtil.notNull(wordFormatCombine, "wordFormatCombine");
+
+        this.wordFormatCombine = wordFormatCombine;
+        return this;
+    }
+
+    public SensitiveWordBs wordAllowDenyCombine(IWordAllowDenyCombine wordAllowDenyCombine) {
+        ArgUtil.notNull(wordAllowDenyCombine, "wordAllowDenyCombine");
+
+        this.wordAllowDenyCombine = wordAllowDenyCombine;
+        return this;
     }
 
     /**
@@ -232,12 +261,12 @@ public class SensitiveWordBs {
 
     /**
      * 设置替换策略
-     * @param sensitiveWordReplace 替换
+     * @param wordReplace 替换
      * @return 结果
      */
-    public SensitiveWordBs sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
-        ArgUtil.notNull(sensitiveWordReplace, "sensitiveWordReplace");
-        this.sensitiveWordReplace = sensitiveWordReplace;
+    public SensitiveWordBs wordReplace(IWordReplace wordReplace) {
+        ArgUtil.notNull(wordReplace, "wordReplace");
+        this.wordReplace = wordReplace;
         return this;
     }
 
@@ -264,6 +293,8 @@ public class SensitiveWordBs {
         this.wordAllow = wordAllow;
         return this;
     }
+
+    //-------------------------------------------------------- 基础属性设置
 
     /**
      * 设置是否启动数字检测

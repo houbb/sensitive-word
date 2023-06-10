@@ -58,7 +58,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
 </dependency>
 ```
 
@@ -89,7 +89,7 @@ IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定�
 
 - WordResultHandlers.raw()
 
-保留敏感词相关信息，包含敏感词，开始和结束下标。
+保留敏感词相关信息，包含敏感词的开始和结束下标。
 
 ## 使用实例
 
@@ -124,7 +124,7 @@ WordResultHandlers.raw() 可以保留对应的下标信息：
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
 IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
-Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
+Assert.assertEquals("WordResult{startIndex=0, endIndex=4}", word.toString());
 ```
 
 ### 返回所有敏感词
@@ -198,11 +198,11 @@ public void defineReplaceTest() {
 其中 `MySensitiveWordReplace` 是我们自定义的替换策略，实现如下：
 
 ```java
-public class MySensitiveWordReplace implements ISensitiveWordReplace {
+public class MyWordReplace implements IWordReplace {
 
     @Override
-    public String replace(ISensitiveWordReplaceContext context) {
-        String sensitiveWord = InnerCharUtils.getString(rawChars, wordResult);
+    public void replace(StringBuilder stringBuilder, final char[] rawChars, IWordResult wordResult, IWordContext wordContext) {
+        String sensitiveWord = InnerWordCharUtils.getString(rawChars, wordResult);
         // 自定义不同的敏感词替换策略，可以从数据库等地方读取
         if("五星红旗".equals(sensitiveWord)) {
             stringBuilder.append("国家旗帜");
@@ -386,7 +386,6 @@ Assert.assertTrue(wordBs.contains(text));
 | 9  | enableUrlCheck       | 是否启用链接检测      | true   |
 | 10 | enableWordCheck      | 是否启用敏感单词检测    | true   |
 | 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
-| 12 | sensitiveWordReplace | 敏感词替换策略       | `*` 替换 |
 
 # 动态加载（用户自定义）
 
@@ -664,23 +663,15 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 - [x] wordData 的内存占用对比 + 优化
 
-- [ ] 用户指定自定义的词组，同时允许指定词组的组合获取，更加灵活
+- [x] 用户指定自定义的词组，同时允许指定词组的组合获取，更加灵活
 
-ICharFormat/ISensitiveCheck/Word 方法，允许用户自定义。
+FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义。
 
 - [ ] word check 策略的优化，统一遍历+转换
 
-- [ ] DFA 数据结构的另一种实现
+- [ ] 添加 ThreadLocal 等性能优化
 
-- 同音字处理
-
-- 形近字处理
-
-- 文字镜像翻转
-
-- 文字降噪处理
-
-- 敏感词标签支持
+- [ ] 敏感词标签支持
 
 # 拓展阅读
 

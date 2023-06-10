@@ -1,6 +1,6 @@
 package com.github.houbb.sensitive.word.api;
 
-import com.github.houbb.sensitive.word.constant.enums.ValidModeEnum;
+import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface ISensitiveWord {
      * @param context 上下文
      * @return 结果
      * @since 0.0.1
-     * @see ValidModeEnum#FAIL_OVER 建议使用全部检测返回模式
+     * @see WordValidModeEnum#FAIL_OVER 建议使用全部检测返回模式
      */
     List<IWordResult> findAll(final String string,
                               final IWordContext context);

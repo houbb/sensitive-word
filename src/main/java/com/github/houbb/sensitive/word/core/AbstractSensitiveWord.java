@@ -3,7 +3,7 @@ package com.github.houbb.sensitive.word.core;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveWord;
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
+import com.github.houbb.sensitive.word.api.IWordReplace;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 
@@ -37,7 +37,7 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
     protected String doReplace(String target, List<IWordResult> allList, IWordContext context) {
         // 根据 index 直接分割
 
-        final ISensitiveWordReplace replace = context.sensitiveWordReplace();
+        final IWordReplace replace = context.wordReplace();
         // 是否需要对 allList 排序？
         StringBuilder stringBuilder = new StringBuilder();
 

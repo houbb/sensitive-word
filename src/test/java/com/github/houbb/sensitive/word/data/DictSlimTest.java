@@ -7,7 +7,7 @@ import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.opencc4j.core.impl.ZhConvertBootstrap;
 import com.github.houbb.opencc4j.support.segment.impl.CharSegment;
-import com.github.houbb.sensitive.word.utils.InnerNumUtils;
+import com.github.houbb.sensitive.word.utils.InnerWordNumUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -127,7 +127,7 @@ public class DictSlimTest {
 
         // 停顿词语
         String trim = string.replaceAll("加|否|与|和", "");
-        String mapString = InnerNumUtils.getMappingString(trim);
+        String mapString = InnerWordNumUtils.getMappingString(trim);
         boolean result = StringUtil.isDigit(mapString);
         if(result) {
             System.out.println(string);

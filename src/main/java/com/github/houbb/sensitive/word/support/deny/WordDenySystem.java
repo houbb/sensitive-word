@@ -1,10 +1,8 @@
 package com.github.houbb.sensitive.word.support.deny;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.StreamUtil;
 import com.github.houbb.sensitive.word.api.IWordDeny;
-import com.github.houbb.sensitive.word.constant.AppConst;
 
 import java.util.List;
 

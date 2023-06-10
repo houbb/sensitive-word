@@ -1,10 +1,6 @@
 package com.github.houbb.sensitive.word.bs;
 
-import com.github.houbb.sensitive.word.api.ICharFormat;
-import com.github.houbb.sensitive.word.api.ISensitiveWordReplace;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordData;
-import com.github.houbb.sensitive.word.support.check.ISensitiveCheck;
+import com.github.houbb.sensitive.word.api.*;
 
 /**
  * 上下文
@@ -83,19 +79,19 @@ public class SensitiveWordContext implements IWordContext {
      * 检测策略
      * @since 0.3.0
      */
-    private ISensitiveCheck sensitiveCheck;
+    private IWordCheck wordCheck;
 
     /**
      * 替换策略
      * @since 0.3.0
      */
-    private ISensitiveWordReplace sensitiveWordReplace;
+    private IWordReplace wordReplace;
 
     /**
      * 格式化
      * @since 0.3.0
      */
-    private ICharFormat charFormat;
+    private IWordFormat wordFormat;
 
     /**
      * 单词 map 信息
@@ -114,22 +110,22 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public ISensitiveWordReplace sensitiveWordReplace() {
-        return sensitiveWordReplace;
+    public IWordReplace wordReplace() {
+        return wordReplace;
     }
 
-    public SensitiveWordContext sensitiveWordReplace(ISensitiveWordReplace sensitiveWordReplace) {
-        this.sensitiveWordReplace = sensitiveWordReplace;
+    public SensitiveWordContext wordReplace(IWordReplace wordReplace) {
+        this.wordReplace = wordReplace;
         return this;
     }
 
     @Override
-    public ISensitiveCheck sensitiveCheck() {
-        return sensitiveCheck;
+    public IWordCheck sensitiveCheck() {
+        return wordCheck;
     }
 
-    public SensitiveWordContext sensitiveCheck(ISensitiveCheck sensitiveCheck) {
-        this.sensitiveCheck = sensitiveCheck;
+    public SensitiveWordContext sensitiveCheck(IWordCheck sensitiveCheck) {
+        this.wordCheck = sensitiveCheck;
         return this;
     }
 
@@ -269,12 +265,12 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public ICharFormat charFormat() {
-        return charFormat;
+    public IWordFormat wordFormat() {
+        return wordFormat;
     }
 
-    public SensitiveWordContext charFormat(ICharFormat charFormat) {
-        this.charFormat = charFormat;
+    public SensitiveWordContext wordFormat(IWordFormat wordFormat) {
+        this.wordFormat = wordFormat;
         return this;
     }
 }

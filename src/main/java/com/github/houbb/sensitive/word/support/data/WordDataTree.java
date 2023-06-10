@@ -5,13 +5,10 @@ import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
-import com.github.houbb.sensitive.word.api.context.InnerSensitiveContext;
-import com.github.houbb.sensitive.word.constant.AppConst;
+import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 敏感词 map
@@ -63,7 +60,7 @@ public class WordDataTree implements IWordData {
 
     @Override
     public WordContainsTypeEnum contains(StringBuilder stringBuilder,
-                                         InnerSensitiveContext innerContext) {
+                                         InnerSensitiveWordContext innerContext) {
         WordDataTreeNode nowNode = root;
 
         int len = stringBuilder.length();
@@ -98,7 +95,7 @@ public class WordDataTree implements IWordData {
     private WordDataTreeNode getNowMap(WordDataTreeNode nowNode,
                           final int index,
                           final StringBuilder stringBuilder,
-                          final InnerSensitiveContext sensitiveContext) {
+                          final InnerSensitiveWordContext sensitiveContext) {
         final IWordContext context = sensitiveContext.wordContext();
 
         // 这里的 char 已经是统一格式化之后的，所以可以不用再次格式化。

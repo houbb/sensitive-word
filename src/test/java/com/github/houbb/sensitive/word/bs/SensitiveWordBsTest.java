@@ -2,7 +2,7 @@ package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
-import com.github.houbb.sensitive.word.support.replace.SensitiveWordReplaces;
+import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -73,7 +73,7 @@ public class SensitiveWordBsTest {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
         String result = SensitiveWordBs.newInstance()
-                .sensitiveWordReplace(SensitiveWordReplaces.chars('0'))
+                .wordReplace(WordReplaces.chars('0'))
                 .init()
                 .replace(text);
         Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);

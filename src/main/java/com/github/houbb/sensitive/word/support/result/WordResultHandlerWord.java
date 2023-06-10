@@ -4,7 +4,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.api.IWordResultHandler;
-import com.github.houbb.sensitive.word.utils.InnerCharUtils;
+import com.github.houbb.sensitive.word.utils.InnerWordCharUtils;
 
 /**
  * 只保留单词
@@ -31,7 +31,7 @@ public class WordResultHandlerWord implements IWordResultHandler<String> {
         }
 
         // 截取
-        return InnerCharUtils.getString(originalText.toCharArray(), wordResult);
+        return InnerWordCharUtils.getString(originalText.toCharArray(), wordResult);
     }
 
 }
