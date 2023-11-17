@@ -58,7 +58,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 
@@ -661,6 +661,16 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 # 后期 road-map
 
+- [x] 移除单个汉字的敏感词，在中国，要把词组当做一次词，降低误判率。
+
+- [ ] 支持单个的敏感词变化？
+
+remove、add、edit?
+
+- [ ] 敏感词标签支持 + 分级支持
+
+比较耗时间。
+
 - [x] wordData 的内存占用对比 + 优化
 
 - [x] 用户指定自定义的词组，同时允许指定词组的组合获取，更加灵活
@@ -671,7 +681,7 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 - [ ] 添加 ThreadLocal 等性能优化
 
-- [ ] 敏感词标签支持
+
 
 # 拓展阅读
 
