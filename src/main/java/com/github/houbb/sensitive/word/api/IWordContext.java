@@ -1,5 +1,7 @@
 package com.github.houbb.sensitive.word.api;
 
+import com.github.houbb.sensitive.word.bs.SensitiveWordContext;
+
 /**
  * @author binbin.hou
  * @since 0.0.4
@@ -230,5 +232,9 @@ public interface IWordContext {
      * @since 0.3.2
      */
     IWordContext wordData(IWordData wordMap);
+
+    IWordTag wordTag();
+
+    SensitiveWordContext wordTag(IWordTag wordTag);
 
 }

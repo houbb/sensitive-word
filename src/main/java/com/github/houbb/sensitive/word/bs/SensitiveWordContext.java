@@ -100,6 +100,13 @@ public class SensitiveWordContext implements IWordContext {
      */
     private IWordData wordData;
 
+    /**
+     * 单词标签
+     *
+     * @since 0.10.0
+     */
+    private IWordTag wordTag;
+
     public IWordData wordData() {
         return wordData;
     }
@@ -273,4 +280,14 @@ public class SensitiveWordContext implements IWordContext {
         this.wordFormat = wordFormat;
         return this;
     }
+
+    public IWordTag wordTag() {
+        return wordTag;
+    }
+
+    public SensitiveWordContext wordTag(IWordTag wordTag) {
+        this.wordTag = wordTag;
+        return this;
+    }
+
 }

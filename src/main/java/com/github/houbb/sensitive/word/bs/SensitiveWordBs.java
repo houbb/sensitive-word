@@ -2,6 +2,7 @@ package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
+import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.combine.IWordAllowDenyCombine;
@@ -16,9 +17,12 @@ import com.github.houbb.sensitive.word.support.data.WordDatas;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
+import com.github.houbb.sensitive.word.support.tag.WordTags;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 敏感词引导类
@@ -147,6 +151,12 @@ public class SensitiveWordBs {
     private IWordAllowDenyCombine wordAllowDenyCombine = WordAllowDenyCombines.defaults();
 
     /**
+     * 单词标签
+     * @since 0.10.0
+     */
+    private IWordTag wordTag = WordTags.none();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -214,8 +224,16 @@ public class SensitiveWordBs {
         context.sensitiveCheckNumLen(numCheckLen);
         context.wordReplace(wordReplace);
         context.wordData(wordData);
+        context.wordTag(wordTag);
 
         return context;
+    }
+
+    public SensitiveWordBs wordTag(IWordTag wordTag) {
+        ArgUtil.notNull(wordTag, "wordTag");
+
+        this.wordTag = wordTag;
+        return this;
     }
 
     public SensitiveWordBs wordCheckCombine(IWordCheckCombine wordCheckCombine) {
@@ -507,6 +525,22 @@ public class SensitiveWordBs {
      */
     public String replace(final String target) {
         return sensitiveWord.replace(target, context);
+    }
+
+    /**
+     * 获取敏感词的标签
+     *
+     * @param word 敏感词
+     * @return 结果
+     * @since 0.10.0
+     */
+    public Set<String> tags(final String word) {
+        if(StringUtil.isEmpty(word)) {
+            return Collections.emptySet();
+        }
+
+        // 是否需要格式化？
+        return wordTag.getTag(word);
     }
 
     //------------------------------------------------------------------------------------ 公开方法 END

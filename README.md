@@ -40,6 +40,8 @@
 
 - [支持数据的数据动态更新（用户自定义），实时生效](https://github.com/houbb/sensitive-word#%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89)
 
+- [支持敏感词的标签接口]()
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
@@ -58,7 +60,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 
@@ -66,16 +68,17 @@
 
 `SensitiveWordHelper` 作为敏感词的工具类，核心方法如下：
 
-| 方法 | 参数 | 返回值| 说明 |
-|:---|:---|:---|:---|
-| contains(String) | 待验证的字符串 | 布尔值 | 验证字符串是否包含敏感词 |
-| replace(String, ISensitiveWordReplace) | 使用指定的替换策略替换敏感词 | 字符串 | 返回脱敏后的字符串 |
-| replace(String, char) | 使用指定的 char 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
-| replace(String) | 使用 `*` 替换敏感词 | 字符串 | 返回脱敏后的字符串 |
-| findAll(String) | 待验证的字符串 | 字符串列表 | 返回字符串中所有敏感词 |
-| findFirst(String) | 待验证的字符串 | 字符串 | 返回字符串中第一个敏感词 |
-| findAll(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串列表 | 返回字符串中所有敏感词 |
-| findFirst(String, IWordResultHandler) | IWordResultHandler 结果处理类 | 字符串 | 返回字符串中第一个敏感词 |
+| 方法                                     | 参数                       | 返回值    | 说明           |
+|:---------------------------------------|:-------------------------|:-------|:-------------|
+| contains(String)                       | 待验证的字符串                  | 布尔值    | 验证字符串是否包含敏感词 |
+| replace(String, ISensitiveWordReplace) | 使用指定的替换策略替换敏感词           | 字符串    | 返回脱敏后的字符串    |
+| replace(String, char)                  | 使用指定的 char 替换敏感词         | 字符串    | 返回脱敏后的字符串    |
+| replace(String)                        | 使用 `*` 替换敏感词             | 字符串    | 返回脱敏后的字符串    |
+| findAll(String)                        | 待验证的字符串                  | 字符串列表  | 返回字符串中所有敏感词  |
+| findFirst(String)                      | 待验证的字符串                  | 字符串    | 返回字符串中第一个敏感词 |
+| findAll(String, IWordResultHandler)    | IWordResultHandler 结果处理类 | 字符串列表  | 返回字符串中所有敏感词  |
+| findFirst(String, IWordResultHandler)  | IWordResultHandler 结果处理类 | 字符串    | 返回字符串中第一个敏感词 |
+| tags(String)       | 获取敏感词的标签                 | 敏感词字符串 | 返回敏感词的标签列表   |
 
 ## IWordResultHandler 结果处理类
 
@@ -387,6 +390,70 @@ Assert.assertTrue(wordBs.contains(text));
 | 10 | enableWordCheck      | 是否启用敏感单词检测    | true   |
 | 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
 
+# 敏感词标签
+
+## 说明
+
+有时候我们希望对敏感词加一个分类标签：比如社情、暴/力等等。
+
+这样后续可以按照标签等进行更多特性操作，比如只处理某一类的标签。
+
+支持版本：v0.10.0
+
+## 入门例子
+
+### 接口
+
+这里只是一个抽象的接口，用户可以自行定义实现。比如从数据库查询等。
+
+```java
+public interface IWordTag {
+
+    /**
+     * 查询标签列表
+     * @param word 脏词
+     * @return 结果
+     */
+    Set<String> getTag(String word);
+
+}
+```
+
+### 配置文件
+
+我们可以自定义 dict 标签文件，通过 WordTags.file() 创建一个 WordTag 实现。
+
+- dict_tag_test.txt
+
+```
+五星红旗 政治,国家
+```
+
+格式如下：
+
+```
+敏感词 tag1,tag2
+```
+
+### 实现
+
+具体的效果如下，在引导类设置一下即可。
+
+默认的 wordTag 是空的。
+
+```java
+String filePath = "dict_tag_test.txt";
+IWordTag wordTag = WordTags.file(filePath);
+
+SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+        .wordTag(wordTag)
+        .init();
+
+Assert.assertEquals("[政治, 国家]", sensitiveWordBs.tags("五星红旗").toString());;
+```
+
+后续会考虑引入一个内置的标签文件策略。
+
 # 动态加载（用户自定义）
 
 ## 情景说明
@@ -667,9 +734,11 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 remove、add、edit?
 
-- [ ] 敏感词标签支持 + 分级支持
+- [x] 敏感词标签接口支持
 
-比较耗时间。
+- [ ] 敏感词处理时标签支持
+
+TODO: 比较耗时间。
 
 - [x] wordData 的内存占用对比 + 优化
 
