@@ -42,7 +42,7 @@
 
 - [支持敏感词的标签接口](https://github.com/houbb/sensitive-word#%E6%95%8F%E6%84%9F%E8%AF%8D%E6%A0%87%E7%AD%BE)
 
-- [支持跳过一些特殊字符，让匹配更灵活]()
+- [支持跳过一些特殊字符，让匹配更灵活](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E5%AD%97%E7%AC%A6)
 
 ## 变更日志
 
