@@ -15,6 +15,7 @@ import com.github.houbb.sensitive.word.support.combine.check.WordCheckCombines;
 import com.github.houbb.sensitive.word.support.combine.format.WordFormatCombines;
 import com.github.houbb.sensitive.word.support.data.WordDatas;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
+import com.github.houbb.sensitive.word.support.ignore.SensitiveWordCharIgnores;
 import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
@@ -157,6 +158,12 @@ public class SensitiveWordBs {
     private IWordTag wordTag = WordTags.none();
 
     /**
+     * 忽略的字符策略
+     * @since 0.11.0
+     */
+    private ISensitiveWordCharIgnore charIgnore = SensitiveWordCharIgnores.defaults();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -225,8 +232,16 @@ public class SensitiveWordBs {
         context.wordReplace(wordReplace);
         context.wordData(wordData);
         context.wordTag(wordTag);
+        context.charIgnore(charIgnore);
 
         return context;
+    }
+
+    public SensitiveWordBs charIgnore(ISensitiveWordCharIgnore charIgnore) {
+        ArgUtil.notNull(charIgnore, "charIgnore");
+
+        this.charIgnore = charIgnore;
+        return this;
     }
 
     public SensitiveWordBs wordTag(IWordTag wordTag) {

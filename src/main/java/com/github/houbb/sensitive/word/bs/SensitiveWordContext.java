@@ -107,6 +107,12 @@ public class SensitiveWordContext implements IWordContext {
      */
     private IWordTag wordTag;
 
+    /**
+     * 忽略的字符
+     * @since 0.11.0
+     */
+    private ISensitiveWordCharIgnore charIgnore;
+
     public IWordData wordData() {
         return wordData;
     }
@@ -290,4 +296,12 @@ public class SensitiveWordContext implements IWordContext {
         return this;
     }
 
+    public ISensitiveWordCharIgnore charIgnore() {
+        return charIgnore;
+    }
+
+    public SensitiveWordContext charIgnore(ISensitiveWordCharIgnore charIgnore) {
+        this.charIgnore = charIgnore;
+        return this;
+    }
 }

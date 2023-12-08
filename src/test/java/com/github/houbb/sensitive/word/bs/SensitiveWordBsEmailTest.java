@@ -38,4 +38,11 @@ public class SensitiveWordBsEmailTest {
         Assert.assertEquals("[123456789, xx.com]", wordList.toString());
     }
 
+    @Test
+    public void emailTest() {
+        final String text = "你我.他你";
+        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        Assert.assertEquals("[]", wordList.toString());
+    }
+
 }

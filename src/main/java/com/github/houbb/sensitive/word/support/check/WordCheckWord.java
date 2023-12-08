@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
@@ -46,16 +47,26 @@ public class WordCheckWord extends AbstractWordCheck {
         // 前一个条件
         StringBuilder stringBuilder = new StringBuilder();
         char[] rawChars = txt.toCharArray();
+
+        final ISensitiveWordCharIgnore wordCharIgnore = context.charIgnore();
+        int tempLen = 0;
         for(int i = beginIndex; i < rawChars.length; i++) {
+            // 判断是否跳过？
+            if(wordCharIgnore.ignore(i, rawChars, innerContext)) {
+                tempLen++;
+                continue;
+            }
+
             // 映射处理
             final char currentChar = rawChars[i];
             char mappingChar = formatCharMapping.get(currentChar);
             stringBuilder.append(mappingChar);
+            tempLen++;
 
             // 判断是否存在
             WordContainsTypeEnum wordContainsTypeEnum = wordData.contains(stringBuilder, innerContext);
             if(WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnum)) {
-                actualLength = stringBuilder.length();
+                actualLength = tempLen;
 
                 // 是否遍历全部匹配的模式
                 if(WordValidModeEnum.FAIL_FAST.equals(wordValidModeEnum)) {

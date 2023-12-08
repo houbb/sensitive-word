@@ -42,6 +42,8 @@
 
 - [支持敏感词的标签接口](https://github.com/houbb/sensitive-word#%E6%95%8F%E6%84%9F%E8%AF%8D%E6%A0%87%E7%AD%BE)
 
+- [支持跳过一些特殊字符，让匹配更灵活]()
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
@@ -60,7 +62,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 
@@ -389,6 +391,41 @@ Assert.assertTrue(wordBs.contains(text));
 | 9  | enableUrlCheck       | 是否启用链接检测      | true   |
 | 10 | enableWordCheck      | 是否启用敏感单词检测    | true   |
 | 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
+
+
+# 忽略字符
+
+## 说明
+
+我们的敏感词一般都是比较连续的，比如【傻帽】
+
+那就有大聪明发现，可以在中间加一些字符，比如【傻!@#$帽】跳过检测，但是骂人等攻击力不减。
+
+那么，如何应对这些类似的场景呢？
+
+我们可以指定特殊字符的跳过集合，忽略掉这些无意义的字符即可。
+
+v0.11.0 开始支持
+
+## 例子
+
+其中 charIgnore 对应的字符策略，用户可以自行灵活定义。
+
+```java
+final String text = "傻@冒，狗+东西";
+
+//默认因为有特殊字符分割，无法识别
+List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+Assert.assertEquals("[]", wordList.toString());
+
+// 指定忽略的字符策略，可自行实现。
+List<String> wordList2 = SensitiveWordBs.newInstance()
+        .charIgnore(SensitiveWordCharIgnores.specialChars())
+        .init()
+        .findAll(text);
+
+Assert.assertEquals("[傻@冒, 狗+东西]", wordList2.toString());
+```
 
 # 敏感词标签
 

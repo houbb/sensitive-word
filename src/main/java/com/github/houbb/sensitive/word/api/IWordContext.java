@@ -237,4 +237,8 @@ public interface IWordContext {
 
     SensitiveWordContext wordTag(IWordTag wordTag);
 
+    ISensitiveWordCharIgnore charIgnore();
+
+    SensitiveWordContext charIgnore(ISensitiveWordCharIgnore charIgnore);
+
 }
