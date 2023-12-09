@@ -369,6 +369,8 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .enableUrlCheck(true)
         .enableWordCheck(true)
         .numCheckLen(8)
+        .wordTag(WordTags.none())
+        .charIgnore(SensitiveWordCharIgnores.defaults())
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
@@ -378,19 +380,21 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法                   | 说明            | 默认值    |
-|:---|:---------------------|:--------------|:-------|
-| 1  | ignoreCase           | 忽略大小写         | true   |
-| 2  | ignoreWidth          | 忽略半角圆角        | true   |
-| 3  | ignoreNumStyle       | 忽略数字的写法       | true   |
-| 4  | ignoreChineseStyle   | 忽略中文的书写格式     | true   |
-| 5  | ignoreEnglishStyle   | 忽略英文的书写格式     | true   |
-| 6  | ignoreRepeat         | 忽略重复词         | false  |
-| 7  | enableNumCheck       | 是否启用数字检测。     | true   |
-| 8  | enableEmailCheck     | 是有启用邮箱检测      | true   |
-| 9  | enableUrlCheck       | 是否启用链接检测      | true   |
-| 10 | enableWordCheck      | 是否启用敏感单词检测    | true   |
-| 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8      |
+| 序号 | 方法                   | 说明            | 默认值   |
+|:---|:---------------------|:--------------|:------|
+| 1  | ignoreCase           | 忽略大小写         | true  |
+| 2  | ignoreWidth          | 忽略半角圆角        | true  |
+| 3  | ignoreNumStyle       | 忽略数字的写法       | true  |
+| 4  | ignoreChineseStyle   | 忽略中文的书写格式     | true  |
+| 5  | ignoreEnglishStyle   | 忽略英文的书写格式     | true  |
+| 6  | ignoreRepeat         | 忽略重复词         | false |
+| 7  | enableNumCheck       | 是否启用数字检测。     | true  |
+| 8  | enableEmailCheck     | 是有启用邮箱检测      | true  |
+| 9  | enableUrlCheck       | 是否启用链接检测      | true  |
+| 10 | enableWordCheck      | 是否启用敏感单词检测    | true  |
+| 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8     |
+| 12 | wordTag          | 词对应的标签        | none  |
+| 13 | charIgnore          | 忽略的字符         | none  |
 
 
 # 忽略字符
