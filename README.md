@@ -48,6 +48,22 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
+## 更多资料
+
+### 敏感词控台
+
+有时候敏感词有一个控台，配置起来会更加灵活方便。
+
+> [java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
+
+### 敏感词标签文件
+
+梳理了大量的敏感词标签文件，可以让我们的敏感词更加方便。
+
+这两个资料阅读可在下方文章获取：
+
+> [v0.11.0-敏感词新特性](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+
 # 快速开始
 
 ## 准备
