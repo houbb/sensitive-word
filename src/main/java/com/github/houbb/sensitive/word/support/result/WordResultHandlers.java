@@ -30,4 +30,13 @@ public final class WordResultHandlers {
         return WordResultHandlerWord.getInstance();
     }
 
+    /**
+     * 单词+标签的处理结果
+     * @return 单词+标签的处理结果
+     * @since 0.12.0
+     */
+    public static IWordResultHandler<WordTagsDto> wordTags() {
+        return new WordResultHandlerWordTags();
+    }
+
 }

@@ -62,7 +62,7 @@
 
 这两个资料阅读可在下方文章获取：
 
-> [v0.11.0-敏感词新特性](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+> [v0.11.0-敏感词新特性及对应标签文件](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
 
 # 快速开始
 
@@ -78,7 +78,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.11.0</version>
+    <version>0.12.0</version>
 </dependency>
 ```
 
@@ -98,23 +98,7 @@
 | findFirst(String, IWordResultHandler)  | IWordResultHandler 结果处理类 | 字符串    | 返回字符串中第一个敏感词 |
 | tags(String)       | 获取敏感词的标签                 | 敏感词字符串 | 返回敏感词的标签列表   |
 
-## IWordResultHandler 结果处理类
 
-IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定义。
-
-内置实现见 `WordResultHandlers` 工具类：
-
-- WordResultHandlers.word()
-
-只保留敏感词单词本身。
-
-- WordResultHandlers.raw()
-
-保留敏感词相关信息，包含敏感词的开始和结束下标。
-
-## 使用实例
-
-所有测试案例参见 [SensitiveWordHelperTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/core/SensitiveWordHelperTest.java)
 
 ### 判断是否包含敏感词
 
@@ -242,6 +226,60 @@ public class MyWordReplace implements IWordReplace {
 ```
 
 我们针对其中的部分词做固定映射处理，其他的默认转换为 `*`。
+
+## IWordResultHandler 结果处理类
+
+IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定义。
+
+内置实现见 `WordResultHandlers` 工具类：
+
+- WordResultHandlers.word()
+
+只保留敏感词单词本身。
+
+- WordResultHandlers.raw()
+
+保留敏感词相关信息，包含敏感词的开始和结束下标。
+
+- WordResultHandlers.wordTags()
+
+同时保留单词，和对应的词标签信息。
+
+### 使用实例
+
+所有测试案例参见 [SensitiveWordHelperTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/core/SensitiveWordHelperTest.java)
+
+1）基本例子
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+List<String> wordList = SensitiveWordHelper.findAll(text);
+Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
+List<String> wordList2 = SensitiveWordHelper.findAll(text, WordResultHandlers.word());
+Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList2.toString());
+
+List<IWordResult> wordList3 = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+Assert.assertEquals("[WordResult{startIndex=0, endIndex=4}, WordResult{startIndex=9, endIndex=12}, WordResult{startIndex=18, endIndex=21}]", wordList3.toString());
+```
+
+2) wordTags 例子
+
+我们在 `dict_tag_test.txt` 文件中指定对应词的标签信息。
+
+```java
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+// 默认敏感词标签为空
+List<WordTagsDto> wordList1 = SensitiveWordHelper.findAll(text, WordResultHandlers.wordTags());
+Assert.assertEquals("[WordTagsDto{word='五星红旗', tags=[]}, WordTagsDto{word='毛主席', tags=[]}, WordTagsDto{word='天安门', tags=[]}]", wordList1.toString());
+
+List<WordTagsDto> wordList2 = SensitiveWordBs.newInstance()
+        .wordTag(WordTags.file("dict_tag_test.txt"))
+        .init()
+        .findAll(text, WordResultHandlers.wordTags());
+Assert.assertEquals("[WordTagsDto{word='五星红旗', tags=[政治, 国家]}, WordTagsDto{word='毛主席', tags=[政治, 伟人, 国家]}, WordTagsDto{word='天安门', tags=[政治, 国家, 地址]}]", wordList2.toString());
+```
 
 # 更多特性
 
@@ -793,9 +831,7 @@ remove、add、edit?
 
 - [x] 敏感词标签接口支持
 
-- [ ] 敏感词处理时标签支持
-
-TODO: 比较耗时间。
+- [x] 敏感词处理时标签支持
 
 - [x] wordData 的内存占用对比 + 优化
 
@@ -807,8 +843,6 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 - [ ] 添加 ThreadLocal 等性能优化
 
-
-
 # 拓展阅读
 
 [敏感词工具实现思路](https://houbb.github.io/2020/01/07/sensitive-word)
@@ -818,6 +852,8 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 [敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
 
 [java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
+
+[v0.11.0-敏感词新特性及对应标签文件](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
 
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 

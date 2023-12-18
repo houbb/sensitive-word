@@ -3,7 +3,6 @@ package com.github.houbb.sensitive.word.support.result;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
-import com.github.houbb.sensitive.word.api.IWordResultHandler;
 import com.github.houbb.sensitive.word.utils.InnerWordCharUtils;
 
 /**
@@ -13,7 +12,7 @@ import com.github.houbb.sensitive.word.utils.InnerWordCharUtils;
  * @since 0.1.0
  */
 @ThreadSafe
-public class WordResultHandlerWord implements IWordResultHandler<String> {
+public class WordResultHandlerWord extends AbstractWordResultHandler<String> {
 
     /**
      * @since 0.3.0
@@ -25,11 +24,7 @@ public class WordResultHandlerWord implements IWordResultHandler<String> {
     }
 
     @Override
-    public String handle(IWordResult wordResult, IWordContext wordContext, String originalText) {
-        if(wordResult == null) {
-            return null;
-        }
-
+    protected String doHandle(IWordResult wordResult, IWordContext wordContext, String originalText) {
         // 截取
         return InnerWordCharUtils.getString(originalText.toCharArray(), wordResult);
     }
