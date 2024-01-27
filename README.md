@@ -8,6 +8,8 @@
 
 > [在线体验](https://houbb.github.io/opensource/sensitive-word)
 
+如果有一些疑难杂增，可以加入：[技术交流群](https://mp.weixin.qq.com/s/rkSvXxiiLGjl3S-ZOZCr0Q)
+
 ## 创作目的
 
 实现一款好用敏感词工具。
