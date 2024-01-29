@@ -8,7 +8,9 @@
 
 > [在线体验](https://houbb.github.io/opensource/sensitive-word)
 
-如果有一些疑难杂增，可以加入：[技术交流群](https://mp.weixin.qq.com/s/rkSvXxiiLGjl3S-ZOZCr0Q)
+如果有一些疑难杂症，可以加入：[技术交流群](https://mp.weixin.qq.com/s/rkSvXxiiLGjl3S-ZOZCr0Q)
+
+[sensitive-word-admin](https://github.com/houbb/sensitive-word-admin) 是对应的控台的应用，目前功能处于初期开发中，MVP 版本可用。
 
 ## 创作目的
 
