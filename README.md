@@ -651,8 +651,8 @@ public class MyWordAllow implements IWordAllow {
 
 ```java
 SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-        .wordDeny(WordDenys.system())
-        .wordAllow(WordAllows.system())
+        .wordDeny(WordDenys.defaults())
+        .wordAllow(WordAllows.defaults())
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
@@ -697,8 +697,8 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 ```java
 String text = "这是一个测试。我的自定义敏感词。";
 
-IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDeny());
-IWordAllow wordAllow = WordAllows.chains(WordAllows.system(), new MyWordAllow());
+IWordDeny wordDeny = WordDenys.chains(WordDenys.defaults(), new MyWordDeny());
+IWordAllow wordAllow = WordAllows.chains(WordAllows.defaults(), new MyWordAllow());
 
 SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .wordDeny(wordDeny)
@@ -746,7 +746,7 @@ public class SpringSensitiveWordConfig {
     @Bean
     public SensitiveWordBs sensitiveWordBs() {
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
-                .wordAllow(WordAllows.chains(WordAllows.system(), myDdWordAllow))
+                .wordAllow(WordAllows.chains(WordAllows.defaults(), myDdWordAllow))
                 .wordDeny(myDdWordDeny)
                 // 各种其他配置
                 .init();
