@@ -82,7 +82,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
 </dependency>
 ```
 
@@ -429,6 +429,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .numCheckLen(8)
         .wordTag(WordTags.none())
         .charIgnore(SensitiveWordCharIgnores.defaults())
+        .wordResultCondition(WordResultConditions.alwaysTrue())
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
@@ -438,22 +439,74 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法                   | 说明            | 默认值   |
-|:---|:---------------------|:--------------|:------|
-| 1  | ignoreCase           | 忽略大小写         | true  |
-| 2  | ignoreWidth          | 忽略半角圆角        | true  |
-| 3  | ignoreNumStyle       | 忽略数字的写法       | true  |
-| 4  | ignoreChineseStyle   | 忽略中文的书写格式     | true  |
-| 5  | ignoreEnglishStyle   | 忽略英文的书写格式     | true  |
-| 6  | ignoreRepeat         | 忽略重复词         | false |
-| 7  | enableNumCheck       | 是否启用数字检测。     | true  |
-| 8  | enableEmailCheck     | 是有启用邮箱检测      | true  |
-| 9  | enableUrlCheck       | 是否启用链接检测      | true  |
-| 10 | enableWordCheck      | 是否启用敏感单词检测    | true  |
-| 11 | numCheckLen          | 数字检测，自定义指定长度。 | 8     |
-| 12 | wordTag          | 词对应的标签        | none  |
-| 13 | charIgnore          | 忽略的字符         | none  |
+| 序号 | 方法                   | 说明                           | 默认值   |
+|:---|:---------------------|:-----------------------------|:------|
+| 1  | ignoreCase           | 忽略大小写                        | true  |
+| 2  | ignoreWidth          | 忽略半角圆角                       | true  |
+| 3  | ignoreNumStyle       | 忽略数字的写法                      | true  |
+| 4  | ignoreChineseStyle   | 忽略中文的书写格式                    | true  |
+| 5  | ignoreEnglishStyle   | 忽略英文的书写格式                    | true  |
+| 6  | ignoreRepeat         | 忽略重复词                        | false |
+| 7  | enableNumCheck       | 是否启用数字检测。                    | true  |
+| 8  | enableEmailCheck     | 是有启用邮箱检测                     | true  |
+| 9  | enableUrlCheck       | 是否启用链接检测                     | true  |
+| 10 | enableWordCheck      | 是否启用敏感单词检测                   | true  |
+| 11 | numCheckLen          | 数字检测，自定义指定长度。                | 8     |
+| 12 | wordTag          | 词对应的标签                       | none  |
+| 13 | charIgnore          | 忽略的字符                        | none  |
+| 14 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
 
+# wordResultCondition-针对匹配词进一步判断
+
+## 说明
+
+支持版本：v0.13.0
+
+有时候我们可能希望对匹配的敏感词进一步限制，比如虽然我们定义了【av】作为敏感词，但是不希望【have】被匹配。
+
+就可以自定义实现 wordResultCondition 接口，实现自己的策略。
+
+系统内置的策略在 WordResultConditions#alwaysTrue() 恒为真，WordResultConditions#englishWordMatch() 则要求英文必须全词匹配。
+
+## 入门例子
+
+原始的默认情况：
+
+```java
+final String text = "I have a nice day。";
+
+List<String> wordList = SensitiveWordBs.newInstance()
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Collections.singletonList("av");
+            }
+        })
+        .wordResultCondition(WordResultConditions.alwaysTrue())
+        .init()
+        .findAll(text);
+Assert.assertEquals("[av]", wordList.toString());
+```
+
+我们可以指定为英文必须全词匹配。
+
+```java
+final String text = "I have a nice day。";
+
+List<String> wordList = SensitiveWordBs.newInstance()
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Collections.singletonList("av");
+            }
+        })
+        .wordResultCondition(WordResultConditions.englishWordMatch())
+        .init()
+        .findAll(text);
+Assert.assertEquals("[]", wordList.toString());
+```
+
+当然可以根据需要实现更加复杂的策略。
 
 # 忽略字符
 
