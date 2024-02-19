@@ -466,7 +466,7 @@ Assert.assertTrue(wordBs.contains(text));
 
 就可以自定义实现 wordResultCondition 接口，实现自己的策略。
 
-系统内置的策略在 WordResultConditions#alwaysTrue() 恒为真，WordResultConditions#englishWordMatch() 则要求英文必须全词匹配。
+系统内置的策略在 `WordResultConditions#alwaysTrue()` 恒为真，`WordResultConditions#englishWordMatch()` 则要求英文必须全词匹配。
 
 ## 入门例子
 
