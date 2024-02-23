@@ -241,4 +241,8 @@ public interface IWordContext {
 
     SensitiveWordContext charIgnore(ISensitiveWordCharIgnore charIgnore);
 
+    IWordResultCondition wordResultCondition();
+
+    SensitiveWordContext wordResultCondition(IWordResultCondition wordResultCondition);
+
 }

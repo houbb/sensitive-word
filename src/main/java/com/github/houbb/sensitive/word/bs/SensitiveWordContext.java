@@ -113,6 +113,13 @@ public class SensitiveWordContext implements IWordContext {
      */
     private ISensitiveWordCharIgnore charIgnore;
 
+    /**
+     * 敏感词结果匹配
+     *
+     * @since 0.13.0
+     */
+    private IWordResultCondition wordResultCondition;
+
     public IWordData wordData() {
         return wordData;
     }
@@ -302,6 +309,15 @@ public class SensitiveWordContext implements IWordContext {
 
     public SensitiveWordContext charIgnore(ISensitiveWordCharIgnore charIgnore) {
         this.charIgnore = charIgnore;
+        return this;
+    }
+
+    public IWordResultCondition wordResultCondition() {
+        return wordResultCondition;
+    }
+
+    public SensitiveWordContext wordResultCondition(IWordResultCondition wordResultCondition) {
+        this.wordResultCondition = wordResultCondition;
         return this;
     }
 }

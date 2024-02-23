@@ -18,6 +18,7 @@ import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.ignore.SensitiveWordCharIgnores;
 import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
+import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 
 import java.util.Collection;
@@ -164,6 +165,12 @@ public class SensitiveWordBs {
     private ISensitiveWordCharIgnore charIgnore = SensitiveWordCharIgnores.defaults();
 
     /**
+     * 敏感词结果匹配策略
+     * @since 0.13.0
+     */
+    private IWordResultCondition wordResultCondition = WordResultConditions.alwaysTrue();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -233,8 +240,16 @@ public class SensitiveWordBs {
         context.wordData(wordData);
         context.wordTag(wordTag);
         context.charIgnore(charIgnore);
+        context.wordResultCondition(wordResultCondition);
 
         return context;
+    }
+
+    public SensitiveWordBs wordResultCondition(IWordResultCondition wordResultCondition) {
+        ArgUtil.notNull(wordResultCondition, "wordResultCondition");
+
+        this.wordResultCondition = wordResultCondition;
+        return this;
     }
 
     public SensitiveWordBs charIgnore(ISensitiveWordCharIgnore charIgnore) {

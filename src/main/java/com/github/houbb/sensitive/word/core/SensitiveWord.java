@@ -1,10 +1,7 @@
 package com.github.houbb.sensitive.word.core;
 
 import com.github.houbb.heaven.util.guava.Guavas;
-import com.github.houbb.sensitive.word.api.IWordCheck;
-import com.github.houbb.sensitive.word.api.ISensitiveWord;
-import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordResult;
+import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.WordCheckResult;
@@ -59,6 +56,7 @@ public class SensitiveWord extends AbstractSensitiveWord {
                 .wordContext(context)
                 .modeEnum(WordValidModeEnum.FAIL_OVER)
                 .formatCharMapping(characterCharacterMap);
+        final IWordResultCondition wordResultCondition = context.wordResultCondition();
 
         for (int i = 0; i < text.length(); i++) {
             WordCheckResult checkResult = sensitiveCheck.sensitiveCheck(i, checkContext);
@@ -70,7 +68,10 @@ public class SensitiveWord extends AbstractSensitiveWord {
                 WordResult wordResult = WordResult.newInstance()
                         .startIndex(i)
                         .endIndex(i+wordLength);
-                resultList.add(wordResult);
+                //v0.13.0 添加判断
+                if(wordResultCondition.match(wordResult, text, modeEnum, context)) {
+                    resultList.add(wordResult);
+                }
 
                 // 快速返回
                 if (WordValidModeEnum.FAIL_FAST.equals(modeEnum)) {
