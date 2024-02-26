@@ -37,7 +37,7 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
 
         // 判断后一个字符是否为英文
         if(endIndex < text.length() - 1) {
-            char afterC = text.charAt(endIndex+1);
+            char afterC = text.charAt(endIndex);
             if(CharUtil.isEnglish(afterC)) {
                 return false;
             }
