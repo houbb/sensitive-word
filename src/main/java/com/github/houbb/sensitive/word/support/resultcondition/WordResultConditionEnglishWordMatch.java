@@ -34,6 +34,7 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
                 return false;
             }
         }
+
         // 判断当前是否为英文单词
         for(int i = startIndex; i < endIndex; i++) {
             char c = text.charAt(i);
@@ -41,8 +42,6 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
                 return true;
             }
         }
-
-        
 
         return true;
     }

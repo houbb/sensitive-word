@@ -103,4 +103,21 @@ public class SensitiveWordBsResultConditionTest {
         Assert.assertEquals("[day]", wordList.toString());
     }
 
+    @Test
+    public void englishWordMatchTest5() {
+        final String text = "test for International Congress";
+
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("national Congress");
+                    }
+                })
+                .wordResultCondition(WordResultConditions.englishWordMatch())
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[]", wordList.toString());
+    }
+
 }
