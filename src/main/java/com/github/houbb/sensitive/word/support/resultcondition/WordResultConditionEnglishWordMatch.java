@@ -19,14 +19,6 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
     protected boolean doMatch(IWordResult wordResult, String text, WordValidModeEnum modeEnum, IWordContext context) {
         final int startIndex = wordResult.startIndex();
         final int endIndex = wordResult.endIndex();
-        // 判断当前是否为英文单词
-        for(int i = startIndex; i < endIndex; i++) {
-            char c = text.charAt(i);
-            if(!CharUtil.isEnglish(c)) {
-                return true;
-            }
-        }
-
         // 判断处理，判断前一个字符是否为英文。如果是，则不满足
         if(startIndex > 0) {
             char preC = text.charAt(startIndex-1);
@@ -37,11 +29,20 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
 
         // 判断后一个字符是否为英文
         if(endIndex < text.length() - 1) {
-            char afterC = text.charAt(endIndex+1);
+            char afterC = text.charAt(endIndex);
             if(CharUtil.isEnglish(afterC)) {
                 return false;
             }
         }
+        // 判断当前是否为英文单词
+        for(int i = startIndex; i < endIndex; i++) {
+            char c = text.charAt(i);
+            if(!CharUtil.isEnglish(c)) {
+                return true;
+            }
+        }
+
+        
 
         return true;
     }
