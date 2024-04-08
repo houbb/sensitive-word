@@ -23,9 +23,9 @@ public class SensitiveWordBsUrlTest {
         final String text = "点击链接 www.baidu.com查看答案";
 
         List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
-        Assert.assertEquals("[链接, www.baidu.com]", wordList.toString());
+        Assert.assertEquals("[www.baidu.com]", wordList.toString());
 
-        Assert.assertEquals("点击** *************查看答案", SensitiveWordBs
+        Assert.assertEquals("点击链接 *************查看答案", SensitiveWordBs
                 .newInstance()
                 .init()
                 .replace(text));

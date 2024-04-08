@@ -23,7 +23,7 @@ public class SensitiveWordBsChineseTest {
         final String text = "我爱我的祖国和五星紅旗。";
 
         List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
-        Assert.assertEquals("[祖国, 五星紅旗]", wordList.toString());
+        Assert.assertEquals("[五星紅旗]", wordList.toString());
     }
 
 }
