@@ -9,6 +9,7 @@ import com.github.houbb.sensitive.word.support.ignore.SensitiveWordCharIgnores;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.util.*;
 public class SensitiveWordBsConfigTest {
 
     @Test
+    @Ignore
     public void config2Test() {
         SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
                 .ignoreCase(true)
@@ -43,35 +45,35 @@ public class SensitiveWordBsConfigTest {
                 .wordDeny(WordDenys.defaults())
                 .init();
 
-        String dir = "D:\\code\\github\\houbb.github.io\\_posts";
-        File[] files = new File(dir).listFiles();
-
-        Set<String> wordSet = new HashSet<>();
-
-        Map<String, Integer> wordCountMap = new HashMap<>();
-        for(File file : files) {
-            String content = FileUtil.getFileContent(file);
-            List<String> allWords = wordBs.findAll(content);
-
-            for(String word : allWords) {
-                Integer integer = wordCountMap.get(word);
-                if(integer == null) {
-                    integer = 0;
-                }
-
-                integer++;
-                wordCountMap.put(word, integer);
-            }
-
-            System.out.println(file.getName());
-        }
-
-//        List<WordCountDto> wordCountDtoList = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
-            if(entry.getValue() >= 3) {
-                System.out.println(entry.getKey() + " : " + entry.getValue());
-            }
-        }
+//        String dir = "D:\\code\\github\\houbb.github.io\\_posts";
+//        File[] files = new File(dir).listFiles();
+//
+//        Set<String> wordSet = new HashSet<>();
+//
+//        Map<String, Integer> wordCountMap = new HashMap<>();
+//        for(File file : files) {
+//            String content = FileUtil.getFileContent(file);
+//            List<String> allWords = wordBs.findAll(content);
+//
+//            for(String word : allWords) {
+//                Integer integer = wordCountMap.get(word);
+//                if(integer == null) {
+//                    integer = 0;
+//                }
+//
+//                integer++;
+//                wordCountMap.put(word, integer);
+//            }
+//
+//            System.out.println(file.getName());
+//        }
+//
+////        List<WordCountDto> wordCountDtoList = new ArrayList<>();
+//        for(Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
+//            if(entry.getValue() >= 3) {
+//                System.out.println(entry.getKey() + " : " + entry.getValue());
+//            }
+//        }
 
 //        Collections.sort(wordCountDtoList);
 //        System.out.println(wordCountDtoList);
