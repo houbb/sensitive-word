@@ -6,6 +6,7 @@ import com.github.houbb.heaven.util.util.regex.RegexUtil;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.WordConst;
+import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 
 /**
  * URL 正则表达式检测实现。
@@ -34,6 +35,11 @@ public class WordCheckUrl extends AbstractConditionWordCheck {
     @Override
     protected Class<? extends IWordCheck> getSensitiveCheckClass() {
         return WordCheckUrl.class;
+    }
+
+    @Override
+    protected String getType() {
+        return WordTypeEnum.URL.getCode();
     }
 
     @Override

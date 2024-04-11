@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.check;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 
 /**
  * 敏感词监测实现
@@ -26,6 +27,11 @@ public class WordCheckNum extends AbstractConditionWordCheck {
     @Override
     protected Class<? extends IWordCheck> getSensitiveCheckClass() {
         return WordCheckNum.class;
+    }
+
+    @Override
+    protected String getType() {
+        return WordTypeEnum.NUM.getCode();
     }
 
     @Override

@@ -24,17 +24,15 @@ public class WordCheckResult {
     private Class<? extends IWordCheck> checkClass;
 
     /**
-     * 实例化
-     * @param index 返回索引
-     * @param checkClass 验证类
-     * @return 结果
-     * @since 0.0.12
+     * 单词类别
+     * @since 0.14.0
      */
-    public static WordCheckResult of(final int index,
-                                     final Class<? extends IWordCheck> checkClass) {
-        WordCheckResult result = new WordCheckResult();
-        result.index(index).checkClass(checkClass);
-        return result;
+    private String type;
+
+    private WordCheckResult(){}
+
+    public static WordCheckResult newInstance() {
+        return new WordCheckResult();
     }
 
     public int index() {
@@ -55,11 +53,21 @@ public class WordCheckResult {
         return this;
     }
 
+    public String type() {
+        return type;
+    }
+
+    public WordCheckResult type(String type) {
+        this.type = type;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "SensitiveCheckResult{" +
+        return "WordCheckResult{" +
                 "index=" + index +
                 ", checkClass=" + checkClass +
+                ", type='" + type + '\'' +
                 '}';
     }
 

@@ -52,6 +52,8 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
+V0.14.0: raw 添加敏感词类别。
+
 ## 更多资料
 
 ### 敏感词控台
@@ -82,7 +84,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.13.4</version>
+    <version>0.14.0</version>
 </dependency>
 ```
 
@@ -127,15 +129,6 @@ SensitiveWordHelper.findFirst(text) 等价于：
 String word = SensitiveWordHelper.findFirst(text, WordResultHandlers.word());
 ```
 
-WordResultHandlers.raw() 可以保留对应的下标信息：
-
-```java
-final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-
-IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
-Assert.assertEquals("WordResult{startIndex=0, endIndex=4}", word.toString());
-```
-
 ### 返回所有敏感词
 
 ```java
@@ -153,13 +146,12 @@ SensitiveWordHelper.findAll(text) 等价于：
 List<String> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.word());
 ```
 
-WordResultHandlers.raw() 可以保留对应的下标信息：
+WordResultHandlers.raw() 可以保留对应的下标信息、类别信息：
 
 ```java
-final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-
-List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-Assert.assertEquals("[WordResult{startIndex=0, endIndex=4}, WordResult{startIndex=9, endIndex=12}, WordResult{startIndex=18, endIndex=21}]", wordList.toString());
+final String text = "骂人：你他妈; 邮箱：123@qq.com; mobile: 13088889999; 网址：https://www.baidu.com";
+List<IWordResult> wordList3 = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+Assert.assertEquals("[WordResult{startIndex=3, endIndex=6, type='WORD'}, WordResult{startIndex=11, endIndex=21, type='EMAIL'}, WordResult{startIndex=31, endIndex=42, type='NUM'}, WordResult{startIndex=55, endIndex=68, type='URL'}]", wordList3.toString());
 ```
 
 ### 默认的替换策略

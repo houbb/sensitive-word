@@ -6,6 +6,7 @@ import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
@@ -81,6 +82,11 @@ public class WordCheckWord extends AbstractWordCheck {
         }
 
         return actualLength;
+    }
+
+    @Override
+    protected String getType() {
+        return WordTypeEnum.WORD.getCode();
     }
 
 }

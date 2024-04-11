@@ -6,6 +6,7 @@ import com.github.houbb.heaven.util.util.regex.RegexUtil;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.WordConst;
+import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 
 /**
  * email 正则表达式检测实现。
@@ -37,6 +38,11 @@ public class WordCheckEmail extends AbstractConditionWordCheck {
     @Override
     protected Class<? extends IWordCheck> getSensitiveCheckClass() {
         return WordCheckEmail.class;
+    }
+
+    @Override
+    protected String getType() {
+        return WordTypeEnum.EMAIL.getCode();
     }
 
     @Override

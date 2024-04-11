@@ -30,18 +30,31 @@ public abstract class AbstractWordCheck implements IWordCheck {
      */
     protected abstract int getActualLength(int beginIndex, final InnerSensitiveWordContext checkContext);
 
+    /**
+     * 获取类别
+     * @return 类别
+     * @since 0.14.0
+     */
+    protected abstract String getType();
+
     @Override
     public WordCheckResult sensitiveCheck(int beginIndex,
                                           final InnerSensitiveWordContext checkContext) {
         Class<? extends IWordCheck> clazz = getSensitiveCheckClass();
         final String txt = checkContext.originalText();
         if(StringUtil.isEmpty(txt)) {
-            return WordCheckResult.of(0, clazz);
+            return WordCheckResult.newInstance()
+                    .index(0)
+                    .type(getType())
+                    .checkClass(clazz);
         }
 
         int actualLength = getActualLength(beginIndex, checkContext);
 
-        return WordCheckResult.of(actualLength, clazz);
+        return WordCheckResult.newInstance()
+                .index(actualLength)
+                .type(getType())
+                .checkClass(clazz);
     }
 
 }

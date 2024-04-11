@@ -21,4 +21,11 @@ public interface IWordResult {
      */
     int endIndex();
 
+    /**
+     * 类别
+     * @return 类别
+     * @since 0.14.0
+     */
+    String type();
+
 }

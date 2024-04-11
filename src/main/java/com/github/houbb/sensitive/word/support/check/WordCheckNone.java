@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.check;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 
 /**
  * 未匹配
@@ -25,7 +26,10 @@ public class WordCheckNone implements IWordCheck {
     /**
      * 只有一个未匹配
      */
-    private static final WordCheckResult NONE_RESULT = WordCheckResult.of(0, WordCheckNone.class);
+    private static final WordCheckResult NONE_RESULT = WordCheckResult.newInstance()
+            .type(WordTypeEnum.DEFAULTS.getCode())
+            .index(0)
+            .checkClass(WordCheckNone.class);
 
     public static WordCheckResult getNoneResult() {
         return NONE_RESULT;

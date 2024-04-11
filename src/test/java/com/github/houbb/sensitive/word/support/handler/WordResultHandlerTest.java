@@ -27,7 +27,14 @@ public class WordResultHandlerTest {
         Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList2.toString());
 
         List<IWordResult> wordList3 = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-        Assert.assertEquals("[WordResult{startIndex=0, endIndex=4}, WordResult{startIndex=9, endIndex=12}, WordResult{startIndex=18, endIndex=21}]", wordList3.toString());
+        Assert.assertEquals("[WordResult{startIndex=0, endIndex=4, type='WORD'}, WordResult{startIndex=9, endIndex=12, type='WORD'}, WordResult{startIndex=18, endIndex=21, type='WORD'}]", wordList3.toString());
+    }
+
+    @Test
+    public void findAllWordTest2() {
+        final String text = "骂人：你他妈; 邮箱：123@qq.com; mobile: 13088889999; 网址：https://www.baidu.com";
+        List<IWordResult> wordList3 = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+        Assert.assertEquals("[WordResult{startIndex=3, endIndex=6, type='WORD'}, WordResult{startIndex=11, endIndex=21, type='EMAIL'}, WordResult{startIndex=31, endIndex=42, type='NUM'}, WordResult{startIndex=55, endIndex=68, type='URL'}]", wordList3.toString());
     }
 
     @Test
