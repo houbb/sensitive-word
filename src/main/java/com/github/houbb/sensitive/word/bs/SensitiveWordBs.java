@@ -86,6 +86,7 @@ public class SensitiveWordBs {
 
     /**
      * 单词校验
+     *
      * @since 0.4.0
      */
     private boolean enableWordCheck = true;
@@ -99,6 +100,7 @@ public class SensitiveWordBs {
     //------------------------------------------------------------- 基本属性 END
     /**
      * 脱敏策略
+     *
      * @since 0.3.2
      */
     private ISensitiveWord sensitiveWord = SensitiveWords.defaults();
@@ -112,60 +114,70 @@ public class SensitiveWordBs {
 
     /**
      * 禁止的单词
+     *
      * @since 0.0.13
      */
     private IWordDeny wordDeny = WordDenys.defaults();
 
     /**
      * 允许的单词
+     *
      * @since 0.0.13
      */
     private IWordAllow wordAllow = WordAllows.defaults();
 
     /**
      * 替换策略
+     *
      * @since 0.3.0
      */
     private IWordReplace wordReplace = WordReplaces.defaults();
 
     /**
      * 上下文
+     *
      * @since 0.3.0
      */
     private IWordContext context = SensitiveWordContext.newInstance();
 
     /**
      * 单词检测组合策略
+     *
      * @since 0.8.0
      */
     private IWordCheckCombine wordCheckCombine = WordCheckCombines.defaults();
 
     /**
      * 单词格式化组合策略
+     *
      * @since 0.8.0
      */
     private IWordFormatCombine wordFormatCombine = WordFormatCombines.defaults();
 
     /**
      * 单词组合策略
+     *
      * @since 0.8.0
      */
     private IWordAllowDenyCombine wordAllowDenyCombine = WordAllowDenyCombines.defaults();
 
     /**
      * 单词标签
+     *
      * @since 0.10.0
      */
     private IWordTag wordTag = WordTags.none();
 
     /**
      * 忽略的字符策略
+     *
      * @since 0.11.0
      */
     private ISensitiveWordCharIgnore charIgnore = SensitiveWordCharIgnores.defaults();
 
     /**
      * 敏感词结果匹配策略
+     *
      * @since 0.13.0
      */
     private IWordResultCondition wordResultCondition = WordResultConditions.alwaysTrue();
@@ -184,10 +196,11 @@ public class SensitiveWordBs {
 
     /**
      * 初始化
-     *
+     * <p>
      * 1. 根据配置，初始化对应的 map。比较消耗性能。
-     * @since 0.0.13
+     *
      * @return this
+     * @since 0.0.13
      */
     public SensitiveWordBs init() {
         // 1. 初始化 context
@@ -202,7 +215,7 @@ public class SensitiveWordBs {
         context.sensitiveCheck(sensitiveCheck);
 
         // 4. 初始化 word
-        Collection<String> denyList  = wordAllowDenyCombine.getActualDenyList(wordAllow, wordDeny, context);
+        Collection<String> denyList = wordAllowDenyCombine.getActualDenyList(wordAllow, wordDeny, context);
         wordData.initWordData(denyList);
 
         //5. 更新 context
@@ -289,6 +302,7 @@ public class SensitiveWordBs {
 
     /**
      * 允许指定策略数据
+     *
      * @param wordData 单词数据
      * @return 结果
      * @since 0.7.0
@@ -309,6 +323,7 @@ public class SensitiveWordBs {
 
     /**
      * 设置替换策略
+     *
      * @param wordReplace 替换
      * @return 结果
      */
@@ -320,6 +335,7 @@ public class SensitiveWordBs {
 
     /**
      * 设置禁止的实现
+     *
      * @param wordDeny 禁止的实现
      * @return this
      * @since 0.0.13
@@ -330,8 +346,78 @@ public class SensitiveWordBs {
         return this;
     }
 
+    private boolean canAddDenyWord(String denyWord) {
+        List<String> wordAllow = this.wordAllow == null ? null : this.wordAllow.allow();
+        if (CollectionUtil.isNotEmpty(wordAllow) &&
+                wordAllow.contains(denyWord)) { // 存在允许词，则添加失败
+            return false;
+        }
+        final IEditableWordDeny editableWordDeny = WordDenys.convertEditableWordDenyInstance(this.wordDeny);
+        return editableWordDeny != null;
+    }
+
+    /**
+     * 添加单个敏感词
+     *
+     * @param denyWord 敏感词
+     * @return 是否添加成功
+     * @since 0.15.0
+     */
+    public boolean addDenyWord(String denyWord) {
+        if (!this.canAddDenyWord(denyWord)) {
+            return false;
+        }
+        final IEditableWordDeny editableWordDeny = WordDenys.convertEditableWordDenyInstance(this.wordDeny);
+        editableWordDeny.add(denyWord);
+        return true;
+    }
+
+    /**
+     * 删除单个敏感词
+     *
+     * @param denyWord 敏感词
+     * @return 是否删除成功
+     * @since 0.15.0
+     */
+    public boolean removeDenyWord(String denyWord) {
+        final IEditableWordDeny editableWordDeny = WordDenys.convertEditableWordDenyInstance(this.wordDeny);
+        if (editableWordDeny == null) {
+            return false;
+        }
+        editableWordDeny.remove(denyWord);
+        return true;
+    }
+
+    /**
+     * 替换单个敏感词
+     *
+     * @param oldWord 被替换的敏感词
+     * @param newWord 新敏感词
+     * @return 是否替换成功
+     * @since 0.15.0
+     */
+    public boolean editDenyWord(String oldWord, String newWord) {
+        if (StringUtil.isEmpty(oldWord) || StringUtil.isEmpty(newWord)) {
+            return false;
+        }
+        if (oldWord.equals(newWord)) {
+            return false;
+        }
+        if (!this.canAddDenyWord(newWord)) {
+            return false;
+        }
+        final IEditableWordDeny editableWordDeny = WordDenys.convertEditableWordDenyInstance(this.wordDeny);
+        if (editableWordDeny == null) {
+            return false;
+        }
+        editableWordDeny.remove(oldWord);
+        editableWordDeny.add(newWord);
+        return true;
+    }
+
     /**
      * 设置允许的实现
+     *
      * @param wordAllow 允许的实现
      * @return this
      * @since 0.0.13
@@ -348,8 +434,8 @@ public class SensitiveWordBs {
      * 设置是否启动数字检测
      *
      * @param enableWordCheck 数字检测
-     * @since 0.0.11
      * @return this
+     * @since 0.0.11
      */
     public SensitiveWordBs enableWordCheck(boolean enableWordCheck) {
         this.enableWordCheck = enableWordCheck;
@@ -360,8 +446,8 @@ public class SensitiveWordBs {
      * 设置是否启动数字检测
      *
      * @param enableNumCheck 数字检测
-     * @since 0.0.11
      * @return this
+     * @since 0.0.11
      */
     public SensitiveWordBs enableNumCheck(boolean enableNumCheck) {
         this.enableNumCheck = enableNumCheck;
@@ -370,6 +456,7 @@ public class SensitiveWordBs {
 
     /**
      * 检测敏感词对应的长度限制，便于用户灵活定义
+     *
      * @param numCheckLen 长度
      * @return this
      * @since 0.2.1
@@ -383,8 +470,8 @@ public class SensitiveWordBs {
      * 设置是否启动 email 检测
      *
      * @param enableEmailCheck email 检测
-     * @since 0.0.11
      * @return this
+     * @since 0.0.11
      */
     public SensitiveWordBs enableEmailCheck(boolean enableEmailCheck) {
         this.enableEmailCheck = enableEmailCheck;
@@ -395,8 +482,8 @@ public class SensitiveWordBs {
      * 设置是否启动 url 检测
      *
      * @param enableUrlCheck url 检测
-     * @since 0.0.12
      * @return this
+     * @since 0.0.12
      */
     public SensitiveWordBs enableUrlCheck(boolean enableUrlCheck) {
         this.enableUrlCheck = enableUrlCheck;
@@ -405,6 +492,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略大小写
+     *
      * @param ignoreCase 大小写
      * @return this
      * @since 0.0.14
@@ -416,6 +504,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略半角全角
+     *
      * @param ignoreWidth 半角全角
      * @return this
      * @since 0.0.14
@@ -427,6 +516,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略数字格式
+     *
      * @param ignoreNumStyle 数字格式
      * @return this
      * @since 0.0.14
@@ -438,6 +528,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略中文样式
+     *
      * @param ignoreChineseStyle 中文样式
      * @return this
      * @since 0.0.14
@@ -449,6 +540,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略英文样式
+     *
      * @param ignoreEnglishStyle 英文样式
      * @return this
      * @since 0.0.14
@@ -460,6 +552,7 @@ public class SensitiveWordBs {
 
     /**
      * 是否忽略重复
+     *
      * @param ignoreRepeat 忽略重复
      * @return this
      * @since 0.0.14
@@ -470,6 +563,7 @@ public class SensitiveWordBs {
     }
 
     //------------------------------------------------------------------------------------ 公开方法 START
+
     /**
      * 是否包含敏感词
      *
@@ -511,8 +605,8 @@ public class SensitiveWordBs {
      * 1. 这里是默认去重的，且是有序的。
      * 2. 如果不存在，返回空列表
      *
-     * @param target 目标字符串
-     * @param <R> 泛型
+     * @param target  目标字符串
+     * @param <R>     泛型
      * @param handler 处理类
      * @return 敏感词列表
      * @since 0.0.1
@@ -533,9 +627,9 @@ public class SensitiveWordBs {
      * 返回第一个敏感词
      * （1）如果不存在，则返回 {@code null}
      *
-     * @param target 目标字符串
+     * @param target  目标字符串
      * @param handler 处理类
-     * @param <R> 泛型
+     * @param <R>     泛型
      * @return 敏感词
      * @since 0.0.1
      */
@@ -549,7 +643,7 @@ public class SensitiveWordBs {
     /**
      * 替换所有内容
      *
-     * @param target      目标字符串
+     * @param target 目标字符串
      * @return 替换后结果
      * @since 0.2.0
      */
@@ -565,7 +659,7 @@ public class SensitiveWordBs {
      * @since 0.10.0
      */
     public Set<String> tags(final String word) {
-        if(StringUtil.isEmpty(word)) {
+        if (StringUtil.isEmpty(word)) {
             return Collections.emptySet();
         }
 
