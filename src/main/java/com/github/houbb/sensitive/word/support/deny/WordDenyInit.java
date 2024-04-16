@@ -3,7 +3,7 @@ package com.github.houbb.sensitive.word.support.deny;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
-import com.github.houbb.heaven.util.io.StreamUtil;
+import com.github.houbb.sensitive.word.api.IEditableWordDeny;
 import com.github.houbb.sensitive.word.api.IWordDeny;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 0.0.13
  */
 @ThreadSafe
-public abstract class WordDenyInit implements IWordDeny {
+public abstract class WordDenyInit implements IEditableWordDeny {
 
     /**
      * 初始化列表
