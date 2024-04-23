@@ -52,7 +52,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.14.0: raw 添加敏感词类别。
+V0.15.0: 
+
+- [x] 修复 [#54](https://github.com/houbb/sensitive-word/issues/54)
 
 ## 更多资料
 
@@ -84,7 +86,7 @@ V0.14.0: raw 添加敏感词类别。
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.14.0</version>
+    <version>0.15.0</version>
 </dependency>
 ```
 

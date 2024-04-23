@@ -26,8 +26,8 @@ public class DictNumTest {
     @Test
     @Ignore
     public void formatTest() {
-        final String sourceFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
-        final String targetFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String sourceFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
+        final String targetFile = "D:\\_github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
 //        List<String> formats = CollectionUtil.toList(words, new IHandler<String, String>() {

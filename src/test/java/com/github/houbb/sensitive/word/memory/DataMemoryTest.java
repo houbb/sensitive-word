@@ -22,7 +22,7 @@ public class DataMemoryTest {
      */
     @Test
     public void hashMapTest() {
-        List<String> allLines = StreamUtil.readAllLines("/dict.txt");
+        List<String> allLines = StreamUtil.readAllLines("/sensitive_word_dict.txt");
         IWordData wordData = WordDatas.defaults();
 
         wordData.initWordData(allLines);
@@ -36,7 +36,7 @@ public class DataMemoryTest {
     //33.4 MB
     @Test
     public void treeTest() {
-        List<String> allLines = StreamUtil.readAllLines("/dict.txt");
+        List<String> allLines = StreamUtil.readAllLines("/sensitive_word_dict.txt");
         IWordData wordData = WordDatas.tree();
 
         wordData.initWordData(allLines);

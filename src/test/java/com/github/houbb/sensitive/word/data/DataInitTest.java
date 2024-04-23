@@ -34,11 +34,11 @@ public class DataInitTest {
     @Test
     @Ignore
     public void trimTest() {
-        final String source = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String source = "D:\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
         List<String> lines = FileUtil.readAllLines(source);
         List<String> trimLines = CollectionUtil.distinct(CollectionUtil.trimCollection(lines));
 
-        final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
     }
 
     /**
@@ -75,7 +75,7 @@ public class DataInitTest {
     @Test
     @Ignore
     public void dictAllInOneTest() {
-        final List<String> allLines = distinctLines("dict.txt");
+        final List<String> allLines = distinctLines("sensitive_word_dict.txt");
 
         allLines.addAll(distinctLines("不正当竞争.txt"));
         allLines.addAll(distinctLines("人名.txt"));
@@ -97,7 +97,7 @@ public class DataInitTest {
 
         Collections.sort(disctinct);
 
-        final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String target = "D:\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         FileUtil.write(target, disctinct);
     }
@@ -105,7 +105,7 @@ public class DataInitTest {
     @Test
     @Ignore
     public void oneWordTest() {
-        final String source = "D:\\_github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String source = "D:\\_github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         List<String> lines = FileUtil.readAllLines(source);
         for(int i = 0; i < lines.size(); i++) {

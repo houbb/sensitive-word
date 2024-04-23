@@ -27,7 +27,7 @@ public class DictRemoveSingleTest {
     @Ignore
     public void removeSingleWord() {
         final String sourceFile = "D:\\code\\github\\sensitive-word\\src\\test\\resources\\dict_20231117.txt";
-        final String targetFile = "D:\\code\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String targetFile = "D:\\code\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
 

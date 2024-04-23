@@ -17,7 +17,7 @@ import java.util.List;
 public class DictRemoveTwoEnglishTest {
 
     public static void main(String[] args) {
-        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String sourceFile = "D:\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
         final String targetFile = "D:\\github\\sensitive-word\\src\\test\\resources\\dict_v20240407.txt";
 
         List<String> words = FileUtil.readAllLines(sourceFile);
