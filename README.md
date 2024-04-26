@@ -52,7 +52,7 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.16.0: 
+V0.16.1: 
 
 - [x] 支持内存释放 [#53](https://github.com/houbb/sensitive-word/issues/53)
 
@@ -86,7 +86,7 @@ V0.16.0:
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.16.0</version>
+    <version>0.16.1</version>
 </dependency>
 ```
 
