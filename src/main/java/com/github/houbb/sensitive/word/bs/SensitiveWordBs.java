@@ -575,7 +575,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
 
     @Override
     public void destroy() {
-
+        this.wordData.destroy();
     }
 
     //------------------------------------------------------------------------------------ 公开方法 END

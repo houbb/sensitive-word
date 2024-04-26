@@ -452,7 +452,7 @@ Assert.assertTrue(wordBs.contains(text));
 
 ## 内存的释放
 
-有时候我们需要释放内存，可以如下：
+v0.16.1 开始支持，有时候我们需要释放内存，可以如下：
 
 > [关于内存回收问题](https://github.com/houbb/sensitive-word/issues/53)
 
