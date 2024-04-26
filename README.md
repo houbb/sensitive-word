@@ -52,9 +52,9 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.15.0: 
+V0.16.0: 
 
-- [x] 修复 [#54](https://github.com/houbb/sensitive-word/issues/54)
+- [x] 支持内存释放 [#53](https://github.com/houbb/sensitive-word/issues/53)
 
 ## 更多资料
 
@@ -86,7 +86,7 @@ V0.15.0:
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.15.0</version>
+    <version>0.16.0</version>
 </dependency>
 ```
 
@@ -449,6 +449,19 @@ Assert.assertTrue(wordBs.contains(text));
 | 12 | wordTag          | 词对应的标签                       | none  |
 | 13 | charIgnore          | 忽略的字符                        | none  |
 | 14 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
+
+## 内存的释放
+
+有时候我们需要释放内存，可以如下：
+
+> [关于内存回收问题](https://github.com/houbb/sensitive-word/issues/53)
+
+```java
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+                .init();
+// 后续因为一些原因移除了对应信息，希望释放内存。
+wordBs.destroy();
+```
 
 # wordResultCondition-针对匹配词进一步判断
 

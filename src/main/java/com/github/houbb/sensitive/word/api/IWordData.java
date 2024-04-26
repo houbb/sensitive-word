@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author binbin.hou
  * @since 0.0.1
  */
-public interface IWordData {
+public interface IWordData extends ISensitiveWordDestroy {
 
 
     /**

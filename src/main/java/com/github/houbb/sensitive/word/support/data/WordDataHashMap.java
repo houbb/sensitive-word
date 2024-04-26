@@ -183,4 +183,11 @@ public class WordDataHashMap extends AbstractWordData {
         return currentMap;
     }
 
+    @Override
+    public synchronized void destroy() {
+        if(innerWordMap != null) {
+            innerWordMap.clear();
+        }
+    }
+
 }
