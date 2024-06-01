@@ -9,6 +9,7 @@ public enum WordTypeEnum {
     EMAIL("EMAIL", "邮箱"),
     URL("URL", "链接"),
     NUM("NUM", "数字"),
+    IPV4("IPV4", "IPv4"),
 
     DEFAULTS("DEFAULTS", "默认"),
     ;

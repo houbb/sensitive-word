@@ -18,32 +18,6 @@ public final class WordChecks {
 
     private WordChecks(){}
 
-    /**
-     * 初始化敏感检测策略
-     * @param context 上下文
-     *
-     * @return 实现
-     * @since 0.3.0
-     */
-    public static IWordCheck initSensitiveCheck(final IWordContext context) {
-        List<IWordCheck> sensitiveCheckList = new ArrayList<>();
-
-        if(context.enableWordCheck()) {
-            sensitiveCheckList.add(WordChecks.word());
-        }
-        if(context.enableNumCheck()) {
-            sensitiveCheckList.add(WordChecks.num());
-        }
-        if(context.enableEmailCheck()) {
-            sensitiveCheckList.add(WordChecks.email());
-        }
-        if(context.enableUrlCheck()) {
-            sensitiveCheckList.add(WordChecks.url());
-        }
-
-        return WordChecks.chains(sensitiveCheckList);
-    }
-
     public static IWordCheck chains(final IWordCheck... sensitiveChecks) {
         if (ArrayUtil.isEmpty(sensitiveChecks)){
             return none();
@@ -92,6 +66,15 @@ public final class WordChecks {
 
     public static IWordCheck none()  {
         return WordCheckNone.getInstance();
+    }
+
+    /**
+     * ipv4 校验
+     * @since 0.17.0
+     * @return 实现
+     */
+    public static IWordCheck ipv4()  {
+        return WordCheckIPV4.getInstance();
     }
 
 }

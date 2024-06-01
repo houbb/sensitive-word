@@ -353,6 +353,8 @@ Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 
 ### 邮箱检测
 
+邮箱等个人信息，默认未启用。
+
 ```java
 final String text = "楼主好人，邮箱 sensitiveword@xx.com";
 List<String> wordList = SensitiveWordBs.newInstance().enableEmailCheck(true).init().findAll(text);
@@ -361,7 +363,7 @@ Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 
 ### 连续数字检测
 
-一般用于过滤手机号/QQ等广告信息。
+一般用于过滤手机号/QQ等广告信息，默认未启用。
 
 V0.2.1 之后，支持通过 `numCheckLen(长度)` 自定义检测的长度。
 
@@ -385,7 +387,7 @@ Assert.assertEquals("[]", wordList2.toString());
 
 ### 网址检测
 
-用于过滤常见的网址信息。
+用于过滤常见的网址信息，默认未启用。
 
 ```java
 final String text = "点击链接 www.baidu.com查看答案";
@@ -396,6 +398,19 @@ List<String> wordList = sensitiveWordBs.findAll(text);
 Assert.assertEquals("[www.baidu.com]", wordList.toString());
 
 Assert.assertEquals("点击链接 *************查看答案", sensitiveWordBs.replace(text));
+```
+
+### IPV4 检测
+
+v0.17.0 支持
+
+避免用户通过 ip 绕过网址检测等，默认未启用。
+
+```java
+final String text = "个人网站，如果网址打不开可以访问 127.0.0.1。";
+final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableIpv4Check(true).init();
+List<String> wordList = sensitiveWordBs.findAll(text);
+Assert.assertEquals("[127.0.0.1]", wordList.toString());
 ```
 
 # 引导类特性配置
@@ -423,6 +438,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .enableNumCheck(false)
         .enableEmailCheck(false)
         .enableUrlCheck(false)
+        .enableIpv4Check(false)
         .enableWordCheck(true)
         .numCheckLen(8)
         .wordTag(WordTags.none())
@@ -448,11 +464,12 @@ Assert.assertTrue(wordBs.contains(text));
 | 7  | enableNumCheck       | 是否启用数字检测。                    | false  |
 | 8  | enableEmailCheck     | 是有启用邮箱检测                     | false  |
 | 9  | enableUrlCheck       | 是否启用链接检测                     | false  |
-| 10 | enableWordCheck      | 是否启用敏感单词检测                   | true  |
-| 11 | numCheckLen          | 数字检测，自定义指定长度。                | 8     |
-| 12 | wordTag          | 词对应的标签                       | none  |
-| 13 | charIgnore          | 忽略的字符                        | none  |
-| 14 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
+| 10 | enableIpv4Check       | 是否启用IPv4检测                   | false  |
+| 11 | enableWordCheck      | 是否启用敏感单词检测                   | true  |
+| 12 | numCheckLen          | 数字检测，自定义指定长度。                | 8     |
+| 13 | wordTag          | 词对应的标签                       | none  |
+| 14 | charIgnore          | 忽略的字符                        | none  |
+| 15 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
 
 ## 内存的释放
 

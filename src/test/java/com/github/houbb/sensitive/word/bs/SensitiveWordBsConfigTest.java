@@ -37,6 +37,8 @@ public class SensitiveWordBsConfigTest {
                 .enableNumCheck(false)
                 .enableEmailCheck(false)
                 .enableUrlCheck(false)
+                .enableIpv4Check(false)
+                .enableWordCheck(true)
                 .numCheckLen(8)
                 .wordTag(WordTags.none())
                 .charIgnore(SensitiveWordCharIgnores.defaults())

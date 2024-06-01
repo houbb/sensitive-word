@@ -70,6 +70,12 @@ public class SensitiveWordContext implements IWordContext {
     private boolean enableUrlCheck;
 
     /**
+     * 是否启用 ipv4 校验
+     * @since 0.17.0
+     */
+    private boolean enableIpv4Check;
+
+    /**
      * 敏感数字检测对应的长度限制
      * @since 0.2.1
      */
@@ -215,6 +221,17 @@ public class SensitiveWordContext implements IWordContext {
     @Override
     public SensitiveWordContext enableNumCheck(boolean enableNumCheck) {
         this.enableNumCheck = enableNumCheck;
+        return this;
+    }
+
+    @Override
+    public boolean enableIpv4Check() {
+        return enableIpv4Check;
+    }
+
+    @Override
+    public SensitiveWordContext enableIpv4Check(boolean enableIpv4Check) {
+        this.enableIpv4Check = enableIpv4Check;
         return this;
     }
 

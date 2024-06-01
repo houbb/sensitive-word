@@ -29,6 +29,9 @@ public class WordCheckCombine extends AbstractWordCheckCombine {
         if(context.enableUrlCheck()) {
             wordCheckList.add(WordChecks.url());
         }
+        if(context.enableIpv4Check()) {
+            wordCheckList.add(WordChecks.ipv4());
+        }
 
         return wordCheckList;
     }

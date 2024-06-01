@@ -127,6 +127,21 @@ public interface IWordContext {
     IWordContext enableUrlCheck(final boolean enableUrlCheck);
 
     /**
+     * 是否启用 ipv4 校验
+     * @return 结果
+     * @since 0.17.0
+     */
+    boolean enableIpv4Check();
+
+    /**
+     * 是否启用 ipv4 校验
+     * @param enableIpv4Check 是否启用
+     * @return this
+     * @since 0.17.0
+     */
+    IWordContext enableIpv4Check(final boolean enableIpv4Check);
+
+    /**
      * 忽略英文的写法
      * @return 数字检测
      * @since 0.0.6

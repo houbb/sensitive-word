@@ -90,6 +90,12 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      */
     private boolean enableWordCheck = true;
 
+    /**
+     * 是否启用 ipv4 校验
+     * @since 0.17.0
+     */
+    private boolean enableIpv4Check = false;
+
     // 额外配置
     /**
      * 检测数字时的长度
@@ -233,6 +239,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.enableEmailCheck(enableEmailCheck);
         context.enableUrlCheck(enableUrlCheck);
         context.enableWordCheck(enableWordCheck);
+        context.enableIpv4Check(enableIpv4Check);
 
         // 额外配置
         context.sensitiveCheckNumLen(numCheckLen);
@@ -343,6 +350,16 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     }
 
     //-------------------------------------------------------- 基础属性设置
+    /**
+     * 是否启用 ipv4 校验
+     * @param enableIpv4Check 是否启用
+     * @return this
+     * @since 0.17.0
+     */
+    public SensitiveWordBs enableIpv4Check(boolean enableIpv4Check) {
+        this.enableIpv4Check = enableIpv4Check;
+        return this;
+    }
 
     /**
      * 设置是否启动数字检测
