@@ -32,7 +32,7 @@ import java.util.Set;
  * @author binbin.hou
  * @since 0.0.1
  */
-public class SensitiveWordBs {
+public class SensitiveWordBs implements ISensitiveWordDestroy {
 
     /**
      * 私有化构造器
@@ -571,6 +571,11 @@ public class SensitiveWordBs {
 
         // 是否需要格式化？
         return wordTag.getTag(word);
+    }
+
+    @Override
+    public void destroy() {
+        this.wordData.destroy();
     }
 
     //------------------------------------------------------------------------------------ 公开方法 END

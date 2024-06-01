@@ -56,6 +56,9 @@ V0.14.1:
 
 - 移除部分敏感词
 - 默认关闭 url/email/num 的校验
+V0.16.1: 
+
+- [x] 支持内存释放 [#53](https://github.com/houbb/sensitive-word/issues/53)
 
 ## 更多资料
 
@@ -87,7 +90,7 @@ V0.14.1:
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.14.1</version>
+    <version>0.16.1</version>
 </dependency>
 ```
 
@@ -454,6 +457,19 @@ Assert.assertTrue(wordBs.contains(text));
 | 13 | charIgnore          | 忽略的字符                        | none  |
 | 14 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
 
+## 内存的释放
+
+v0.16.1 开始支持，有时候我们需要释放内存，可以如下：
+
+> [关于内存回收问题](https://github.com/houbb/sensitive-word/issues/53)
+
+```java
+SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+                .init();
+// 后续因为一些原因移除了对应信息，希望释放内存。
+wordBs.destroy();
+```
+
 # wordResultCondition-针对匹配词进一步判断
 
 ## 说明
@@ -603,6 +619,15 @@ Assert.assertEquals("[政治, 国家]", sensitiveWordBs.tags("五星红旗").toS
 ```
 
 后续会考虑引入一个内置的标签文件策略。
+
+### 敏感词标签文件
+
+梳理了大量的敏感词标签文件，可以让我们的敏感词更加方便。
+
+这两个资料阅读可在下方文章获取：
+
+> [v0.11.0-敏感词新特性及对应标签文件](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+
 
 # 动态加载（用户自定义）
 

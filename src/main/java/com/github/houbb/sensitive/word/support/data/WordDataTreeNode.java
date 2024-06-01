@@ -1,5 +1,7 @@
 package com.github.houbb.sensitive.word.support.data;
 
+import com.github.houbb.sensitive.word.api.ISensitiveWordDestroy;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,7 @@ import java.util.Map;
  *
  * @since 0.7.0
  */
-public class WordDataTreeNode {
+public class WordDataTreeNode implements ISensitiveWordDestroy {
 
     /**
      * 关键词结束标识
@@ -44,6 +46,13 @@ public class WordDataTreeNode {
 
         subNodeMap.put(c, subNode);
         return this;
+    }
+
+    @Override
+    public void destroy() {
+        if(subNodeMap != null) {
+            subNodeMap.clear();
+        }
     }
 
 }

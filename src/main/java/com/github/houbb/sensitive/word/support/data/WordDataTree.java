@@ -117,4 +117,10 @@ public class WordDataTree implements IWordData {
         return currentMap;
     }
 
+    @Override
+    public void destroy() {
+        if(this.root != null) {
+            this.root.destroy();
+        }
+    }
 }

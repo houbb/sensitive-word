@@ -38,7 +38,7 @@ public class DataUtil {
     @Test
     @Ignore
     public void singleCharTest() {
-        final String path = "D:\\github\\sensitive-word\\src\\main\\resources\\dict.txt";
+        final String path = "D:\\github\\sensitive-word\\src\\main\\resources\\sensitive_word_dict.txt";
 
         List<String> stringList = FileUtil.readAllLines(path);
         for(String s : stringList) {
