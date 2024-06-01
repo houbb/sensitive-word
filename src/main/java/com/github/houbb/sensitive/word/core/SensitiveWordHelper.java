@@ -23,7 +23,11 @@ public final class SensitiveWordHelper {
      *
      * @since 0.0.13
      */
-    private static final SensitiveWordBs WORD_BS = SensitiveWordBs.newInstance().init();
+    private static final SensitiveWordBs WORD_BS = SensitiveWordBs.newInstance()
+            .enableNumCheck(false)
+            .enableEmailCheck(false)
+            .enableUrlCheck(false)
+            .init();
 
     /**
      * 是否包含敏感词

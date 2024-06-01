@@ -74,15 +74,15 @@ public class SensitiveWordBs {
     /**
      * 启用数字检测
      */
-    private boolean enableNumCheck = true;
+    private boolean enableNumCheck = false;
     /**
      * 启用邮箱检测
      */
-    private boolean enableEmailCheck = true;
+    private boolean enableEmailCheck = false;
     /**
      * 启用 URL 检测
      */
-    private boolean enableUrlCheck = true;
+    private boolean enableUrlCheck = false;
 
     /**
      * 单词校验

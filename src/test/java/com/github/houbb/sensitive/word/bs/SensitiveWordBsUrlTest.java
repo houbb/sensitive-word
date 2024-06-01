@@ -22,13 +22,11 @@ public class SensitiveWordBsUrlTest {
     public void commonUrlTest() {
         final String text = "点击链接 www.baidu.com查看答案";
 
-        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableUrlCheck(true).init();
+        List<String> wordList = sensitiveWordBs.findAll(text);
         Assert.assertEquals("[www.baidu.com]", wordList.toString());
 
-        Assert.assertEquals("点击链接 *************查看答案", SensitiveWordBs
-                .newInstance()
-                .init()
-                .replace(text));
+        Assert.assertEquals("点击链接 *************查看答案", sensitiveWordBs.replace(text));
     }
 
     /**
@@ -43,10 +41,13 @@ public class SensitiveWordBsUrlTest {
     public void imageUrlTest() {
         final String text = "双击查看大图 www.big-image.png查看";
 
-        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .enableUrlCheck(true)
+                .init();
+        List<String> wordList = sensitiveWordBs.findAll(text);
         Assert.assertEquals("[www.big-image.png]", wordList.toString());
 
-        Assert.assertEquals("双击查看大图 *****************查看", SensitiveWordBs.newInstance().init().replace(text));
+        Assert.assertEquals("双击查看大图 *****************查看", sensitiveWordBs.replace(text));
     }
 
 }

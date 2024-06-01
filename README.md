@@ -52,7 +52,10 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.14.0: raw 添加敏感词类别。
+V0.14.1: 
+
+- 移除部分敏感词
+- 默认关闭 url/email/num 的校验
 
 ## 更多资料
 
@@ -84,7 +87,7 @@ V0.14.0: raw 添加敏感词类别。
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.14.0</version>
+    <version>0.14.1</version>
 </dependency>
 ```
 
@@ -149,9 +152,11 @@ List<String> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.wor
 WordResultHandlers.raw() 可以保留对应的下标信息、类别信息：
 
 ```java
-final String text = "骂人：你他妈; 邮箱：123@qq.com; mobile: 13088889999; 网址：https://www.baidu.com";
-List<IWordResult> wordList3 = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
-Assert.assertEquals("[WordResult{startIndex=3, endIndex=6, type='WORD'}, WordResult{startIndex=11, endIndex=21, type='EMAIL'}, WordResult{startIndex=31, endIndex=42, type='NUM'}, WordResult{startIndex=55, endIndex=68, type='URL'}]", wordList3.toString());
+final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+
+// 默认敏感词标签为空
+List<WordTagsDto> wordList1 = SensitiveWordHelper.findAll(text, WordResultHandlers.wordTags());
+Assert.assertEquals("[WordTagsDto{word='五星红旗', tags=[]}, WordTagsDto{word='毛主席', tags=[]}, WordTagsDto{word='天安门', tags=[]}]", wordList1.toString());
 ```
 
 ### 默认的替换策略
@@ -310,7 +315,7 @@ Assert.assertEquals("ｆｕｃｋ", word);
 ```java
 final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordBs.newInstance().enableNumCheck(true).init().findAll(text);
 Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
 ```
 
@@ -350,8 +355,7 @@ Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 
 ```java
 final String text = "楼主好人，邮箱 sensitiveword@xx.com";
-
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordBs.newInstance().enableEmailCheck(true).init().findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
@@ -365,14 +369,17 @@ V0.2.1 之后，支持通过 `numCheckLen(长度)` 自定义检测的长度。
 final String text = "你懂得：12345678";
 
 // 默认检测 8 位
-List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+List<String> wordList = SensitiveWordBs.newInstance()
+.enableNumCheck(true)
+.init().findAll(text);
 Assert.assertEquals("[12345678]", wordList.toString());
 
 // 指定数字的长度，避免误杀
 List<String> wordList2 = SensitiveWordBs.newInstance()
-        .numCheckLen(9)
-        .init()
-        .findAll(text);
+.enableNumCheck(true)
+.numCheckLen(9)
+.init()
+.findAll(text);
 Assert.assertEquals("[]", wordList2.toString());
 ```
 
@@ -382,14 +389,13 @@ Assert.assertEquals("[]", wordList2.toString());
 
 ```java
 final String text = "点击链接 www.baidu.com查看答案";
+final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableUrlCheck(true).init();
+        
+        '
+List<String> wordList = sensitiveWordBs.findAll(text);
+Assert.assertEquals("[www.baidu.com]", wordList.toString());
 
-List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
-Assert.assertEquals("[链接, www.baidu.com]", wordList.toString());
-
-Assert.assertEquals("点击** *************查看答案", SensitiveWordBs
-                .newInstance()
-                .init()
-                .replace(text));
+Assert.assertEquals("点击链接 *************查看答案", sensitiveWordBs.replace(text));
 ```
 
 # 引导类特性配置
@@ -414,9 +420,9 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .ignoreChineseStyle(true)
         .ignoreEnglishStyle(true)
         .ignoreRepeat(false)
-        .enableNumCheck(true)
-        .enableEmailCheck(true)
-        .enableUrlCheck(true)
+        .enableNumCheck(false)
+        .enableEmailCheck(false)
+        .enableUrlCheck(false)
         .enableWordCheck(true)
         .numCheckLen(8)
         .wordTag(WordTags.none())
@@ -439,9 +445,9 @@ Assert.assertTrue(wordBs.contains(text));
 | 4  | ignoreChineseStyle   | 忽略中文的书写格式                    | true  |
 | 5  | ignoreEnglishStyle   | 忽略英文的书写格式                    | true  |
 | 6  | ignoreRepeat         | 忽略重复词                        | false |
-| 7  | enableNumCheck       | 是否启用数字检测。                    | true  |
-| 8  | enableEmailCheck     | 是有启用邮箱检测                     | true  |
-| 9  | enableUrlCheck       | 是否启用链接检测                     | true  |
+| 7  | enableNumCheck       | 是否启用数字检测。                    | false  |
+| 8  | enableEmailCheck     | 是有启用邮箱检测                     | false  |
+| 9  | enableUrlCheck       | 是否启用链接检测                     | false  |
 | 10 | enableWordCheck      | 是否启用敏感单词检测                   | true  |
 | 11 | numCheckLen          | 数字检测，自定义指定长度。                | 8     |
 | 12 | wordTag          | 词对应的标签                       | none  |

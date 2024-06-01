@@ -23,11 +23,14 @@ public class SensitiveWordBsNumLenTest {
         final String text = "你懂得：12345678";
 
         // 默认检测 8 位
-        List<String> wordList = SensitiveWordBs.newInstance().init().findAll(text);
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .enableNumCheck(true)
+                .init().findAll(text);
         Assert.assertEquals("[12345678]", wordList.toString());
 
         // 指定数字的长度，避免误杀
         List<String> wordList2 = SensitiveWordBs.newInstance()
+                .enableNumCheck(true)
                 .numCheckLen(9)
                 .init()
                 .findAll(text);
