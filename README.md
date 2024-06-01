@@ -36,7 +36,7 @@
 
 全角半角互换、英文大小写互换、数字常见形式的互换、中文繁简体互换、英文常见形式的互换、忽略重复词等
 
-- [支持敏感词检测、邮箱检测、数字检测、网址检测等](https://github.com/houbb/sensitive-word#%E6%9B%B4%E5%A4%9A%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5)
+- [支持敏感词检测、邮箱检测、数字检测、网址检测、IPV4等](https://github.com/houbb/sensitive-word#%E6%9B%B4%E5%A4%9A%E6%A3%80%E6%B5%8B%E7%AD%96%E7%95%A5)
 
 - [支持自定义替换策略](https://github.com/houbb/sensitive-word#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5)
 
@@ -77,7 +77,7 @@ V0.16.2:
 
 ## 准备
 
-- JDK1.7+
+- JDK1.8+
 
 - Maven 3.x+
 
@@ -87,7 +87,7 @@ V0.16.2:
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.16.2</version>
+    <version>0.17.0</version>
 </dependency>
 ```
 
