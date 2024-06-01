@@ -52,10 +52,14 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.16.2: 
+### V0.16.2: 
 
 - 移除部分敏感词
 - 默认关闭 url/email/num 的校验
+
+### V0.17.0
+
+- 支持 ipv4
 
 ## 更多资料
 
