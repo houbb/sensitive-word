@@ -52,13 +52,10 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-V0.14.1: 
+V0.16.2: 
 
 - 移除部分敏感词
 - 默认关闭 url/email/num 的校验
-V0.16.1: 
-
-- [x] 支持内存释放 [#53](https://github.com/houbb/sensitive-word/issues/53)
 
 ## 更多资料
 
@@ -90,7 +87,7 @@ V0.16.1:
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.16.1</version>
+    <version>0.16.2</version>
 </dependency>
 ```
 
