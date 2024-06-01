@@ -475,7 +475,7 @@ Assert.assertTrue(wordBs.contains(text));
 | 14 | charIgnore          | 忽略的字符                        | none  |
 | 15 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
 
-## 内存的释放
+## 内存资源的释放
 
 v0.16.1 开始支持，有时候我们需要释放内存，可以如下：
 
