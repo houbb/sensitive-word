@@ -969,6 +969,8 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 [v0.13.0-敏感词特性版本发布 支持英文单词全词匹配](https://mp.weixin.qq.com/s/DXv5OUyOs0y2dAq8nFWJ9A)
 
+[v0.16.1-敏感词新特性之字典内存资源释放](https://mp.weixin.qq.com/s/zbeJR-OkWjxashtjiopnMA)
+
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # NLP 开源矩阵
