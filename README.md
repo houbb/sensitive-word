@@ -52,14 +52,13 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.16.2: 
-
-- 移除部分敏感词
-- 默认关闭 url/email/num 的校验
-
 ### V0.17.0
 
 - 支持 ipv4
+
+### V0.18.0
+
+- 优化 URL 检测，降低误判率
 
 ## 更多资料
 
@@ -91,7 +90,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.17.0</version>
+    <version>0.18.0</version>
 </dependency>
 ```
 
@@ -393,15 +392,14 @@ Assert.assertEquals("[]", wordList2.toString());
 
 用于过滤常见的网址信息，默认未启用。
 
-```java
-final String text = "点击链接 www.baidu.com查看答案";
-final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableUrlCheck(true).init();
-        
-        '
-List<String> wordList = sensitiveWordBs.findAll(text);
-Assert.assertEquals("[www.baidu.com]", wordList.toString());
+v0.18.0 优化 URL 检测，更加严格，降低误判率
 
-Assert.assertEquals("点击链接 *************查看答案", sensitiveWordBs.replace(text));
+```java
+final String text = "点击链接 https://www.baidu.com 查看答案";
+final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().enableUrlCheck(true).init();
+List<String> wordList = sensitiveWordBs.findAll(text);
+Assert.assertEquals("[https://www.baidu.com]", wordList.toString());
+Assert.assertEquals("点击链接 ********************* 查看答案", sensitiveWordBs.replace(text));
 ```
 
 ### IPV4 检测

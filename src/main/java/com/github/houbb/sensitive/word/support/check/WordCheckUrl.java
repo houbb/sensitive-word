@@ -44,7 +44,7 @@ public class WordCheckUrl extends AbstractConditionWordCheck {
 
     @Override
     protected boolean isCharCondition(char mappingChar, int index, InnerSensitiveWordContext checkContext) {
-        return CharUtil.isWebSiteChar(mappingChar);
+        return CharUtil.isWebSiteChar(mappingChar) || mappingChar == ':' || mappingChar == '/';
     }
 
     @Override
@@ -58,8 +58,9 @@ public class WordCheckUrl extends AbstractConditionWordCheck {
             return false;
         }
 
+        // 改为 http:// 或者 https:// 开头
         String string = stringBuilder.toString();
-        return RegexUtil.isWebSite(string);
+        return RegexUtil.isUrl(string);
     }
 
 }
