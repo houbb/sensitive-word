@@ -35,6 +35,9 @@ public abstract class WordDenyInit implements IWordDeny {
         List<IWordDeny> wordDenies = pipeline.list();
         for (IWordDeny wordDeny : wordDenies) {
             List<String> denyList = wordDeny.deny();
+            if (denyList == null) {
+                denyList = new ArrayList<>();
+            }
             results.addAll(denyList);
         }
 

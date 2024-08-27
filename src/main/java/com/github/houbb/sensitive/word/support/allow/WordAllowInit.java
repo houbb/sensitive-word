@@ -34,6 +34,9 @@ public abstract class WordAllowInit implements IWordAllow {
         List<IWordAllow> wordAllows = pipeline.list();
         for (IWordAllow wordAllow : wordAllows) {
             List<String> allowList = wordAllow.allow();
+            if (allowList == null) {
+                allowList = new ArrayList<>();
+            }
             results.addAll(allowList);
         }
 
