@@ -22,6 +22,20 @@ public interface IWordData extends ISensitiveWordDestroy {
     void initWordData(Collection<String> collection);
 
     /**
+     * 删除敏感词
+     * @param word
+     */
+    default   void removeWord(String word){
+
+     }
+
+    /**
+     * 新增敏感词
+     * @param collection
+     */
+     void saveWordData(Collection<String> collection);
+
+    /**
      * 是否包含敏感词
      * @param stringBuilder 缓冲
      * @param innerContext 上下文

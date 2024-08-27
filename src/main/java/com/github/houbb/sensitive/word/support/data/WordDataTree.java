@@ -9,6 +9,8 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 敏感词 map
@@ -21,42 +23,89 @@ import java.util.Collection;
 @ThreadSafe
 public class WordDataTree implements IWordData {
 
-    /**
-     * 根节点
-     */
-    private WordDataTreeNode root;
-
     @Override
     public synchronized void initWordData(Collection<String> collection) {
         WordDataTreeNode newRoot = new WordDataTreeNode();
 
-        for(String word : collection) {
-            if(StringUtil.isEmpty(word)) {
+        for (String word : collection) {
+            if (StringUtil.isEmpty(word)) {
                 continue;
             }
+            saveWord(newRoot, word);
 
-            WordDataTreeNode tempNode = newRoot;
-            char[] chars = word.toCharArray();
-            for (char c : chars) {
-                // 获取子节点
-                WordDataTreeNode subNode = tempNode.getSubNode(c);
-                if (subNode == null) {
-                    subNode = new WordDataTreeNode();
-                    // 加入新的子节点
-                    tempNode.addSubNode(c, subNode);
-                }
-
-                // 临时节点指向子节点，进入下一次循环
-                tempNode = subNode;
-            }
-
-            // 设置结束标识（循环结束，设置一次即可）
-            tempNode.end(true);
         }
 
         // 初始化完成才做替换
         this.root = newRoot;
     }
+    /**
+     * 根节点
+     */
+    private WordDataTreeNode root;
+    /**
+     * 新增敏感词
+     *
+     * @param collection
+     */
+    @Override
+    public synchronized void saveWordData(Collection<String> collection) {
+        for (String word : collection) {
+            if (StringUtil.isEmpty(word)) {
+                continue;
+            }
+            saveWord(this.root, word);
+
+        }
+    }
+
+    @Override
+    public synchronized void removeWord(String word) {
+        if (StringUtil.isEmpty(word)) {
+            return;
+        }
+        WordDataTreeNode tempNode = root;
+        //需要删除的
+        Map<Character, WordDataTreeNode> map = new HashMap<>();
+        char[] chars = word.toCharArray();
+        int length = chars.length;
+        for (int i = 0; i < length; i++) {
+            //不存在第一个词
+            WordDataTreeNode subNode = tempNode.getSubNode(chars[i]);
+            if (subNode == null) {
+                return;
+            }
+            if (i == (length - 1)) {
+                //尾字符判断是否结束
+                if (!subNode.end()) {
+                    return;
+                }
+                if (subNode.getNodeSize() > 0) {
+                    //尾字符下还存在字符,即标识即可
+                    subNode.end(false);
+                    return;
+                }
+            }
+            if (subNode.end()) {
+                map.clear();
+            }
+            map.put(chars[i], tempNode);
+
+
+            tempNode = subNode;
+        }
+        for (Map.Entry<Character, WordDataTreeNode> entry : map.entrySet()) {
+            WordDataTreeNode value = entry.getValue();
+            //节点只有一个就置空
+            if (value.getNodeSize() == 1) {
+                value.clearNode();
+                return;
+            }
+            //多个就删除
+            value.removeNode(entry.getKey());
+        }
+
+    }
+
 
     @Override
     public WordContainsTypeEnum contains(StringBuilder stringBuilder,
@@ -122,5 +171,25 @@ public class WordDataTree implements IWordData {
         if(this.root != null) {
             this.root.destroy();
         }
+    }
+
+    public void saveWord(WordDataTreeNode newRoot, String word) {
+        WordDataTreeNode tempNode = newRoot;
+        char[] chars = word.toCharArray();
+        for (char c : chars) {
+            // 获取子节点
+            WordDataTreeNode subNode = tempNode.getSubNode(c);
+            if (subNode == null) {
+                subNode = new WordDataTreeNode();
+                // 加入新的子节点
+                tempNode.addSubNode(c, subNode);
+            }
+
+            // 临时节点指向子节点，进入下一次循环
+            tempNode = subNode;
+        }
+
+        // 设置结束标识（循环结束，设置一次即可）
+        tempNode.end(true);
     }
 }
