@@ -59,6 +59,10 @@
 - 针对单个词的新增/删除，无需全量初始化
 - 新增 allow/deny 空实现
 
+### V0.19.1
+
+- 修正 englishWordMatch #69 单个英文字符命中错误问题
+
 ## 更多资料
 
 ### 敏感词控台
@@ -89,7 +93,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.19.0</version>
+    <version>0.19.1</version>
 </dependency>
 ```
 

@@ -28,7 +28,8 @@ public class WordResultConditionEnglishWordMatch extends AbstractWordResultCondi
         }
 
         // 判断后一个字符是否为英文
-        if(endIndex < text.length() - 1) {
+        // v0.19.1 修正 cp cpm 单个字符错误命中问题
+        if(endIndex < text.length()) {
             char afterC = text.charAt(endIndex);
             if(CharUtil.isEnglish(afterC)) {
                 return false;

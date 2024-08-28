@@ -120,4 +120,21 @@ public class SensitiveWordBsResultConditionTest {
         Assert.assertEquals("[]", wordList.toString());
     }
 
+    @Test
+    public void englishWordMatchTest6() {
+        final String text = "cp cpm";
+
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("cp");
+                    }
+                })
+                .wordResultCondition(WordResultConditions.englishWordMatch())
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[cp]", wordList.toString());
+    }
+
 }
