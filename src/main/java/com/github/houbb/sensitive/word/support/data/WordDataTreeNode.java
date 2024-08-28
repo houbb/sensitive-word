@@ -38,6 +38,26 @@ public class WordDataTreeNode implements ISensitiveWordDestroy {
 
         return subNodeMap.get(c);
     }
+    public int getNodeSize() {
+        if (subNodeMap == null) {
+            return 0;
+        }
+        return subNodeMap.size();
+    }
+
+    public void clearNode() {
+        if (subNodeMap == null) {
+            return;
+        }
+        subNodeMap=null;
+    }
+
+    public void removeNode(final char c) {
+        if (subNodeMap == null) {
+            return;
+        }
+        subNodeMap.remove(c);
+    }
 
     public WordDataTreeNode addSubNode(char c, WordDataTreeNode subNode) {
         if(this.subNodeMap == null) {
