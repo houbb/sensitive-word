@@ -90,7 +90,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.18.0</version>
+    <version>0.18.1</version>
 </dependency>
 ```
 
