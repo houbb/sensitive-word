@@ -48,7 +48,7 @@
 
 - [支持跳过一些特殊字符，让匹配更灵活](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E5%AD%97%E7%AC%A6)
 
-- [支持单个词的新增/修改，无需全量初始化]()
+- [支持单个词的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
 
 ## 变更日志
 
