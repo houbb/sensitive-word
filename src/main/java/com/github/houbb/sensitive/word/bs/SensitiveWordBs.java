@@ -595,6 +595,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     /**
      * 删除敏感词
      * @param word 单词
+     * @param others 其他
      * @since 0.19.0
      */
     public void removeWord(String word, String ... others) {
