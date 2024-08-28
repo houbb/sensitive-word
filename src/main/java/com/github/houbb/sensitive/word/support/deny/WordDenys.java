@@ -45,4 +45,14 @@ public final class WordDenys {
         return WordDenySystem.getInstance();
     }
 
+    /**
+     * 空实现
+     * @return 结果
+     * @since 0.19.13
+     */
+    public static IWordDeny empty() {
+        return new WordDenyEmpty();
+    }
+
+
 }

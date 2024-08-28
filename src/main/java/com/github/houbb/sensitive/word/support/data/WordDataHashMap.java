@@ -15,10 +15,12 @@ import java.util.Map;
 /**
  * 敏感词 map
  *
+ * 不再维护，降低维护成本
+ * 
  * @author binbin.hou
  * @since 0.0.1
  */
-@ThreadSafe
+@Deprecated
 public class WordDataHashMap extends AbstractWordData {
 
     /**
@@ -85,6 +87,16 @@ public class WordDataHashMap extends AbstractWordData {
 
         // 最后更新为新的 map，保证更新过程中旧的数据可用
         this.innerWordMap = newInnerWordMap;
+    }
+
+    @Override
+    protected void doRemoveWord(String word) {
+
+    }
+
+    @Override
+    protected void doAddWord(Collection<String> collection) {
+
     }
 
     /**

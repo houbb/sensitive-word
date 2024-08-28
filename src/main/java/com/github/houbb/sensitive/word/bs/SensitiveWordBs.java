@@ -21,10 +21,7 @@ import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 敏感词引导类
@@ -593,6 +590,56 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     @Override
     public void destroy() {
         this.wordData.destroy();
+    }
+
+    /**
+     * 删除敏感词
+     * @param word 单词
+     * @since 0.19.0
+     */
+    public void removeWord(String word, String ... others) {
+        List<String> wordList = new ArrayList<>();
+        wordList.add(word);
+        wordList.addAll(Arrays.asList(others));
+
+        removeWord(wordList);
+    }
+
+    /**
+     * 删除单词
+     * @param collection 集合
+     * @since 0.19.0
+     */
+    public void removeWord(Collection<String> collection) {
+        if(CollectionUtil.isEmpty(collection)) {
+            return;
+        }
+        for(String word : collection) {
+            this.wordData.removeWord(word);
+        }
+    }
+
+    /**
+     * 新增敏感词
+     * @param collection 敏感词集合
+     * @since 0.19.0
+     */
+    public void addWord(Collection<String> collection) {
+        this.wordData.addWord(collection);
+    }
+
+    /**
+     * 新增敏感词
+     * @param word 敏感词
+     * @param others 其他
+     * @since 0.19.0
+     */
+    public void addWord(String word, String...others) {
+        List<String> wordList = new ArrayList<>();
+        wordList.add(word);
+        wordList.addAll(Arrays.asList(others));
+
+        this.addWord(wordList);
     }
 
     //------------------------------------------------------------------------------------ 公开方法 END

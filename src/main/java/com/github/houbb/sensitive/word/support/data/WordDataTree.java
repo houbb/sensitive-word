@@ -16,12 +16,16 @@ import java.util.Map;
  * 敏感词 map
  * PR：https://github.com/houbb/sensitive-word/pull/33
  *
+ * PR: https://github.com/houbb/sensitive-word/pull/74
+ *
  * @author xiaochangbai
  * @author binbin.hou
+ * @author zldaysleepy
+ *
  * @since 0.7.0
  */
 @ThreadSafe
-public class WordDataTree implements IWordData {
+public class WordDataTree extends AbstractWordData {
 
     @Override
     public synchronized void initWordData(Collection<String> collection) {
@@ -31,8 +35,7 @@ public class WordDataTree implements IWordData {
             if (StringUtil.isEmpty(word)) {
                 continue;
             }
-            saveWord(newRoot, word);
-
+            addWord(newRoot, word);
         }
 
         // 初始化完成才做替换
@@ -42,27 +45,47 @@ public class WordDataTree implements IWordData {
      * 根节点
      */
     private WordDataTreeNode root;
-    /**
-     * 新增敏感词
-     *
-     * @param collection
-     */
+
     @Override
-    public synchronized void saveWordData(Collection<String> collection) {
+    protected WordContainsTypeEnum doContains(StringBuilder stringBuilder, InnerSensitiveWordContext innerContext) {
+        WordDataTreeNode nowNode = root;
+
+        int len = stringBuilder.length();
+
+        for(int i = 0; i < len; i++) {
+            // 获取当前的 map 信息
+            nowNode = getNowMap(nowNode, i, stringBuilder, innerContext);
+
+            // 如果不为空，则判断是否为结尾。
+            if (ObjectUtil.isNull(nowNode)) {
+                return WordContainsTypeEnum.NOT_FOUND;
+            }
+        }
+
+        if(nowNode.end()) {
+            return WordContainsTypeEnum.CONTAINS_END;
+        }
+
+        return WordContainsTypeEnum.CONTAINS_PREFIX;
+    }
+
+    @Override
+    protected void doInitWordData(Collection<String> collection) {
+        WordDataTreeNode newRoot = new WordDataTreeNode();
+
         for (String word : collection) {
             if (StringUtil.isEmpty(word)) {
                 continue;
             }
-            saveWord(this.root, word);
-
+            addWord(newRoot, word);
         }
+
+        // 初始化完成才做替换
+        this.root = newRoot;
     }
 
     @Override
-    public synchronized void removeWord(String word) {
-        if (StringUtil.isEmpty(word)) {
-            return;
-        }
+    protected void doRemoveWord(String word) {
         WordDataTreeNode tempNode = root;
         //需要删除的
         Map<Character, WordDataTreeNode> map = new HashMap<>();
@@ -90,9 +113,9 @@ public class WordDataTree implements IWordData {
             }
             map.put(chars[i], tempNode);
 
-
             tempNode = subNode;
         }
+
         for (Map.Entry<Character, WordDataTreeNode> entry : map.entrySet()) {
             WordDataTreeNode value = entry.getValue();
             //节点只有一个就置空
@@ -103,34 +126,22 @@ public class WordDataTree implements IWordData {
             //多个就删除
             value.removeNode(entry.getKey());
         }
-
     }
 
-
+    /**
+     * 新增敏感词
+     *
+     * @param collection 敏感词集合
+     */
     @Override
-    public WordContainsTypeEnum contains(StringBuilder stringBuilder,
-                                         InnerSensitiveWordContext innerContext) {
-        WordDataTreeNode nowNode = root;
-
-        int len = stringBuilder.length();
-
-        for(int i = 0; i < len; i++) {
-            // 获取当前的 map 信息
-            nowNode = getNowMap(nowNode, i, stringBuilder, innerContext);
-
-            // 如果不为空，则判断是否为结尾。
-            if (ObjectUtil.isNull(nowNode)) {
-                return WordContainsTypeEnum.NOT_FOUND;
+    public synchronized void doAddWord(Collection<String> collection) {
+        for (String word : collection) {
+            if (StringUtil.isEmpty(word)) {
+                continue;
             }
+            addWord(this.root, word);
         }
-
-        if(nowNode.end()) {
-            return WordContainsTypeEnum.CONTAINS_END;
-        }
-
-        return WordContainsTypeEnum.CONTAINS_PREFIX;
     }
-
 
     /**
      * 获取当前的 Map
@@ -173,7 +184,14 @@ public class WordDataTree implements IWordData {
         }
     }
 
-    public void saveWord(WordDataTreeNode newRoot, String word) {
+    /**
+     * 添加敏感词
+     * @param newRoot 新的根节点
+     * @param word 单词
+     *
+     * @since 0.19.0
+     */
+    private void addWord(WordDataTreeNode newRoot, String word) {
         WordDataTreeNode tempNode = newRoot;
         char[] chars = word.toCharArray();
         for (char c : chars) {
@@ -192,4 +210,5 @@ public class WordDataTree implements IWordData {
         // 设置结束标识（循环结束，设置一次即可）
         tempNode.end(true);
     }
+
 }

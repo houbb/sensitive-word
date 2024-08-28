@@ -48,17 +48,16 @@
 
 - [支持跳过一些特殊字符，让匹配更灵活](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E5%AD%97%E7%AC%A6)
 
+- [支持单个词的新增/修改，无需全量初始化]()
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.17.0
+### V0.19.0
 
-- 支持 ipv4
-
-### V0.18.0
-
-- 优化 URL 检测，降低误判率
+- 针对单个词的新增/删除，无需全量初始化
+- 新增 allow/deny 空实现
 
 ## 更多资料
 
@@ -90,7 +89,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.18.1</version>
+    <version>0.19.0</version>
 </dependency>
 ```
 
@@ -484,6 +483,58 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
                 .init();
 // 后续因为一些原因移除了对应信息，希望释放内存。
 wordBs.destroy();
+```
+
+## 针对单个词的新增/删除，无需全量初始化
+
+使用场景：在初始化之后，我们希望针对单个词的新增/删除，而不是完全重新初始化。这个特性就是为此准备的。
+
+支持版本：v0.19.0
+
+### 方法说明 
+
+`addWord(word)` 新增敏感词，支持单个词/集合
+
+`removeWord(word)` 删除敏感词，支持单个词/集合
+
+### 实例代码：
+
+```java
+final String text = "测试一下新增敏感词，验证一下删除和新增对不对";
+
+SensitiveWordBs sensitiveWordBs =
+SensitiveWordBs.newInstance()
+        .wordAllow(WordAllows.empty())
+        .wordDeny(WordDenys.empty())
+        .init();
+
+// 当前
+Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+
+// 新增单个
+sensitiveWordBs.addWord("测试");
+sensitiveWordBs.addWord("新增");
+Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+
+// 删除单个
+sensitiveWordBs.removeWord("新增");
+Assert.assertEquals("[测试]", sensitiveWordBs.findAll(text).toString());
+sensitiveWordBs.removeWord("测试");
+Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+
+// 新增集合
+sensitiveWordBs.addWord(Arrays.asList("新增", "测试"));
+Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+// 删除集合
+sensitiveWordBs.removeWord(Arrays.asList("新增", "测试"));
+Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+
+// 新增数组
+sensitiveWordBs.addWord("新增", "测试");
+Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+// 删除集合
+sensitiveWordBs.removeWord("新增", "测试");
+Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
 ```
 
 # wordResultCondition-针对匹配词进一步判断

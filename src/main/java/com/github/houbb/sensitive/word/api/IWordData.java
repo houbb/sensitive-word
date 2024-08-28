@@ -13,7 +13,6 @@ import java.util.Collection;
  */
 public interface IWordData extends ISensitiveWordDestroy {
 
-
     /**
      * 初始化敏感词 map
      * @param collection 集合信息
@@ -23,17 +22,17 @@ public interface IWordData extends ISensitiveWordDestroy {
 
     /**
      * 删除敏感词
-     * @param word
+     * @param word 单词
+     * @since 0.19.0
      */
-    default   void removeWord(String word){
-
-     }
+    void removeWord(String word);
 
     /**
      * 新增敏感词
-     * @param collection
+     * @param collection 敏感词集合
+     * @since 0.19.0
      */
-     void saveWordData(Collection<String> collection);
+     void addWord(Collection<String> collection);
 
     /**
      * 是否包含敏感词

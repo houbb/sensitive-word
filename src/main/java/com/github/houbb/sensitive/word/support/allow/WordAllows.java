@@ -45,4 +45,14 @@ public final class WordAllows {
         return WordAllowSystem.getInstance();
     }
 
+
+    /**
+     * 空实现，可测试用
+     * @return 结果
+     * @since 0.19.0
+     */
+    public static IWordAllow empty() {
+        return new WordAllowEmpty();
+    }
+
 }

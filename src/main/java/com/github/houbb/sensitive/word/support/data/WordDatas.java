@@ -30,14 +30,4 @@ public final class WordDatas {
         return new WordDataTree();
     }
 
-    /**
-     * 树模式
-     * @return 树
-     * @since 0.7.0
-     */
-    public static IWordData hashMap() {
-        return new WordDataHashMap();
-    }
-
-
 }
