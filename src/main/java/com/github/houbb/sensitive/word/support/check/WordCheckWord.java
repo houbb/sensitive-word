@@ -53,7 +53,8 @@ public class WordCheckWord extends AbstractWordCheck {
         int tempLen = 0;
         for(int i = beginIndex; i < rawChars.length; i++) {
             // 判断是否跳过？
-            if(wordCharIgnore.ignore(i, rawChars, innerContext)) {
+            // 避免开始的时候命中 https://github.com/houbb/sensitive-word/issues/68
+            if(wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
                 tempLen++;
                 continue;
             }

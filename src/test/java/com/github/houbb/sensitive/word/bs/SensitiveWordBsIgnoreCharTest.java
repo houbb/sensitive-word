@@ -36,4 +36,18 @@ public class SensitiveWordBsIgnoreCharTest {
         Assert.assertEquals("[傻@冒, 狗+东西]", wordList2.toString());
     }
 
+    //https://github.com/houbb/sensitive-word/issues/68
+    @Test
+    public void ignoreChineseStyleTest2() {
+        final String text = "<p>傻逼</p>";
+
+        // 指定忽略的字符策略，可自行实现。
+        List<String> wordList2 = SensitiveWordBs.newInstance()
+                .charIgnore(SensitiveWordCharIgnores.specialChars())
+                .init()
+                .findAll(text);
+
+        Assert.assertEquals("[傻逼]", wordList2.toString());
+    }
+
 }

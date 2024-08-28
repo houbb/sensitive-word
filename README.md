@@ -63,6 +63,10 @@
 
 - 修正 englishWordMatch #69 单个英文字符命中错误问题
 
+### V0.19.2
+
+- 修正 #68 `SensitiveWordCharIgnores.specialChars()` 误判命中开始的问题
+
 ## 更多资料
 
 ### 敏感词控台
@@ -93,7 +97,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.19.1</version>
+    <version>0.19.2</version>
 </dependency>
 ```
 
