@@ -137,4 +137,55 @@ public class SensitiveWordBsResultConditionTest {
         Assert.assertEquals("[cp]", wordList.toString());
     }
 
+    @Test
+    public void englishWordNumMatchTest1() {
+        final String text = "cp cpm trade deficit totaled 695 billion yen, or $4.9 billion";
+
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("cp", "69");
+                    }
+                })
+                .wordResultCondition(WordResultConditions.englishWordMatch())
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[cp, 69]", wordList.toString());
+    }
+
+    @Test
+    public void englishWordNumMatchTest2() {
+        final String text = "cp cpm trade deficit totaled 695 billion yen, or $4.9 billion";
+
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("cp", "69");
+                    }
+                })
+                .wordResultCondition(WordResultConditions.englishWordNumMatch())
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[cp]", wordList.toString());
+    }
+
+    @Test
+    public void englishWordNumMatchTest3() {
+        final String text = "cp cpm trade deficit totaled 695 billion yen, or $4.9 billion 69";
+
+        List<String> wordList = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("cp", "69");
+                    }
+                })
+                .wordResultCondition(WordResultConditions.englishWordNumMatch())
+                .init()
+                .findAll(text);
+        Assert.assertEquals("[cp, 69]", wordList.toString());
+    }
+
 }

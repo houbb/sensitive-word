@@ -59,13 +59,9 @@
 - 针对单个词的新增/删除，无需全量初始化
 - 新增 allow/deny 空实现
 
-### V0.19.1
+### V0.20.0
 
-- 修正 englishWordMatch #69 单个英文字符命中错误问题
-
-### V0.19.2
-
-- 修正 #68 `SensitiveWordCharIgnores.specialChars()` 误判命中开始的问题
+- 新增数字+英文的全词匹配实现
 
 ## 更多资料
 
@@ -557,7 +553,17 @@ Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
 
 系统内置的策略在 `WordResultConditions#alwaysTrue()` 恒为真，`WordResultConditions#englishWordMatch()` 则要求英文必须全词匹配。
 
-## 入门例子
+## 内置策略
+
+WordResultConditions 工具类可以获取匹配策略
+
+| 实现 | 说明          | 支持版本    |
+|:----|:------------|:--------|
+| alwaysTrue | 恒为真         |         |
+| englishWordMatch | 英文单词全词匹配    | v0.13.0 |
+| englishWordNumMatch | 英文单词/数字全词匹配 | v0.20.0 |
+
+## 使用例子
 
 原始的默认情况：
 

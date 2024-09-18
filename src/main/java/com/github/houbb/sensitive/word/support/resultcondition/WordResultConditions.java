@@ -26,4 +26,13 @@ public final class WordResultConditions {
         return new WordResultConditionEnglishWordMatch();
     }
 
+    /**
+     * 如果是英文或者数字，则必须全词匹匹配
+     * @return 结果
+     * @since 0.20.0
+     */
+    public static IWordResultCondition englishWordNumMatch() {
+        return new WordResultConditionEnglishWordNumMatch();
+    }
+
 }
