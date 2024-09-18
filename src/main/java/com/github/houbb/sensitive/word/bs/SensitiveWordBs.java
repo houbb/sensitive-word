@@ -20,6 +20,7 @@ import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
+import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
 import java.util.*;
 
@@ -107,11 +108,18 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     private ISensitiveWord sensitiveWord = SensitiveWords.defaults();
 
     /**
-     * 敏感词 Data
+     * 敏感词(黑名单) Data
      *
      * @since 0.0.1
      */
     private IWordData wordData = WordDatas.defaults();
+
+    /**
+     * 敏感词(白名单) Data
+     *
+     * @since 0.21.0
+     */
+    private IWordData wordDataAllow = WordDatas.defaults();
 
     /**
      * 禁止的单词
@@ -205,10 +213,18 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.sensitiveCheck(sensitiveCheck);
 
         // 4. 初始化 word
-        Collection<String> denyList  = wordAllowDenyCombine.getActualDenyList(wordAllow, wordDeny, context);
+        final List<String> wordAllowList = wordAllow.allow();
+        final List<String> wordDenyList = wordDeny.deny();
+        Collection<String> denyList  = wordAllowDenyCombine.getActualDenyList(wordAllowList, wordDenyList, context);
         wordData.initWordData(denyList);
+        //4.2 白名单，避免长白黑短
+        List<String> actualAllowList = InnerWordFormatUtils.formatWordList(wordAllowList, context);
+        wordDataAllow.initWordData(actualAllowList);
 
         //5. 更新 context
+        context.wordData(wordData);
+        context.wordDataAllow(wordDataAllow);
+
         this.context = context;
 
         return this;
@@ -301,6 +317,13 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         ArgUtil.notNull(wordData, "wordData");
 
         this.wordData = wordData;
+        return this;
+    }
+
+    public SensitiveWordBs wordDataAllow(IWordData wordDataAllow) {
+        ArgUtil.notNull(wordDataAllow, "wordDataAllow");
+
+        this.wordDataAllow = wordDataAllow;
         return this;
     }
 
@@ -590,6 +613,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     @Override
     public void destroy() {
         this.wordData.destroy();
+        this.wordDataAllow.destroy();
     }
 
     /**
@@ -643,6 +667,55 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         this.addWord(wordList);
     }
 
+    // 白名单---------------- START
+    /**
+     * 删除敏感词白名单
+     * @param word 单词
+     * @param others 其他
+     * @since 0.21.0
+     */
+    public void removeWordAllow(String word, String ... others) {
+        List<String> wordList = new ArrayList<>();
+        wordList.add(word);
+        wordList.addAll(Arrays.asList(others));
+
+        removeWordAllow(wordList);
+    }
+    /**
+     * 删除敏感词白名单
+     * @param collection 集合
+     * @since 0.21.0
+     */
+    public void removeWordAllow(Collection<String> collection) {
+        if(CollectionUtil.isEmpty(collection)) {
+            return;
+        }
+        for(String word : collection) {
+            this.wordDataAllow.removeWord(word);
+        }
+    }
+    /**
+     * 新增敏感词白名单
+     * @param collection 敏感词白名单集合
+     * @since 0.21.0
+     */
+    public void addWordAllow(Collection<String> collection) {
+        this.wordDataAllow.addWord(collection);
+    }
+    /**
+     * 新增敏感词白名单
+     * @param word 敏感词白名单
+     * @param others 其他
+     * @since 0.21.0
+     */
+    public void addWordAllow(String word, String...others) {
+        List<String> wordList = new ArrayList<>();
+        wordList.add(word);
+        wordList.addAll(Arrays.asList(others));
+
+        this.addWordAllow(wordList);
+    }
+    // 白名单---------------- END
     //------------------------------------------------------------------------------------ 公开方法 END
 
 }

@@ -6,6 +6,7 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.WordCheckResult;
+import com.github.houbb.sensitive.word.support.check.WordCheckWordAllow;
 import com.github.houbb.sensitive.word.support.result.WordResult;
 import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
@@ -59,7 +60,17 @@ public class SensitiveWord extends AbstractSensitiveWord {
                 .formatCharMapping(characterCharacterMap);
         final IWordResultCondition wordResultCondition = context.wordResultCondition();
 
+        final IWordCheck wordCheckAllow = new WordCheckWordAllow();
+
         for (int i = 0; i < text.length(); i++) {
+            // v0.21.0 白名单跳过 TODO: 感觉这种实现性能一般，考虑后续优化。
+            WordCheckResult wordCheckAllowResult = wordCheckAllow.sensitiveCheck(i, checkContext);
+            int wordLengthAllow = wordCheckAllowResult.index();
+            if(wordLengthAllow > 0) {
+                i += wordLengthAllow-1;
+                continue;
+            }
+
             WordCheckResult checkResult = sensitiveCheck.sensitiveCheck(i, checkContext);
 
             // 命中

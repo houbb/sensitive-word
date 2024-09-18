@@ -22,12 +22,9 @@ public abstract class AbstractWordAllowDenyCombine implements IWordAllowDenyComb
                                                         IWordContext context);
 
     @Override
-    public Collection<String> getActualDenyList(IWordAllow wordAllow,
-                                                IWordDeny wordDeny,
+    public Collection<String> getActualDenyList(final List<String> allowList,
+                                                final List<String> denyList,
                                                 IWordContext context) {
-        List<String> allowList = wordAllow.allow();
-        List<String> denyList = wordDeny.deny();
-
         List<String> formatAllowList = InnerWordFormatUtils.formatWordList(allowList, context);
         List<String> formatDenyList = InnerWordFormatUtils.formatWordList(denyList, context);
 

@@ -248,6 +248,21 @@ public interface IWordContext {
      */
     IWordContext wordData(IWordData wordMap);
 
+    /**
+     * 获取 wordDataAllow 策略
+     * @return 策略
+     * @since 0.21.0
+     */
+    IWordData wordDataAllow();
+
+    /**
+     * 设置 wordDataAllow 策略
+     * @param wordDataAllow 策略
+     * @return this
+     * @since 0.3.2
+     */
+    IWordContext wordDataAllow(IWordData wordDataAllow);
+
     IWordTag wordTag();
 
     SensitiveWordContext wordTag(IWordTag wordTag);

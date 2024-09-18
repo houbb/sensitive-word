@@ -107,6 +107,13 @@ public class SensitiveWordContext implements IWordContext {
     private IWordData wordData;
 
     /**
+     * 单词允许信息
+     *
+     * @since 0.21.0
+     */
+    private IWordData wordDataAllow;
+
+    /**
      * 单词标签
      *
      * @since 0.10.0
@@ -132,6 +139,17 @@ public class SensitiveWordContext implements IWordContext {
 
     public SensitiveWordContext wordData(IWordData wordData) {
         this.wordData = wordData;
+        return this;
+    }
+
+    @Override
+    public IWordData wordDataAllow() {
+        return wordDataAllow;
+    }
+
+    @Override
+    public SensitiveWordContext wordDataAllow(IWordData wordDataAllow) {
+        this.wordDataAllow = wordDataAllow;
         return this;
     }
 

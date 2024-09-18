@@ -48,7 +48,7 @@
 
 - [支持跳过一些特殊字符，让匹配更灵活](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E5%AD%97%E7%AC%A6)
 
-- [支持单个词的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
+- [支持黑白名单单个的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
 
 ## 变更日志
 
@@ -62,6 +62,12 @@
 ### V0.20.0
 
 - 新增数字+英文的全词匹配实现
+
+### V0.21.0
+
+- 修正白名单较长，包含了黑名单，导致白名单不符合预期的场景。
+
+- 新增了白名单单个的编辑操作
 
 ## 更多资料
 
@@ -93,7 +99,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.20.0</version>
+    <version>0.21.0</version>
 </dependency>
 ```
 
@@ -489,7 +495,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
 wordBs.destroy();
 ```
 
-## 针对单个词的新增/删除，无需全量初始化
+## 针对单个黑名单词的新增/删除，无需全量初始化
 
 使用场景：在初始化之后，我们希望针对单个词的新增/删除，而不是完全重新初始化。这个特性就是为此准备的。
 
@@ -539,6 +545,63 @@ Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).to
 // 删除集合
 sensitiveWordBs.removeWord("新增", "测试");
 Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+```
+
+## 针对单个白名单词的新增/删除，无需全量初始化
+
+使用场景：在初始化之后，我们希望针对单个词的新增/删除，而不是完全重新初始化。这个特性就是为此准备的。
+
+支持版本：v0.21.0
+
+### 方法说明
+
+`addWordAllow(word)` 新增白名单，支持单个词/集合
+
+`removeWordAllow(word)` 删除白名单，支持单个词/集合
+
+### 使用例子
+
+```java
+        final String text = "测试一下新增敏感词白名单，验证一下删除和新增对不对";
+
+        SensitiveWordBs sensitiveWordBs =
+                SensitiveWordBs.newInstance()
+                        .wordAllow(WordAllows.empty())
+                        .wordDeny(new IWordDeny() {
+                            @Override
+                            public List<String> deny() {
+                                return Arrays.asList("测试", "新增");
+                            }
+                        })
+                        .init();
+
+        // 当前
+        Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+
+        // 新增单个
+        sensitiveWordBs.addWordAllow("测试");
+        sensitiveWordBs.addWordAllow("新增");
+        Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+
+        // 删除单个
+        sensitiveWordBs.removeWordAllow("测试");
+        Assert.assertEquals("[测试]", sensitiveWordBs.findAll(text).toString());
+        sensitiveWordBs.removeWordAllow("新增");
+        Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+
+        // 新增集合
+        sensitiveWordBs.addWordAllow(Arrays.asList("新增", "测试"));
+        Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+        // 删除集合
+        sensitiveWordBs.removeWordAllow(Arrays.asList("新增", "测试"));
+        Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
+
+        // 新增数组
+        sensitiveWordBs.addWordAllow("新增", "测试");
+        Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
+        // 删除集合
+        sensitiveWordBs.removeWordAllow("新增", "测试");
+        Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
 ```
 
 # wordResultCondition-针对匹配词进一步判断
