@@ -1097,6 +1097,12 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 [v0.16.1-敏感词新特性之字典内存资源释放](https://mp.weixin.qq.com/s/zbeJR-OkWjxashtjiopnMA)
 
+[v0.19.0-敏感词新特性之敏感词单个编辑，不必重复初始化](https://houbb.github.io/2020/01/07/sensitive-word-10-v0.19.0-deny-word-edit)
+
+[v0.20.0 敏感词新特性之数字全部匹配，而不是部分匹配](https://houbb.github.io/2020/01/07/sensitive-word-11-v0.20.0-num-match)
+
+[v0.21.0 敏感词新特性之白名单支持单个编辑，修正白名单包含黑名单时的问题](https://houbb.github.io/2020/01/07/sensitive-word-12-v0.21.0-allow-word-edit)
+
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # NLP 开源矩阵
