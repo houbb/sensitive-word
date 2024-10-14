@@ -107,6 +107,8 @@
 
 `SensitiveWordHelper` 作为敏感词的工具类，核心方法如下：
 
+注意：`SensitiveWordHelper` 提供的都是默认配置。如果你希望进行灵活的自定义配置，可参考 [引导类特性配置](https://github.com/houbb/sensitive-word/?tab=readme-ov-file#%E5%BC%95%E5%AF%BC%E7%B1%BB%E7%89%B9%E6%80%A7%E9%85%8D%E7%BD%AE)
+
 | 方法                                     | 参数                       | 返回值    | 说明           |
 |:---------------------------------------|:-------------------------|:-------|:-------------|
 | contains(String)                       | 待验证的字符串                  | 布尔值    | 验证字符串是否包含敏感词 |
@@ -437,6 +439,8 @@ Assert.assertEquals("[127.0.0.1]", wordList.toString());
 为了让使用更加优雅，统一使用 fluent-api 的方式定义。
 
 用户可以使用 `SensitiveWordBs` 进行如下定义：
+
+注意：配置后，要使用我们新定义的 `SensitiveWordBs` 的对象，而不是以前的工具方法。工具方法配置都是默认的。
 
 ```java
 SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
