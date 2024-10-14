@@ -604,6 +604,43 @@ Assert.assertEquals("[]", sensitiveWordBs.findAll(text).toString());
         Assert.assertEquals("[测试, 新增, 新增]", sensitiveWordBs.findAll(text).toString());
 ```
 
+## 全量初始化
+
+### 说明
+
+此方式**已废弃**，建议使用上面增量添加的方式，避免全量加载。为了兼容，此方式依然保留。
+
+使用方式：在调用 `sensitiveWordBs.init()` 的时候，根据 IWordDeny+IWordAllow 重新构建敏感词库。 因为初始化可能耗时较长（秒级别），所有优化为 init 未完成时**不影响旧的词库功能，完成后以新的为准**。
+
+### 例子
+
+```java
+@Component
+public class SensitiveWordService {
+
+    @Autowired
+    private SensitiveWordBs sensitiveWordBs;
+
+    /**
+     * 更新词库
+     *
+     * 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法。
+     * 如果需要生效，则调用这个方法。
+     *
+     * 说明：重新初始化不影响旧的方法使用。初始化完成后，会以新的为准。
+     */
+    public void refresh() {
+        // 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法，然后调用这个方法。
+        sensitiveWordBs.init();
+    }
+
+}
+```
+
+如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `sensitiveWordBs.init();`。
+
+其他使用保持不变，无需重启应用。
+
 # wordResultCondition-针对匹配词进一步判断
 
 ## 说明
@@ -978,41 +1015,6 @@ public class SpringSensitiveWordConfig {
 ```
 
 敏感词库的初始化较为耗时，建议程序启动时做一次 init 初始化。
-
-## 动态变更
-
-为了保证敏感词修改可以实时生效且保证接口的尽可能简化，此处没有新增 add/remove 的方法。
-
-而是在调用 `sensitiveWordBs.init()` 的时候，根据 IWordDeny+IWordAllow 重新构建敏感词库。
-
-因为初始化可能耗时较长（秒级别），所有优化为 init 未完成时**不影响旧的词库功能，完成后以新的为准**。
-
-```java
-@Component
-public class SensitiveWordService {
-
-    @Autowired
-    private SensitiveWordBs sensitiveWordBs;
-
-    /**
-     * 更新词库
-     *
-     * 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法。
-     * 如果需要生效，则调用这个方法。
-     *
-     * 说明：重新初始化不影响旧的方法使用。初始化完成后，会以新的为准。
-     */
-    public void refresh() {
-        // 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法，然后调用这个方法。
-        sensitiveWordBs.init();
-    }
-
-}
-```
-
-如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `sensitiveWordBs.init();`。
-
-其他使用保持不变，无需重启应用。
 
 # Benchmark
 
