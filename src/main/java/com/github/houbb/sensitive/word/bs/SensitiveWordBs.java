@@ -639,7 +639,11 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         if(CollectionUtil.isEmpty(collection)) {
             return;
         }
-        for(String word : collection) {
+        // fixed https://github.com/houbb/sensitive-word/issues/84
+        // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
+        List<String> formatList = InnerWordFormatUtils.formatWordList(collection, context);
+
+        for(String word : formatList) {
             this.wordData.removeWord(word);
         }
     }
@@ -650,7 +654,11 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.19.0
      */
     public void addWord(Collection<String> collection) {
-        this.wordData.addWord(collection);
+        // fixed https://github.com/houbb/sensitive-word/issues/84
+        // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
+        // 正常字典并没有这个问题
+        List<String> formatAllowList = InnerWordFormatUtils.formatWordList(collection, context);
+        this.wordData.addWord(formatAllowList);
     }
 
     /**
@@ -690,7 +698,11 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         if(CollectionUtil.isEmpty(collection)) {
             return;
         }
-        for(String word : collection) {
+        // fixed https://github.com/houbb/sensitive-word/issues/84
+        // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
+        List<String> formatList = InnerWordFormatUtils.formatWordList(collection, context);
+
+        for(String word : formatList) {
             this.wordDataAllow.removeWord(word);
         }
     }
@@ -700,7 +712,11 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.21.0
      */
     public void addWordAllow(Collection<String> collection) {
-        this.wordDataAllow.addWord(collection);
+        // fixed https://github.com/houbb/sensitive-word/issues/84
+        // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
+        List<String> formatList = InnerWordFormatUtils.formatWordList(collection, context);
+
+        this.wordDataAllow.addWord(formatList);
     }
     /**
      * 新增敏感词白名单

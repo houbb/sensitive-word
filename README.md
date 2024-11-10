@@ -54,20 +54,15 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.19.0
-
-- 针对单个词的新增/删除，无需全量初始化
-- 新增 allow/deny 空实现
-
-### V0.20.0
-
-- 新增数字+英文的全词匹配实现
-
 ### V0.21.0
 
 - 修正白名单较长，包含了黑名单，导致白名单不符合预期的场景。
 
 - 新增了白名单单个的编辑操作
+
+### V0.22.0
+
+- 修正单个敏感词修改时，对应的格式处理问题
 
 ## 更多资料
 
@@ -99,7 +94,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.21.0</version>
+    <version>0.22.0</version>
 </dependency>
 ```
 

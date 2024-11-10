@@ -78,10 +78,10 @@ public final class InnerWordFormatUtils {
      * @return 结果
      * @since 0。3.0
      */
-    public static List<String> formatWordList(List<String> list,
+    public static List<String> formatWordList(Collection<String> list,
                                               final IWordContext context) {
         if(CollectionUtil.isEmpty(list)) {
-            return list;
+            return new ArrayList<>();
         }
 
         List<String> resultList = new ArrayList<>(list.size());

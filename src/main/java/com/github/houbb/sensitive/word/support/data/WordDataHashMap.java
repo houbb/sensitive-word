@@ -1,6 +1,5 @@
 package com.github.houbb.sensitive.word.support.data;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
