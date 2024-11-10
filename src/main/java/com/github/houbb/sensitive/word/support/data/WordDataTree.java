@@ -27,6 +27,23 @@ import java.util.Map;
 @ThreadSafe
 public class WordDataTree extends AbstractWordData {
 
+    /**
+     *  汉字数字和阿拉伯数字的映射表
+     */
+    private static final Map<String, String> numberMap = new HashMap<>();
+    static {
+        numberMap.put("零", "0");
+        numberMap.put("一", "1");
+        numberMap.put("二", "2");
+        numberMap.put("三", "3");
+        numberMap.put("四", "4");
+        numberMap.put("五", "5");
+        numberMap.put("六", "6");
+        numberMap.put("七", "7");
+        numberMap.put("八", "8");
+        numberMap.put("九", "9");
+    }
+
     @Override
     public synchronized void initWordData(Collection<String> collection) {
         WordDataTreeNode newRoot = new WordDataTreeNode();
@@ -129,6 +146,18 @@ public class WordDataTree extends AbstractWordData {
     }
 
     /**
+     * 将汉字数字转换为阿拉伯数字
+     * @param text 待处理的文本
+     * @return 转换后的文本
+     */
+    private String convertChineseNumbers(String text) {
+        for (Map.Entry<String, String> entry : numberMap.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
+        }
+        return text;
+    }
+
+    /**
      * 新增敏感词
      *
      * @param collection 敏感词集合
@@ -140,6 +169,11 @@ public class WordDataTree extends AbstractWordData {
                 continue;
             }
             addWord(this.root, word);
+            // 添加转换后的敏感词
+            String convertedWord = convertChineseNumbers(word);
+            if (!convertedWord.equals(word)) {
+                addWord(this.root, convertedWord);
+            }
         }
     }
 
@@ -153,9 +187,9 @@ public class WordDataTree extends AbstractWordData {
      * @since 0.0.7
      */
     private WordDataTreeNode getNowMap(WordDataTreeNode nowNode,
-                          final int index,
-                          final StringBuilder stringBuilder,
-                          final InnerSensitiveWordContext sensitiveContext) {
+                                       final int index,
+                                       final StringBuilder stringBuilder,
+                                       final InnerSensitiveWordContext sensitiveContext) {
         final IWordContext context = sensitiveContext.wordContext();
 
         // 这里的 char 已经是统一格式化之后的，所以可以不用再次格式化。
