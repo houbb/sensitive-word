@@ -64,6 +64,10 @@
 
 - 修正单个敏感词修改时，对应的格式处理问题
 
+### V0.23.0
+
+- 结果条件拓展支持 wordTags 和 chains 
+
 ## 更多资料
 
 ### 敏感词控台
@@ -94,7 +98,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.22.0</version>
+    <version>0.23.0</version>
 </dependency>
 ```
 
@@ -656,11 +660,13 @@ public class SensitiveWordService {
 
 WordResultConditions 工具类可以获取匹配策略
 
-| 实现 | 说明          | 支持版本    |
-|:----|:------------|:--------|
-| alwaysTrue | 恒为真         |         |
-| englishWordMatch | 英文单词全词匹配    | v0.13.0 |
-| englishWordNumMatch | 英文单词/数字全词匹配 | v0.20.0 |
+| 实现                                         | 说明                  | 支持版本    |
+|:-------------------------------------------|:--------------------|:--------|
+| alwaysTrue                                 | 恒为真                 |         |
+| englishWordMatch                           | 英文单词全词匹配            | v0.13.0 |
+| englishWordNumMatch                        | 英文单词/数字全词匹配         | v0.20.0 |
+| wordTags                                   | 满足特定标签的，比如只关注【广告】标签 | v0.23.0 |
+| chains(IWordResultCondition ...conditions) | 支持指定多个条件，同时满足       | v0.23.0 |
 
 ## 使用例子
 
@@ -701,6 +707,81 @@ Assert.assertEquals("[]", wordList.toString());
 ```
 
 当然可以根据需要实现更加复杂的策略。
+
+## wordTags 单词标签
+
+支持版本： `v0.23.0`
+
+我们可以只返回隶属于某一种标签的敏感词。
+
+我们指定了两个敏感词：商品、AV
+
+MyWordTag 是我们定义的一个敏感词标签实现：
+
+```java
+/**
+ * 自定义单词标签
+ * @since 0.23.0
+ */
+public class MyWordTag extends AbstractWordTag {
+
+    private static Map<String, Set<String>> dataMap;
+
+    static {
+        dataMap = new HashMap<>();
+        dataMap.put("商品", buildSet("广告", "中文"));
+        dataMap.put("AV", buildSet("色情", "单词", "英文"));
+    }
+
+    private static Set<String> buildSet(String... tags) {
+        Set<String> set = new HashSet<>();
+        for(String tag : tags) {
+            set.add(tag);
+        }
+        return set;
+    }
+
+    @Override
+    protected Set<String> doGetTag(String word) {
+        return dataMap.get(word);
+    }
+
+}
+```
+
+测试用例如下，我们模拟了两个不同的实现类，每一个关注的单词标签不同。
+
+```java
+// 只关心SE情
+SensitiveWordBs sensitiveWordBsYellow = SensitiveWordBs.newInstance()
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("商品", "AV");
+            }
+        })
+        .wordAllow(WordAllows.empty())
+        .wordTag(new MyWordTag())
+        .wordResultCondition(WordResultConditions.wordTags(Arrays.asList("色情")))
+        .init();
+
+// 只关心广告
+SensitiveWordBs sensitiveWordBsAd = SensitiveWordBs.newInstance()
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("商品", "AV");
+            }
+        })
+        .wordAllow(WordAllows.empty())
+        .wordTag(new MyWordTag())
+        .wordResultCondition(WordResultConditions.wordTags(Arrays.asList("广告")))
+        .init();
+
+final String text = "这些 AV 商品什么价格？";
+Assert.assertEquals("[AV]", sensitiveWordBsYellow.findAll(text).toString());
+Assert.assertEquals("[商品]", sensitiveWordBsAd.findAll(text).toString());
+```
 
 # 忽略字符
 
