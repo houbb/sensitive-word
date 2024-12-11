@@ -8,6 +8,8 @@ import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.combine.IWordAllowDenyCombine;
 import com.github.houbb.sensitive.word.api.combine.IWordCheckCombine;
 import com.github.houbb.sensitive.word.api.combine.IWordFormatCombine;
+import com.github.houbb.sensitive.word.core.SensitiveWord;
+import com.github.houbb.sensitive.word.core.SensitiveWordOptimized;
 import com.github.houbb.sensitive.word.core.SensitiveWords;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.combine.allowdeny.WordAllowDenyCombines;
@@ -556,8 +558,15 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      */
     public <R> List<R> findAll(final String target, final IWordResultHandler<R> handler) {
         ArgUtil.notNull(handler, "handler");
+        // 使用策略判断文本大小，选择不同的敏感词处理实现
+        List<IWordResult> wordResults;
+        if (target.length() < 65536) { // 小于64K字符，使用默认 SensitiveWord
+            wordResults = SensitiveWord.getInstance().findAll(target, context);
+        } else { // 大于等于64K字符，使用优化版 SensitiveWordOptimized
+            wordResults = SensitiveWordOptimized.getInstance().findAll(target, context);
+        }
 
-        List<IWordResult> wordResults = sensitiveWord.findAll(target, context);
+        // 使用处理器转换敏感词结果
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
