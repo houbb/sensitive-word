@@ -17,6 +17,7 @@ public class InnerWordTagUtils {
      * 获取敏感词的标签
      *
      * @param word 敏感词
+     * @param wordContext 上下文
      * @return 结果
      * @since 0.24.0
      */
