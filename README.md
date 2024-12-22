@@ -88,7 +88,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 开源不易，如果本项目对你有帮助，你可以请老马喝一杯奶茶。
 
-![赞赏](lmxxf_reword.png)
+<img src="https://github.com/houbb/sensitive-word/raw/master/lmxxf_reword.png?raw=true" style="width: 300px; height: 200px;"/>
 
 # 快速开始
 
