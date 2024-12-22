@@ -14,13 +14,17 @@
 
 ## 创作目的
 
-实现一款好用敏感词工具。
+大家好，我是老马。
+
+一直想实现一款简单好用敏感词工具，于是开源实现了这个工具。
 
 基于 DFA 算法实现，目前敏感词库内容收录 6W+（源文件 18W+，经过一次删减）。
 
 后期将进行持续优化和补充敏感词库，并进一步提升算法的性能。
 
-希望可以细化敏感词的分类，感觉工作量比较大，暂时没有进行。
+v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大，难免存在疏漏。
+
+欢迎 PR 改进， github 提需求，或者加入技术交流群沟通吹牛！
 
 ## 特性
 
@@ -54,17 +58,13 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.22.0
-
-- 修正单个敏感词修改时，对应的格式处理问题
-
 ### V0.23.0
 
 - 结果条件拓展支持 wordTags 和 chains 
 
-### V0.23.1
+### V0.24.0
 
-- 敏感词标签统一格式化处理优化
+- 初步内置实现单词标签，丰富单词标签内置策略
 
 ## 更多资料
 
@@ -82,6 +82,8 @@
 
 > [v0.11.0-敏感词新特性及对应标签文件](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
 
+目前 v0.24.0 已内置实现单词标签，需要的建议升级到最新版本。
+
 # 快速开始
 
 ## 准备
@@ -96,7 +98,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.23.1</version>
+    <version>0.24.0</version>
 </dependency>
 ```
 
@@ -825,11 +827,11 @@ Assert.assertEquals("[傻@冒, 狗+东西]", wordList2.toString());
 
 支持版本：v0.10.0
 
-## 入门例子
+主要特性支持版本：v0.24.0
 
-### 接口
+## 标签接口
 
-这里只是一个抽象的接口，用户可以自行定义实现。比如从数据库查询等。
+这里只是一个抽象的接口，用户可以自行定义实现。比如从数据库查询、文件读取、api 调用等。
 
 ```java
 public interface IWordTag {
@@ -844,49 +846,113 @@ public interface IWordTag {
 }
 ```
 
-### 配置文件
+## 内置实现
 
-我们可以自定义 dict 标签文件，通过 WordTags.file() 创建一个 WordTag 实现。
+### 方法列表
 
-- dict_tag_test.txt
+为了方便大部分情况使用，内置实现一些场景策略在 `WordTags` 类中
+
+| 实现方法                                                              | 说明                   | 备注         |
+|:------------------------------------------------------------------|:---------------------|:-----------|
+| none()                                                            | 空实现                  | v0.10.0 支持 |
+| file(String filePath)                                             | 指定文件路径               | v0.10.0 支持 |
+| file(String filePath, String wordSplit, String tagSplit)          | 指定文件路径，以及单词分隔符、标签分隔符 | v0.10.0 支持 |
+| map(final Map<String, Set<String>> wordTagMap)                    | 根据 map初始化            | v0.24.0 支持 |
+| lines(Collection<String> lines)                                   | 字符串列表                | v0.24.0 支持 |
+| lines(Collection<String> lines, String wordSplit, String tagSpli) | 字符串列表，以及单词分隔符、标签分隔符  | v0.24.0 支持 |
+| system()                                                          | 系件文件内置实现，整合网络分类      | v0.24.0 支持 |
+| defaults()                                                        | 默认策略，目前为 system      | v0.24.0 支持 |
+| chains(IWordTag... others)                 | 链式方法，支持用户整合实现多个策略    | v0.24.0 支持 |
+
+### 格式约定
+
+敏感词标签的格式我们默认约定如下 `敏感词 tag1,tag2`，代表这 `敏感词` 的标签为 tag1 和 tag2
+
+比如 
 
 ```
 五星红旗 政治,国家
 ```
 
-格式如下：
+所有的文件行内容，和指定的字符串行内容也建议用这种方式。如果不满足，自定义实现即可。
 
-```
-敏感词 tag1,tag2
-```
+## 系统内置实现（默认效果）
 
-### 实现
+v0.24.0 版本开始，默认的单词标签为 `WordTags.system()`。
 
-具体的效果如下，在引导类设置一下即可。
-
-默认的 wordTag 是空的。
+说明：目前数据统计自网络，存在不少疏漏。也欢迎大家指正，持续改进中...
 
 ```java
-String filePath = "dict_tag_test.txt";
-IWordTag wordTag = WordTags.file(filePath);
+SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+.wordTag(WordTags.system())
+.init();
+Set<String> tagSet = sensitiveWordBs.tags("博彩");
+Assert.assertEquals("[3]", tagSet.toString());
+```
 
+这里为了压缩大小优化，对应的类别用数字表示。
+
+数字的含义列表如下：
+
+```
+0 政治
+1 毒品
+2 色情
+3 赌博
+4 违法
+```
+
+## 文件入门例子
+
+这里以文件为例子，演示一下如何使用。
+
+```java
+final String path = "~\\test\\resources\\dict_tag_test.txt";
+
+// 演示默认方法
+IWordTag wordTag = WordTags.file(path);
 SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
         .wordTag(wordTag)
         .init();
 
-Assert.assertEquals("[政治, 国家]", sensitiveWordBs.tags("五星红旗").toString());;
+Set<String> tagSet = sensitiveWordBs.tags("零售");
+        Assert.assertEquals("[广告, 网络]", tagSet.toString());
+
+
+// 演示指定分隔符
+IWordTag wordTag2 = WordTags.file(path, " ", ",");
+SensitiveWordBs sensitiveWordBs2 = SensitiveWordBs.newInstance()
+        .wordTag(wordTag2)
+        .init();
+Set<String> tagSet2 = sensitiveWordBs2.tags("零售");
+        Assert.assertEquals("[广告, 网络]", tagSet2.toString());
 ```
 
-后续会考虑引入一个内置的标签文件策略。
+其中 `dict_tag_test.txt` 我们自定义的内容如下：
 
-### 敏感词标签文件
+```
+零售 广告,网络
+```
 
-梳理了大量的敏感词标签文件，可以让我们的敏感词更加方便。
+## 单词标签和敏感词发现的联动
 
-这两个资料阅读可在下方文章获取：
+我们在获取敏感词的时候，是可以设置对应的结果处理策略，从而获取对应的敏感词标签信息
 
-> [v0.11.0-敏感词新特性及对应标签文件](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+```java
+// 自定义测试标签类
+IWordTag wordTag = WordTags.lines(Arrays.asList("天安门 政治,国家,地址"));
 
+// 指定初始化
+SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+        .wordTag(wordTag)
+        .init()
+        ;
+
+List<WordTagsDto> wordTagsDtoList1 = sensitiveWordBs.findAll("天安门", WordResultHandlers.wordTags());
+Assert.assertEquals("[WordTagsDto{word='天安门', tags=[政治, 国家, 地址]}]", wordTagsDtoList1.toString());
+```
+
+我们自定义了 `天安门` 关键词的标签，然后通过指定 findAll 的结果处理策略为 `WordResultHandlers.wordTags()`，就可以在获取敏感词的同时，获取对应的标签列表。
 
 # 动态加载（用户自定义）
 
@@ -1129,7 +1195,7 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 - [x] 移除单个汉字的敏感词，在中国，要把词组当做一次词，降低误判率。
 
-- [ ] 支持单个的敏感词变化？
+- [x] 支持单个的敏感词变化？
 
 remove、add、edit?
 

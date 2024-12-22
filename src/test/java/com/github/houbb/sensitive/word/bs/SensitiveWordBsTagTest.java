@@ -1,16 +1,15 @@
 package com.github.houbb.sensitive.word.bs;
 
-import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordDeny;
 import com.github.houbb.sensitive.word.api.IWordTag;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.result.WordTagsDto;
-import com.github.houbb.sensitive.word.support.tag.AbstractWordTag;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p> project: sensitive-word-SensitiveWordBsTest </p>
@@ -21,25 +20,10 @@ import java.util.*;
  */
 public class SensitiveWordBsTagTest {
 
-    private void addLine(String line,
-                         Map<String, Set<String>> wordTagMap) {
-        String[] strings = line.split(" ");
-        String key = strings[0];
-        Set<String> tags = new HashSet<>(StringUtil.splitToList(strings[1]));
-        wordTagMap.put(key, tags);
-    }
-
     @Test
     public void wordResultHandlerWordTagsTest() {
         // 自定义测试标签类
-        final Map<String, Set<String>> wordTagMap = new HashMap<>();
-        addLine("0售 广告", wordTagMap);
-        IWordTag wordTag = new AbstractWordTag() {
-            @Override
-            protected Set<String> doGetTag(String word) {
-                return wordTagMap.get(word);
-            }
-        };
+        IWordTag wordTag = WordTags.lines(Arrays.asList("0售 广告"));
 
         // 指定初始化
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
@@ -60,18 +44,23 @@ public class SensitiveWordBsTagTest {
     }
 
     @Test
+    public void wordResultHandlerWordTags2Test() {
+        // 自定义测试标签类
+        IWordTag wordTag = WordTags.lines(Arrays.asList("天安门 政治,国家,地址"));
+
+        // 指定初始化
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .wordTag(wordTag)
+                .init()
+                ;
+        List<WordTagsDto> wordTagsDtoList1 = sensitiveWordBs.findAll("天安门", WordResultHandlers.wordTags());
+        Assert.assertEquals("[WordTagsDto{word='天安门', tags=[政治, 国家, 地址]}]", wordTagsDtoList1.toString());
+    }
+
+    @Test
     public void wordTagsTest() {
         // 自定义测试标签类
-        final Map<String, Set<String>> wordTagMap = new HashMap<>();
-        addLine("0售 广告", wordTagMap);
-        addLine("天安门 政治,国家,地址", wordTagMap);
-        IWordTag wordTag = new AbstractWordTag() {
-            @Override
-            protected Set<String> doGetTag(String word) {
-                return wordTagMap.get(word);
-            }
-        };
-
+        IWordTag wordTag = WordTags.lines(Arrays.asList("0售 广告", "天安门 政治,国家,地址"));
         // 指定初始化
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
                 .wordTag(wordTag)

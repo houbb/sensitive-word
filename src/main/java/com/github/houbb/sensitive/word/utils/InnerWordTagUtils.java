@@ -1,7 +1,9 @@
 package com.github.houbb.sensitive.word.utils;
 
 import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
+import com.github.houbb.sensitive.word.api.IWordTag;
 
 import java.util.Collections;
 import java.util.Set;
@@ -27,7 +29,14 @@ public class InnerWordTagUtils {
             return Collections.emptySet();
         }
 
-        // 是否需要格式化？ v0.24.0
+        final IWordTag wordTag = wordContext.wordTag();
+        // 直接获取
+        Set<String> actualSet = wordTag.getTag(word);
+        if(CollectionUtil.isNotEmpty(actualSet)) {
+            return actualSet;
+        }
+
+        // 格式化处理后的信息
         String formatWord = InnerWordFormatUtils.format(word, wordContext);
         return wordContext.wordTag().getTag(formatWord);
     }

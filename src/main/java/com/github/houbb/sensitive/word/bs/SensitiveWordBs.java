@@ -168,7 +168,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * 单词标签
      * @since 0.10.0
      */
-    private IWordTag wordTag = WordTags.none();
+    private IWordTag wordTag = WordTags.defaults();
 
     /**
      * 忽略的字符策略

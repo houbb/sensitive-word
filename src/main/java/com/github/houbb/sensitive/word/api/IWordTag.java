@@ -15,6 +15,6 @@ public interface IWordTag {
      * @param word 脏词
      * @return 结果
      */
-    Set<String> getTag(String word);
+    Set<String> getTag(final String word);
 
 }
