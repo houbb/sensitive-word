@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.result;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordResult;
 import com.github.houbb.sensitive.word.utils.InnerWordCharUtils;
+import com.github.houbb.sensitive.word.utils.InnerWordTagUtils;
 
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class WordResultHandlerWordTags extends AbstractWordResultHandler<WordTag
         WordTagsDto dto = new WordTagsDto();
         dto.setWord(word);
         // 获取 tags
-        Set<String> wordTags = wordContext.wordTag().getTag(word);
+        Set<String> wordTags = InnerWordTagUtils.tags(word, wordContext);
         dto.setTags(wordTags);
         return dto;
     }

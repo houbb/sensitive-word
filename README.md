@@ -54,12 +54,6 @@
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.21.0
-
-- 修正白名单较长，包含了黑名单，导致白名单不符合预期的场景。
-
-- 新增了白名单单个的编辑操作
-
 ### V0.22.0
 
 - 修正单个敏感词修改时，对应的格式处理问题
@@ -67,6 +61,10 @@
 ### V0.23.0
 
 - 结果条件拓展支持 wordTags 和 chains 
+
+### V0.23.1
+
+- 敏感词标签统一格式化处理优化
 
 ## 更多资料
 
@@ -98,7 +96,7 @@
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.23.0</version>
+    <version>0.23.1</version>
 </dependency>
 ```
 

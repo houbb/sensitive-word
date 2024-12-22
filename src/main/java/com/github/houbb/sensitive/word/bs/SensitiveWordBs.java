@@ -21,6 +21,7 @@ import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
+import com.github.houbb.sensitive.word.utils.InnerWordTagUtils;
 
 import java.util.*;
 
@@ -602,12 +603,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.10.0
      */
     public Set<String> tags(final String word) {
-        if(StringUtil.isEmpty(word)) {
-            return Collections.emptySet();
-        }
-
-        // 是否需要格式化？
-        return wordTag.getTag(word);
+        return InnerWordTagUtils.tags(word, context);
     }
 
     @Override
