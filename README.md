@@ -48,7 +48,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 - [支持数据的数据动态更新（用户自定义），实时生效](https://github.com/houbb/sensitive-word#%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89)
 
-- [支持敏感词的标签接口](https://github.com/houbb/sensitive-word#%E6%95%8F%E6%84%9F%E8%AF%8D%E6%A0%87%E7%AD%BE)
+- [支持敏感词的标签接口+内置分类实现](https://github.com/houbb/sensitive-word#%E6%95%8F%E6%84%9F%E8%AF%8D%E6%A0%87%E7%AD%BE)
 
 - [支持跳过一些特殊字符，让匹配更灵活](https://github.com/houbb/sensitive-word#%E5%BF%BD%E7%95%A5%E5%AD%97%E7%AC%A6)
 
