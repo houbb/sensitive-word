@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
@@ -9,6 +10,7 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 import java.util.Map;
 
@@ -35,54 +37,63 @@ public class WordCheckWord extends AbstractWordCheck {
     }
 
     @Override
-    protected int getActualLength(int beginIndex, InnerSensitiveWordContext innerContext) {
+    protected WordLengthResult getActualLength(int beginIndex, InnerSensitiveWordContext innerContext) {
         final String txt = innerContext.originalText();
         final Map<Character, Character> formatCharMapping = innerContext.formatCharMapping();
-        final WordValidModeEnum wordValidModeEnum = innerContext.modeEnum();
         final IWordContext context = innerContext.wordContext();
-
-        // 采用 ThreadLocal 应该可以提升性能，减少对象的创建。
-        int actualLength = 0;
         final IWordData wordData = context.wordData();
+        final IWordData wordDataAllow = context.wordDataAllow();
+        final ISensitiveWordCharIgnore wordCharIgnore = context.charIgnore();
 
         // 前一个条件
         StringBuilder stringBuilder = new StringBuilder();
         char[] rawChars = txt.toCharArray();
 
-        final ISensitiveWordCharIgnore wordCharIgnore = context.charIgnore();
         int tempLen = 0;
-        for(int i = beginIndex; i < rawChars.length; i++) {
-            // 判断是否跳过？
-            // 避免开始的时候命中 https://github.com/houbb/sensitive-word/issues/68
-            if(wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
+        int maxWhite = 0;
+        int maxBlack = 0;
+        boolean firstCheck = true;
+
+        WordContainsTypeEnum wordContainsTypeEnumAllow = wordDataAllow.contains(stringBuilder, innerContext);
+        WordContainsTypeEnum wordContainsTypeEnumDeny = wordData.contains(stringBuilder, innerContext);
+
+        for (int i = beginIndex; i < rawChars.length; i++) {
+            if (wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
                 tempLen++;
                 continue;
             }
 
-            // 映射处理
-            final char currentChar = rawChars[i];
-            char mappingChar = formatCharMapping.get(currentChar);
+            char mappingChar = formatCharMapping.get(rawChars[i]);
             stringBuilder.append(mappingChar);
             tempLen++;
 
-            // 判断是否存在
-            WordContainsTypeEnum wordContainsTypeEnum = wordData.contains(stringBuilder, innerContext);
-            if(WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnum)) {
-                actualLength = tempLen;
-
-                // 是否遍历全部匹配的模式
-                if(WordValidModeEnum.FAIL_FAST.equals(wordValidModeEnum)) {
-                    break;
+            if (firstCheck || !WordContainsTypeEnum.NOT_FOUND.equals(wordContainsTypeEnumAllow)) {
+                wordContainsTypeEnumAllow = wordDataAllow.contains(stringBuilder, innerContext);
+                if (WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnumAllow)) {
+                    maxWhite += tempLen;
+                    wordContainsTypeEnumAllow = WordContainsTypeEnum.NOT_FOUND;
                 }
             }
 
-            // 如果不包含，则直接返回。后续遍历无意义
-            if(WordContainsTypeEnum.NOT_FOUND.equals(wordContainsTypeEnum)) {
+            if (firstCheck || !WordContainsTypeEnum.NOT_FOUND.equals(wordContainsTypeEnumDeny)) {
+                wordContainsTypeEnumDeny = wordData.contains(stringBuilder, innerContext);
+                if (WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnumDeny)) {
+                    maxBlack += tempLen;
+                    wordContainsTypeEnumDeny = WordContainsTypeEnum.NOT_FOUND;
+                }
+            }
+
+            firstCheck = false;
+
+            if (WordContainsTypeEnum.NOT_FOUND.equals(wordContainsTypeEnumAllow) &&
+                    WordContainsTypeEnum.NOT_FOUND.equals(wordContainsTypeEnumDeny)) {
                 break;
             }
         }
 
-        return actualLength;
+        return WordLengthResult.newInstance()
+                .wordAllowLen(maxWhite)
+                .wordDenyLen(maxBlack);
     }
 
     @Override

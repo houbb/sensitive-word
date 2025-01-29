@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.check;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
                                                final StringBuilder stringBuilder, InnerSensitiveWordContext checkContext);
 
     @Override
-    protected int getActualLength(int beginIndex, InnerSensitiveWordContext checkContext) {
+    protected WordLengthResult getActualLength(int beginIndex, InnerSensitiveWordContext checkContext) {
         final String txt = checkContext.originalText();
         final IWordContext context = checkContext.wordContext();
         final Map<Character, Character> formatCharMapping = checkContext.formatCharMapping();
@@ -69,7 +70,9 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
             actualLength = stringBuilder.length();
         }
 
-        return actualLength;
+        return WordLengthResult.newInstance()
+                .wordDenyLen(actualLength)
+                .wordAllowLen(0);
     }
 
 }

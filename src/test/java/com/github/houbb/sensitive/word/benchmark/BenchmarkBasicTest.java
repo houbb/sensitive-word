@@ -1,10 +1,15 @@
 package com.github.houbb.sensitive.word.benchmark;
 
 import com.github.houbb.heaven.util.util.RandomUtil;
+import com.github.houbb.sensitive.word.api.IWordAllow;
+import com.github.houbb.sensitive.word.api.IWordDeny;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.List;
 
 @Ignore
 public class BenchmarkBasicTest {
@@ -61,6 +66,45 @@ public class BenchmarkBasicTest {
 
         for(int i = 0; i < 10000; i++) {
             sensitiveWordBs.findAll(randomText);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("------------------ COST: " + (end-start));
+    }
+
+    /**
+     * 黑白名单一次遍历
+     */
+    @Test
+    public void costTimeOneTraceTest() {
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<100;i++){
+            sb.append("地铁口交易").append(i);
+        }
+        String text = sb.toString();
+
+        // 1W 次
+        long start = System.currentTimeMillis();
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Collections.singletonList("口交");
+                    }
+                })
+                .wordAllow(new IWordAllow() {
+                    @Override
+                    public List<String> allow() {
+                        return Collections.singletonList("地铁口交易");
+                    }
+                })
+                .enableWordCheck(true)
+                .enableNumCheck(false)
+                .enableUrlCheck(false)
+                .enableEmailCheck(false)
+                .init();
+
+        for(int i = 0; i < 10000; i++) {
+            sensitiveWordBs.findAll(text);
         }
         long end = System.currentTimeMillis();
         System.out.println("------------------ COST: " + (end-start));
