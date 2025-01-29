@@ -72,13 +72,15 @@ public class BenchmarkBasicTest {
     }
 
     /**
-     * 黑白名单一次遍历
+     *      * 黑白名单一次遍历 优化前：300*他们在地铁口交易，查10000次，26183
+     *      * 黑白名单一次遍历 优化后：300*他们在地铁口交易，查10000次，15705
+     *
      */
     @Test
     public void costTimeOneTraceTest() {
         StringBuilder sb=new StringBuilder();
-        for(int i=0;i<100;i++){
-            sb.append("地铁口交易").append(i);
+        for(int i=0;i<300;i++){
+            sb.append("他们在地铁口交易").append(i);
         }
         String text = sb.toString();
 
