@@ -89,7 +89,7 @@ public class WordDataHashMap extends AbstractWordData {
     }
 
     @Override
-    protected void doRemoveWord(String word) {
+    protected void doRemoveWord(Collection<String> collection) {
 
     }
 

@@ -639,9 +639,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
         List<String> formatList = InnerWordFormatUtils.formatWordList(collection, context);
 
-        for(String word : formatList) {
-            this.wordData.removeWord(word);
-        }
+        this.wordData.removeWord(formatList);
     }
 
     /**
@@ -698,9 +696,8 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         // 主要原因是二者没有保持一致，初始化的数据和插入的数据没有做相同的格式化
         List<String> formatList = InnerWordFormatUtils.formatWordList(collection, context);
 
-        for(String word : formatList) {
-            this.wordDataAllow.removeWord(word);
-        }
+        this.wordDataAllow.removeWord(formatList);
+
     }
     /**
      * 新增敏感词白名单
