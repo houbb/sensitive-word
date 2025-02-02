@@ -1,12 +1,11 @@
 package com.github.houbb.sensitive.word.core;
 
 import com.github.houbb.heaven.util.guava.Guavas;
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
-import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.WordCheckResult;
-import com.github.houbb.sensitive.word.support.check.WordCheckWordAllow;
 import com.github.houbb.sensitive.word.support.result.WordResult;
 import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
@@ -34,6 +33,16 @@ public class SensitiveWord extends AbstractSensitiveWord {
         return innerSensitiveWords(string, WordValidModeEnum.FAIL_OVER, context);
     }
 
+    @Override
+    protected IWordResult doFindFirst(String string, IWordContext context) {
+        List<IWordResult> wordResults = innerSensitiveWords(string, WordValidModeEnum.FAIL_FAST, context);
+        if(!CollectionUtil.isEmpty(wordResults)){
+            return wordResults.get(0);
+        }
+        return null;
+    }
+
+
     /**
      * 获取敏感词列表
      *
@@ -60,21 +69,18 @@ public class SensitiveWord extends AbstractSensitiveWord {
                 .formatCharMapping(characterCharacterMap);
         final IWordResultCondition wordResultCondition = context.wordResultCondition();
 
-        final IWordCheck wordCheckAllow = new WordCheckWordAllow();
-
         for (int i = 0; i < text.length(); i++) {
-            // v0.21.0 白名单跳过 TODO: 感觉这种实现性能一般，考虑后续优化。
-            WordCheckResult wordCheckAllowResult = wordCheckAllow.sensitiveCheck(i, checkContext);
-            int wordLengthAllow = wordCheckAllowResult.index();
+            // v0.21.0 白名单跳过
+            WordCheckResult checkResult = sensitiveCheck.sensitiveCheck(i, checkContext);
+            int wordLengthAllow = checkResult.wordLengthResult().wordAllowLen();
             if(wordLengthAllow > 0) {
                 i += wordLengthAllow-1;
                 continue;
             }
 
-            WordCheckResult checkResult = sensitiveCheck.sensitiveCheck(i, checkContext);
 
             // 命中
-            int wordLength = checkResult.index();
+            int wordLength = checkResult.wordLengthResult().wordDenyLen();
             if (wordLength > 0) {
                 // 保存敏感词
                 WordResult wordResult = WordResult.newInstance()
@@ -84,12 +90,13 @@ public class SensitiveWord extends AbstractSensitiveWord {
                 //v0.13.0 添加判断
                 if(wordResultCondition.match(wordResult, text, modeEnum, context)) {
                     resultList.add(wordResult);
+                    // 快速返回
+                    if (WordValidModeEnum.FAIL_FAST.equals(modeEnum)) {
+                        break;
+                    }
                 }
 
-                // 快速返回
-                if (WordValidModeEnum.FAIL_FAST.equals(modeEnum)) {
-                    break;
-                }
+
 
                 // 增加 i 的步长
                 // 为什么要-1，因为默认就会自增1

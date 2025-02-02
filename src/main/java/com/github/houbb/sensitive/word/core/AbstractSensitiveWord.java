@@ -26,6 +26,10 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
      */
     protected abstract List<IWordResult> doFindAll(String string, IWordContext context);
 
+
+    protected abstract IWordResult doFindFirst(String string, IWordContext context);
+
+
     /**
      * 替换
      * @param target 目标字符串
@@ -80,13 +84,10 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
     @Override
     public IWordResult findFirst(String string, IWordContext context) {
-        //TODO: 这个是懒惰的实现，性能一般。也可以调整为 FAST_OVER 模式。
-        List<IWordResult> allList = findAll(string, context);
-        if(CollectionUtil.isNotEmpty(allList)) {
-            return allList.get(0);
+        if(StringUtil.isEmpty(string)){
+            return null;
         }
-
-        return null;
+        return doFindFirst(string,context);
     }
 
     @Override

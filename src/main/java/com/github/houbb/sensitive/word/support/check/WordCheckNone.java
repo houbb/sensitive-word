@@ -4,6 +4,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 /**
  * 未匹配
@@ -28,7 +29,7 @@ public class WordCheckNone implements IWordCheck {
      */
     private static final WordCheckResult NONE_RESULT = WordCheckResult.newInstance()
             .type(WordTypeEnum.DEFAULTS.getCode())
-            .index(0)
+            .wordLengthResult(WordLengthResult.newInstance())
             .checkClass(WordCheckNone.class);
 
     public static WordCheckResult getNoneResult() {

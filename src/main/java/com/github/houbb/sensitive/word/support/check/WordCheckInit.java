@@ -4,6 +4,7 @@ import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 import java.util.List;
 
@@ -34,7 +35,8 @@ public abstract class WordCheckInit implements IWordCheck {
         for(IWordCheck sensitiveCheck : sensitiveChecks) {
             WordCheckResult result = sensitiveCheck.sensitiveCheck(beginIndex, checkContext);
 
-            if(result.index() > 0) {
+            WordLengthResult wordLengthResult = result.wordLengthResult();
+            if(wordLengthResult.wordAllowLen() > 0 || wordLengthResult.wordDenyLen()> 0) {
                 return result;
             }
         }
