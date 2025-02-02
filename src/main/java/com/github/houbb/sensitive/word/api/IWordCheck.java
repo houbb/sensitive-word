@@ -31,6 +31,7 @@ public interface IWordCheck {
      * @param context       执行上下文
      * @return 敏感信息对应的长度
      * @since 0.0.5
+     * @since 0.24.2 为了黑白名单统一，调整了对应的返回值
      */
     WordCheckResult sensitiveCheck(final int beginIndex,
                                    final InnerSensitiveWordContext context);

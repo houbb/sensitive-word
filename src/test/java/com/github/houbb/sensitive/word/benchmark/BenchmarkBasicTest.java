@@ -72,44 +72,37 @@ public class BenchmarkBasicTest {
     }
 
     /**
-     *      * 黑白名单一次遍历 优化前：300*他们在地铁口交易，查10000次，26183
-     *      * 黑白名单一次遍历 优化后：300*他们在地铁口交易，查10000次，15705
-     *
+     * 黑白名单一次遍历 优化前：300*他们在地铁口交易，查10000次，26183
+     * 黑白名单一次遍历 优化后：300*他们在地铁口交易，查10000次，15705
+     * @since 0.24.2
      */
     @Test
     public void costTimeOneTraceTest() {
-        StringBuilder sb=new StringBuilder();
-        for(int i=0;i<300;i++){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 300; i++) {
             sb.append("他们在地铁口交易").append(i);
         }
         String text = sb.toString();
 
         // 1W 次
         long start = System.currentTimeMillis();
-        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
-                .wordDeny(new IWordDeny() {
-                    @Override
-                    public List<String> deny() {
-                        return Collections.singletonList("口交");
-                    }
-                })
-                .wordAllow(new IWordAllow() {
-                    @Override
-                    public List<String> allow() {
-                        return Collections.singletonList("地铁口交易");
-                    }
-                })
-                .enableWordCheck(true)
-                .enableNumCheck(false)
-                .enableUrlCheck(false)
-                .enableEmailCheck(false)
-                .init();
+        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance().wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Collections.singletonList("口交");
+            }
+        }).wordAllow(new IWordAllow() {
+            @Override
+            public List<String> allow() {
+                return Collections.singletonList("地铁口交易");
+            }
+        }).enableWordCheck(true).enableNumCheck(false).enableUrlCheck(false).enableEmailCheck(false).init();
 
-        for(int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             sensitiveWordBs.findAll(text);
         }
         long end = System.currentTimeMillis();
-        System.out.println("------------------ COST: " + (end-start));
+        System.out.println("------------------ COST: " + (end - start));
     }
 
     /**

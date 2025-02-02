@@ -58,9 +58,6 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.23.0
-
-- 结果条件拓展支持 wordTags 和 chains 
 
 ### V0.24.0
 
@@ -69,6 +66,12 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 ### V0.24.1
 
 - 删除时统一添加同步锁 sync
+
+### V0.24.2
+
+- 统一黑白名单为一次遍历，性能优化
+
+- 实现真实的 findFirst，性能优化
 
 ## 更多资料
 
@@ -108,7 +111,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.24.1</version>
+    <version>0.24.2</version>
 </dependency>
 ```
 
