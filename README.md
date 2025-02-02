@@ -66,6 +66,10 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 - 初步内置实现单词标签，丰富单词标签内置策略
 
+### V0.24.1
+
+- 删除时统一添加同步锁 sync
+
 ## 更多资料
 
 ### 敏感词控台
@@ -104,7 +108,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.24.0</version>
+    <version>0.24.1</version>
 </dependency>
 ```
 

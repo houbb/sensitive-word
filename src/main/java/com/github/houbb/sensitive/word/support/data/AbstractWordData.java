@@ -30,7 +30,7 @@ public abstract class AbstractWordData implements IWordData {
 
     /**
      * 删除敏感词
-     * @param collection
+     * @param collection 集合
      */
     protected abstract void doRemoveWord(Collection<String> collection);
 
