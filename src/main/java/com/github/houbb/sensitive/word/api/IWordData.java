@@ -22,10 +22,10 @@ public interface IWordData extends ISensitiveWordDestroy {
 
     /**
      * 删除敏感词
-     * @param word 单词
+     * @param collection 单词
      * @since 0.19.0
      */
-    void removeWord(String word);
+    void removeWord(Collection<String> collection);
 
     /**
      * 新增敏感词

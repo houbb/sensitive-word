@@ -4,7 +4,6 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
-import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 
@@ -84,49 +83,7 @@ public class WordDataTree extends AbstractWordData {
         this.root = newRoot;
     }
 
-    @Override
-    protected void doRemoveWord(String word) {
-        WordDataTreeNode tempNode = root;
-        //需要删除的
-        Map<Character, WordDataTreeNode> map = new HashMap<>();
-        char[] chars = word.toCharArray();
-        int length = chars.length;
-        for (int i = 0; i < length; i++) {
-            //不存在第一个词
-            WordDataTreeNode subNode = tempNode.getSubNode(chars[i]);
-            if (subNode == null) {
-                return;
-            }
-            if (i == (length - 1)) {
-                //尾字符判断是否结束
-                if (!subNode.end()) {
-                    return;
-                }
-                if (subNode.getNodeSize() > 0) {
-                    //尾字符下还存在字符,即标识即可
-                    subNode.end(false);
-                    return;
-                }
-            }
-            if (subNode.end()) {
-                map.clear();
-            }
-            map.put(chars[i], tempNode);
 
-            tempNode = subNode;
-        }
-
-        for (Map.Entry<Character, WordDataTreeNode> entry : map.entrySet()) {
-            WordDataTreeNode value = entry.getValue();
-            //节点只有一个就置空
-            if (value.getNodeSize() == 1) {
-                value.clearNode();
-                return;
-            }
-            //多个就删除
-            value.removeNode(entry.getKey());
-        }
-    }
 
     /**
      * 新增敏感词
@@ -142,6 +99,21 @@ public class WordDataTree extends AbstractWordData {
             addWord(this.root, word);
         }
     }
+
+    @Override
+    protected synchronized void doRemoveWord(Collection<String> collection) {
+        for (String word : collection) {
+            if (StringUtil.isEmpty(word)) {
+                continue;
+            }
+            removeWord(this.root, word);
+        }
+    }
+
+
+
+
+
 
     /**
      * 获取当前的 Map
@@ -209,6 +181,50 @@ public class WordDataTree extends AbstractWordData {
 
         // 设置结束标识（循环结束，设置一次即可）
         tempNode.end(true);
+    }
+
+
+    private void removeWord(WordDataTreeNode root, String word){
+        WordDataTreeNode tempNode = root;
+        //需要删除的
+        Map<Character, WordDataTreeNode> map = new HashMap<>();
+        char[] chars = word.toCharArray();
+        int length = chars.length;
+        for (int i = 0; i < length; i++) {
+            //不存在第一个词
+            WordDataTreeNode subNode = tempNode.getSubNode(chars[i]);
+            if (subNode == null) {
+                return;
+            }
+            if (i == (length - 1)) {
+                //尾字符判断是否结束
+                if (!subNode.end()) {
+                    return;
+                }
+                if (subNode.getNodeSize() > 0) {
+                    //尾字符下还存在字符,即标识即可
+                    subNode.end(false);
+                    return;
+                }
+            }
+            if (subNode.end()) {
+                map.clear();
+            }
+            map.put(chars[i], tempNode);
+
+            tempNode = subNode;
+        }
+
+        for (Map.Entry<Character, WordDataTreeNode> entry : map.entrySet()) {
+            WordDataTreeNode value = entry.getValue();
+            //节点只有一个就置空
+            if (value.getNodeSize() == 1) {
+                value.clearNode();
+                return;
+            }
+            //多个就删除
+            value.removeNode(entry.getKey());
+        }
     }
 
 }

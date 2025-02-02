@@ -1,6 +1,5 @@
 package com.github.houbb.sensitive.word.support.data;
 
-import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordData;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
@@ -31,9 +30,9 @@ public abstract class AbstractWordData implements IWordData {
 
     /**
      * 删除敏感词
-     * @param word 敏感词
+     * @param collection
      */
-    protected abstract void doRemoveWord(String word);
+    protected abstract void doRemoveWord(Collection<String> collection);
 
     /**
      * 新增敏感词
@@ -49,12 +48,12 @@ public abstract class AbstractWordData implements IWordData {
     }
 
     @Override
-    public void removeWord(String word) {
-        if(StringUtil.isEmpty(word)) {
+    public void removeWord(Collection<String> collection) {
+        if(CollectionUtil.isEmpty(collection)) {
             return;
         }
 
-        doRemoveWord(word);
+        doRemoveWord(collection);
     }
 
     @Override
