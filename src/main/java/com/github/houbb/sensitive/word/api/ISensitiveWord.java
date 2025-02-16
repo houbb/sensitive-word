@@ -38,11 +38,13 @@ public interface ISensitiveWord {
      *
      * @param target 目标字符串
      * @param context 上下文
+     * @param wordReplace 替换策略
      * @return 替换后结果
      * @since 0.3.2
      */
     String replace(final String target,
-                   final IWordContext context);
+                   final IWordContext context,
+                   final IWordReplace replace);
 
     /**
      * 包含
