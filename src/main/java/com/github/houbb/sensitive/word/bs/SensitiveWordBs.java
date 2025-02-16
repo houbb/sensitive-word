@@ -592,7 +592,10 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.2.0
      */
     public String replace(final String target) {
-        return sensitiveWord.replace(target, context);
+        return this.replace(target,context.wordReplace());
+    }
+    public String replace(final String target, IWordReplace replace) {
+        return sensitiveWord.replace(target, context, replace);
     }
 
     /**

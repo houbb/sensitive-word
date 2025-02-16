@@ -38,10 +38,9 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
      * @return 结果
      * @since 0.3.2
      */
-    protected String doReplace(String target, List<IWordResult> allList, IWordContext context) {
+    protected String doReplace(String target, List<IWordResult> allList, IWordContext context, IWordReplace replace) {
         // 根据 index 直接分割
 
-        final IWordReplace replace = context.wordReplace();
         // 是否需要对 allList 排序？
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -91,7 +90,7 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
     }
 
     @Override
-    public String replace(String target, IWordContext context) {
+    public String replace(String target, IWordContext context, IWordReplace replace) {
         if(StringUtil.isEmpty(target)) {
             return target;
         }
@@ -101,7 +100,7 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
             return target;
         }
 
-        return doReplace(target, allList, context);
+        return doReplace(target, allList, context, replace);
     }
 
     @Override
