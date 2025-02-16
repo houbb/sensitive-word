@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.sensitive.word.api.IWordCheck;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 /**
  * 敏感信息监测接口结果
@@ -12,10 +13,9 @@ import com.github.houbb.sensitive.word.api.IWordCheck;
 public class WordCheckResult {
 
     /**
-     * 下标
-     * @since 0.0.12
+     * 命中的黑白名单的长度对象
      */
-    private int index;
+    private WordLengthResult wordLengthResult;
 
     /**
      * 检测类
@@ -35,12 +35,12 @@ public class WordCheckResult {
         return new WordCheckResult();
     }
 
-    public int index() {
-        return index;
+    public WordLengthResult wordLengthResult() {
+        return wordLengthResult;
     }
 
-    public WordCheckResult index(int index) {
-        this.index = index;
+    public WordCheckResult wordLengthResult(WordLengthResult wordLengthResult) {
+        this.wordLengthResult = wordLengthResult;
         return this;
     }
 
@@ -65,7 +65,7 @@ public class WordCheckResult {
     @Override
     public String toString() {
         return "WordCheckResult{" +
-                "index=" + index +
+                "wordLengthResult=" + wordLengthResult +
                 ", checkClass=" + checkClass +
                 ", type='" + type + '\'' +
                 '}';

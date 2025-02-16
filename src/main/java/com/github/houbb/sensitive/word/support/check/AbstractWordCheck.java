@@ -4,6 +4,7 @@ import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 
 /**
  * 抽象实现策略
@@ -28,7 +29,7 @@ public abstract class AbstractWordCheck implements IWordCheck {
      * @return 长度
      * @since 0.4.0
      */
-    protected abstract int getActualLength(int beginIndex, final InnerSensitiveWordContext checkContext);
+    protected abstract WordLengthResult getActualLength(int beginIndex, final InnerSensitiveWordContext checkContext);
 
     /**
      * 获取类别
@@ -42,17 +43,21 @@ public abstract class AbstractWordCheck implements IWordCheck {
                                           final InnerSensitiveWordContext checkContext) {
         Class<? extends IWordCheck> clazz = getSensitiveCheckClass();
         final String txt = checkContext.originalText();
+        WordLengthResult wordLengthResult = WordLengthResult.newInstance()
+                .wordAllowLen(0)
+                .wordDenyLen(0);
+
         if(StringUtil.isEmpty(txt)) {
             return WordCheckResult.newInstance()
-                    .index(0)
+                    .wordLengthResult(wordLengthResult)
                     .type(getType())
                     .checkClass(clazz);
         }
 
-        int actualLength = getActualLength(beginIndex, checkContext);
+        wordLengthResult  = getActualLength(beginIndex, checkContext);
 
         return WordCheckResult.newInstance()
-                .index(actualLength)
+                .wordLengthResult(wordLengthResult)
                 .type(getType())
                 .checkClass(clazz);
     }
