@@ -7,6 +7,7 @@ import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.check.WordChecks;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.ignore.SensitiveWordCharIgnores;
+import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 import org.junit.Assert;
@@ -51,6 +52,7 @@ public class SensitiveWordBsConfigTest {
                 .wordResultCondition(WordResultConditions.alwaysTrue())
                 .wordAllow(WordAllows.defaults())
                 .wordDeny(WordDenys.defaults())
+                .wordReplace(WordReplaces.defaults())
                 .init();
     }
 
