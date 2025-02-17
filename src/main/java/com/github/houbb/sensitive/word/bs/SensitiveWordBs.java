@@ -10,6 +10,7 @@ import com.github.houbb.sensitive.word.api.combine.IWordCheckCombine;
 import com.github.houbb.sensitive.word.api.combine.IWordFormatCombine;
 import com.github.houbb.sensitive.word.core.SensitiveWords;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
+import com.github.houbb.sensitive.word.support.check.WordChecks;
 import com.github.houbb.sensitive.word.support.combine.allowdeny.WordAllowDenyCombines;
 import com.github.houbb.sensitive.word.support.combine.check.WordCheckCombines;
 import com.github.houbb.sensitive.word.support.combine.format.WordFormatCombines;
@@ -183,6 +184,36 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     private IWordResultCondition wordResultCondition = WordResultConditions.alwaysTrue();
 
     /**
+     * 单词检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckWord = WordChecks.word();
+
+    /**
+     * 数字检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckNum = WordChecks.num();
+
+    /**
+     * email 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckEmail = WordChecks.email();
+
+    /**
+     * URL 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckUrl = WordChecks.url();
+
+    /**
+     * ipv4 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckIpv4 = WordChecks.ipv4();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -254,6 +285,13 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.enableUrlCheck(enableUrlCheck);
         context.enableWordCheck(enableWordCheck);
         context.enableIpv4Check(enableIpv4Check);
+
+        // 校验策略实现配置
+        context.wordCheckWord(wordCheckWord);
+        context.wordCheckEmail(wordCheckEmail);
+        context.wordCheckNum(wordCheckNum);
+        context.wordCheckUrl(wordCheckUrl);
+        context.wordCheckIpv4(wordCheckIpv4);
 
         // 额外配置
         context.sensitiveCheckNumLen(numCheckLen);
@@ -367,6 +405,41 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     public SensitiveWordBs wordAllow(IWordAllow wordAllow) {
         ArgUtil.notNull(wordAllow, "wordAllow");
         this.wordAllow = wordAllow;
+        return this;
+    }
+
+    public SensitiveWordBs wordCheckWord(IWordCheck wordCheckWord) {
+        ArgUtil.notNull(wordCheckWord, "wordCheckWord");
+
+        this.wordCheckWord = wordCheckWord;
+        return this;
+    }
+
+    public SensitiveWordBs wordCheckNum(IWordCheck wordCheckNum) {
+        ArgUtil.notNull(wordCheckNum, "wordCheckNum");
+
+        this.wordCheckNum = wordCheckNum;
+        return this;
+    }
+
+    public SensitiveWordBs wordCheckEmail(IWordCheck wordCheckEmail) {
+        ArgUtil.notNull(wordCheckEmail, "wordCheckEmail");
+
+        this.wordCheckEmail = wordCheckEmail;
+        return this;
+    }
+
+    public SensitiveWordBs wordCheckUrl(IWordCheck wordCheckUrl) {
+        ArgUtil.notNull(wordCheckUrl, "wordCheckUrl");
+
+        this.wordCheckUrl = wordCheckUrl;
+        return this;
+    }
+
+    public SensitiveWordBs wordCheckIpv4(IWordCheck wordCheckIpv4) {
+        ArgUtil.notNull(wordCheckIpv4, "wordCheckIpv4");
+
+        this.wordCheckIpv4 = wordCheckIpv4;
         return this;
     }
 

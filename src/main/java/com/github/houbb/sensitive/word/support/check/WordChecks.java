@@ -77,4 +77,15 @@ public final class WordChecks {
         return WordCheckIPV4.getInstance();
     }
 
+    /**
+     * 不需要前缀的 urlPrefix
+     * 注意：这种检测方法可能会和代码中的包名称冲突
+     *
+     * @return 实现
+     * @since 0.25.0
+     */
+    public static IWordCheck urlNoPrefix() {
+        return WordCheckUrlNoPrefix.getInstance();
+    }
+
 }
