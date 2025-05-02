@@ -1,5 +1,6 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordAllow;
 import com.github.houbb.sensitive.word.api.IWordDeny;
 import org.junit.Assert;
@@ -268,5 +269,31 @@ public class SensitiveWordFailFastTest {
         Assert.assertEquals(Arrays.asList("我的", "我的"), textList2);
     }
 
+    @Test
+    public void fallOverTest3() {
+        SensitiveWordBs bs = SensitiveWordBs.newInstance()
+                .wordFailFast(false)
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("我的世界");
+                    }
+                }).init();
+
+        String text = "他的世界它的世界和她的世界都不是我的也不是我的天界";
+        List<String> textList = bs.findAll(text);
+        Assert.assertTrue(CollectionUtil.isEmpty(textList));
+
+        SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("我的世界");
+                    }
+                }).init();
+
+        List<String> textList2 = bs2.findAll(text);
+        Assert.assertTrue(CollectionUtil.isEmpty(textList2));
+    }
 
 }

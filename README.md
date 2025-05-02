@@ -550,7 +550,7 @@ SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
                 return Arrays.asList("我的世界", "我的");
             }
         }).init();
-
+String text = "他的世界它的世界和她的世界都不是我的也不是我的世界";
 List<String> textList2 = bs2.findAll(text);
 Assert.assertEquals(Arrays.asList("我的", "我的"), textList2);
 ```
