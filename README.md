@@ -54,7 +54,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 - [支持黑白名单单个的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
 
-- [支持词匹配模式的两种模式]()
+- [支持词匹配模式的两种模式](https://github.com/houbb/sensitive-word?tab=readme-ov-file#wordfailfast-%E6%95%8F%E6%84%9F%E8%AF%8D%E5%8C%B9%E9%85%8D%E5%BF%AB%E9%80%9F%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F)
 
 ## 变更日志
 
