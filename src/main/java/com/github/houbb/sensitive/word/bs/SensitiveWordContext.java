@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.sensitive.word.api.*;
+import com.github.houbb.sensitive.word.support.check.WordChecks;
 
 /**
  * 上下文
@@ -132,6 +133,36 @@ public class SensitiveWordContext implements IWordContext {
      * @since 0.13.0
      */
     private IWordResultCondition wordResultCondition;
+
+    /**
+     * 单词检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckWord;
+
+    /**
+     * 数字检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckNum;
+
+    /**
+     * email 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckEmail;
+
+    /**
+     * URL 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckUrl;
+
+    /**
+     * ipv4 检测策略
+     * @since 0.25.0
+     */
+    private IWordCheck wordCheckIpv4;
 
     public IWordData wordData() {
         return wordData;
@@ -353,6 +384,51 @@ public class SensitiveWordContext implements IWordContext {
 
     public SensitiveWordContext wordResultCondition(IWordResultCondition wordResultCondition) {
         this.wordResultCondition = wordResultCondition;
+        return this;
+    }
+
+    public IWordCheck wordCheckWord() {
+        return wordCheckWord;
+    }
+
+    public SensitiveWordContext wordCheckWord(IWordCheck wordCheckWord) {
+        this.wordCheckWord = wordCheckWord;
+        return this;
+    }
+
+    public IWordCheck wordCheckNum() {
+        return wordCheckNum;
+    }
+
+    public SensitiveWordContext wordCheckNum(IWordCheck wordCheckNum) {
+        this.wordCheckNum = wordCheckNum;
+        return this;
+    }
+
+    public IWordCheck wordCheckEmail() {
+        return wordCheckEmail;
+    }
+
+    public SensitiveWordContext wordCheckEmail(IWordCheck wordCheckEmail) {
+        this.wordCheckEmail = wordCheckEmail;
+        return this;
+    }
+
+    public IWordCheck wordCheckUrl() {
+        return wordCheckUrl;
+    }
+
+    public SensitiveWordContext wordCheckUrl(IWordCheck wordCheckUrl) {
+        this.wordCheckUrl = wordCheckUrl;
+        return this;
+    }
+
+    public IWordCheck wordCheckIpv4() {
+        return wordCheckIpv4;
+    }
+
+    public SensitiveWordContext wordCheckIpv4(IWordCheck wordCheckIpv4) {
+        this.wordCheckIpv4 = wordCheckIpv4;
         return this;
     }
 }

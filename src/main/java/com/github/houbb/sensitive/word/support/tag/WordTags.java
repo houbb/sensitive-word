@@ -71,6 +71,8 @@ public class WordTags {
     /**
      * 根据标准的约定行处理
      * @param lines 行信息
+     * @param wordSplit 单词分割
+     * @param tagSplit 标签分割
      * @return 结果
      */
     public static IWordTag lines(final Collection<String> lines, final String wordSplit, final String tagSplit) {

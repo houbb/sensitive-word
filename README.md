@@ -58,14 +58,6 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
 
-### V0.23.0
-
-- 结果条件拓展支持 wordTags 和 chains 
-
-### V0.24.0
-
-- 初步内置实现单词标签，丰富单词标签内置策略
-
 ## 更多资料
 
 ### 敏感词控台
@@ -104,7 +96,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.24.0</version>
+    <version>0.25.0</version>
 </dependency>
 ```
 
@@ -370,6 +362,22 @@ Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 
 ## 更多检测策略
 
+### 说明
+
+v0.25.0 目前的几个策略，也支持用户引导类自定义。所有的策略都是接口，支持用户自定义实现。
+
+| 序号 | 方法                   | 说明                                         | 默认值   |
+|:---|:---------------------|:-------------------------------------------|:------|
+| 16 | wordCheckNum          | 数字检测策略(v0.25.0开始支持)                        | `WordChecks.num()`   |
+| 17 | wordCheckEmail          | 邮箱检测策略(v0.25.0开始支持)                        | `WordChecks.email()`   |
+| 18 | wordCheckUrl          | URL检测策略(v0.25.0开始支持)，内置还是实现了 `urlNoPrefix()` | `(WordChecks.url()`   |
+| 19 | wordCheckIpv4          | ipv4检测策略(v0.25.0开始支持)                      | `WordChecks.ipv4()`   |
+| 20 | wordCheckWord          | 敏感词检测策略(v0.25.0开始支持)                       | `WordChecks.word()`   |
+
+内置实现：
+
+a) `WordChecks.urlNoPrefix()` 作为 url 的额外实现，可以不需要 `https://` 和 `http://` 前缀。 
+
 ### 邮箱检测
 
 邮箱等个人信息，默认未启用。
@@ -418,6 +426,21 @@ Assert.assertEquals("[https://www.baidu.com]", wordList.toString());
 Assert.assertEquals("点击链接 ********************* 查看答案", sensitiveWordBs.replace(text));
 ```
 
+v0.25.0 内置支持不需要 http 协议的前缀检测：
+
+```java
+final String text = "点击链接 https://www.baidu.com 查看答案，当然也可以是 baidu.com、www.baidu.com";
+
+final SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+        .enableUrlCheck(true) // 启用URL检测
+        .wordCheckUrl(WordChecks.urlNoPrefix()) //指定检测的方式
+        .init();
+List<String> wordList = sensitiveWordBs.findAll(text);
+Assert.assertEquals("[www.baidu.com, baidu.com, www.baidu.com]", wordList.toString());
+
+Assert.assertEquals("点击链接 https://************* 查看答案，当然也可以是 *********、*************", sensitiveWordBs.replace(text));
+```
+
 ### IPV4 检测
 
 v0.17.0 支持
@@ -460,6 +483,11 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .enableUrlCheck(false)
         .enableIpv4Check(false)
         .enableWordCheck(true)
+        .wordCheckNum(WordChecks.num())
+        .wordCheckEmail(WordChecks.email())
+        .wordCheckUrl(WordChecks.url())
+        .wordCheckIpv4(WordChecks.ipv4())
+        .wordCheckWord(WordChecks.word())
         .numCheckLen(8)
         .wordTag(WordTags.none())
         .charIgnore(SensitiveWordCharIgnores.defaults())
@@ -473,23 +501,29 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法                   | 说明                           | 默认值   |
-|:---|:---------------------|:-----------------------------|:------|
-| 1  | ignoreCase           | 忽略大小写                        | true  |
-| 2  | ignoreWidth          | 忽略半角圆角                       | true  |
-| 3  | ignoreNumStyle       | 忽略数字的写法                      | true  |
-| 4  | ignoreChineseStyle   | 忽略中文的书写格式                    | true  |
-| 5  | ignoreEnglishStyle   | 忽略英文的书写格式                    | true  |
-| 6  | ignoreRepeat         | 忽略重复词                        | false |
-| 7  | enableNumCheck       | 是否启用数字检测。                    | false  |
-| 8  | enableEmailCheck     | 是有启用邮箱检测                     | false  |
-| 9  | enableUrlCheck       | 是否启用链接检测                     | false  |
-| 10 | enableIpv4Check       | 是否启用IPv4检测                   | false  |
-| 11 | enableWordCheck      | 是否启用敏感单词检测                   | true  |
-| 12 | numCheckLen          | 数字检测，自定义指定长度。                | 8     |
-| 13 | wordTag          | 词对应的标签                       | none  |
+| 序号 | 方法                  | 说明                           | 默认值   |
+|:---|:--------------------|:-----------------------------|:------|
+| 1  | ignoreCase          | 忽略大小写                        | true  |
+| 2  | ignoreWidth         | 忽略半角圆角                       | true  |
+| 3  | ignoreNumStyle      | 忽略数字的写法                      | true  |
+| 4  | ignoreChineseStyle  | 忽略中文的书写格式                    | true  |
+| 5  | ignoreEnglishStyle  | 忽略英文的书写格式                    | true  |
+| 6  | ignoreRepeat        | 忽略重复词                        | false |
+| 7  | enableNumCheck      | 是否启用数字检测。                    | false  |
+| 8  | enableEmailCheck    | 是有启用邮箱检测                     | false  |
+| 9  | enableUrlCheck      | 是否启用链接检测                     | false  |
+| 10 | enableIpv4Check     | 是否启用IPv4检测                   | false  |
+| 11 | enableWordCheck     | 是否启用敏感单词检测                   | true  |
+| 12 | numCheckLen         | 数字检测，自定义指定长度。                | 8     |
+| 13 | wordTag             | 词对应的标签                       | none  |
 | 14 | charIgnore          | 忽略的字符                        | none  |
-| 15 | wordResultCondition          | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
+| 15 | wordResultCondition | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
+| 16 | wordCheckNum        | 数字检测策略(v0.25.0开始支持)          | `WordChecks.num()`   |
+| 17 | wordCheckEmail      | 邮箱检测策略(v0.25.0开始支持)          | `WordChecks.email()`   |
+| 18 | wordCheckUrl        | URL检测策略(v0.25.0开始支持)         | `(WordChecks.url()`   |
+| 19 | wordCheckIpv4       | ipv4检测策略(v0.25.0开始支持)        | `WordChecks.ipv4()`   |
+| 20 | wordCheckWord       | 敏感词检测策略(v0.25.0开始支持)         | `WordChecks.word()`   |
+| 21 | wordReplace         | 替换策略                         | `WordReplaces.defaults()`   |
 
 ## 内存资源的释放
 

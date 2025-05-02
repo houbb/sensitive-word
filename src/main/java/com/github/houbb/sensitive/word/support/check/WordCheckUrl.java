@@ -60,7 +60,17 @@ public class WordCheckUrl extends AbstractConditionWordCheck {
 
         // 改为 http:// 或者 https:// 开头
         String string = stringBuilder.toString();
-        return RegexUtil.isUrl(string);
+        return isUrl(string);
+    }
+
+    /**
+     * 是否为 URL
+     * @param text 原始文本
+     * @return 结果
+     * @since 0.25.0
+     */
+    protected boolean isUrl(final String text) {
+        return RegexUtil.isUrl(text);
     }
 
 }

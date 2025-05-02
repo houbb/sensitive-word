@@ -18,19 +18,19 @@ public class WordCheckCombine extends AbstractWordCheckCombine {
         List<IWordCheck> wordCheckList = new ArrayList<>();
 
         if(context.enableWordCheck()) {
-            wordCheckList.add(WordChecks.word());
+            wordCheckList.add(context.wordCheckWord());
         }
         if(context.enableNumCheck()) {
-            wordCheckList.add(WordChecks.num());
+            wordCheckList.add(context.wordCheckNum());
         }
         if(context.enableEmailCheck()) {
-            wordCheckList.add(WordChecks.email());
+            wordCheckList.add(context.wordCheckEmail());
         }
         if(context.enableUrlCheck()) {
-            wordCheckList.add(WordChecks.url());
+            wordCheckList.add(context.wordCheckUrl());
         }
         if(context.enableIpv4Check()) {
-            wordCheckList.add(WordChecks.ipv4());
+            wordCheckList.add(context.wordCheckIpv4());
         }
 
         return wordCheckList;

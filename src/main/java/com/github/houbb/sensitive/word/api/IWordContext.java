@@ -275,4 +275,23 @@ public interface IWordContext {
 
     SensitiveWordContext wordResultCondition(IWordResultCondition wordResultCondition);
 
+    IWordCheck wordCheckWord();
+
+    SensitiveWordContext wordCheckWord(IWordCheck wordCheckWord);
+
+    IWordCheck wordCheckNum();
+
+    SensitiveWordContext wordCheckNum(IWordCheck wordCheckNum);
+
+    IWordCheck wordCheckEmail();
+
+    SensitiveWordContext wordCheckEmail(IWordCheck wordCheckEmail);
+
+    IWordCheck wordCheckUrl();
+
+    SensitiveWordContext wordCheckUrl(IWordCheck wordCheckUrl);
+
+    IWordCheck wordCheckIpv4();
+
+    SensitiveWordContext wordCheckIpv4(IWordCheck wordCheckIpv4);
 }
