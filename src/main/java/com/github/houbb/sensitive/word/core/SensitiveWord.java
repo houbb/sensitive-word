@@ -37,7 +37,7 @@ public class SensitiveWord extends AbstractSensitiveWord {
     @Override
     protected IWordResult doFindFirst(String string, IWordContext context) {
         List<IWordResult> wordResults = innerSensitiveWords(string, WordValidModeEnum.FAIL_FAST, context);
-        if(!CollectionUtil.isEmpty(wordResults)){
+        if (!CollectionUtil.isEmpty(wordResults)) {
             return wordResults.get(0);
         }
         return null;
@@ -47,14 +47,14 @@ public class SensitiveWord extends AbstractSensitiveWord {
     /**
      * 获取敏感词列表
      *
-     * @param text     文本
+     * @param text 文本
      * @param modeEnum 模式
      * @return 结果列表
      * @since 0.0.1
      */
     private List<IWordResult> innerSensitiveWords(final String text,
-                                                  final WordValidModeEnum modeEnum,
-                                                  final IWordContext context) {
+            final WordValidModeEnum modeEnum,
+            final IWordContext context) {
         //1. 是否存在敏感词，如果比存在，直接返回空列表
         final IWordCheck sensitiveCheck = context.sensitiveCheck();
         List<IWordResult> resultList = Guavas.newArrayList();
@@ -74,38 +74,32 @@ public class SensitiveWord extends AbstractSensitiveWord {
             // v0.21.0 白名单跳过
             WordCheckResult checkResult = sensitiveCheck.sensitiveCheck(i, checkContext);
             int wordLengthAllow = checkResult.wordLengthResult().wordAllowLen();
-            if(wordLengthAllow > 0) {
-                i += wordLengthAllow-1;
-                continue;
-            }
+            int wordLengthDeny = checkResult.wordLengthResult().wordDenyLen();
 
-
-            // 命中
-            final WordLengthResult wordLengthResult = checkResult.wordLengthResult();
-            int wordLength = wordLengthResult.wordDenyLen();
-            if (wordLength > 0) {
+            //如果命中的白名单长度小于黑名单，则直接对黑名单的敏感词进行保存
+            if (wordLengthAllow < wordLengthDeny) {
                 // 保存敏感词
                 WordResult wordResult = WordResult.newInstance()
                         .startIndex(i)
-                        .endIndex(i+wordLength)
+                        .endIndex(i + wordLengthDeny)
                         .type(checkResult.type())
-                        .word(wordLengthResult.wordDeny());
+                        .word(checkResult.wordLengthResult().wordDeny());
 
                 //v0.13.0 添加判断
-                if(wordResultCondition.match(wordResult, text, modeEnum, context)) {
+                if (wordResultCondition.match(wordResult, text, modeEnum, context)) {
                     resultList.add(wordResult);
                     // 快速返回
                     if (WordValidModeEnum.FAIL_FAST.equals(modeEnum)) {
                         break;
                     }
                 }
-
-
-
                 // 增加 i 的步长
                 // 为什么要-1，因为默认就会自增1
                 // TODO: 这里可以根据字符串匹配算法优化。
-                i += wordLength - 1;
+                i += wordLengthDeny - 1;
+            } else {
+                //如果命中的白名单长度大于黑名单长度，则跳过白名单个字符
+                i += Math.max(0, wordLengthAllow - 1);
             }
         }
 

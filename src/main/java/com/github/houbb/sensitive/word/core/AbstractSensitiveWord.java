@@ -40,8 +40,8 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
      */
     protected String doReplace(String target, List<IWordResult> allList, IWordContext context) {
         // 根据 index 直接分割
-
         final IWordReplace replace = context.wordReplace();
+
         // 是否需要对 allList 排序？
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -103,7 +103,6 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
         return doReplace(target, allList, context);
     }
-
     @Override
     public boolean contains(String string, IWordContext context) {
         //1. 第一个存在

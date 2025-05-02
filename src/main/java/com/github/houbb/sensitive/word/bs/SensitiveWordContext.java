@@ -10,6 +10,12 @@ import com.github.houbb.sensitive.word.support.check.WordChecks;
  */
 public class SensitiveWordContext implements IWordContext {
 
+
+    /**
+     * issue110
+     */
+    private  boolean failFastWordPattern;
+
     /**
      * 忽略大小写
      * @since 0.0.4
@@ -219,6 +225,19 @@ public class SensitiveWordContext implements IWordContext {
     public static SensitiveWordContext newInstance() {
         return new SensitiveWordContext();
     }
+
+    @Override
+    public boolean failFastWordPattern() {
+        return failFastWordPattern;
+    }
+
+
+    @Override
+    public IWordContext failFastWordPattern(boolean failFastWordPattern){
+        this.failFastWordPattern=failFastWordPattern;
+        return this;
+    }
+
 
     @Override
     public boolean ignoreCase() {

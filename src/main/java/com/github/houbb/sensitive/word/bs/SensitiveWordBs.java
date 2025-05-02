@@ -2,7 +2,6 @@ package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.heaven.support.handler.IHandler;
 import com.github.houbb.heaven.util.common.ArgUtil;
-import com.github.houbb.heaven.util.lang.StringUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.combine.IWordAllowDenyCombine;
@@ -69,6 +68,9 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * 是否忽略重复
      */
     private boolean ignoreRepeat = false;
+
+    private boolean failFastWordPattern = true;
+
 
     // 开启校验
     /**
@@ -278,6 +280,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.ignoreChineseStyle(ignoreChineseStyle);
         context.ignoreEnglishStyle(ignoreEnglishStyle);
         context.ignoreRepeat(ignoreRepeat);
+        context.failFastWordPattern(failFastWordPattern);
 
         // 开启校验
         context.enableNumCheck(enableNumCheck);
@@ -579,6 +582,10 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         this.ignoreRepeat = ignoreRepeat;
         return this;
     }
+    public SensitiveWordBs failFastWordPattern(boolean failFastWordPattern) {
+        this.failFastWordPattern = failFastWordPattern;
+        return this;
+    }
 
     //------------------------------------------------------------------------------------ 公开方法 START
     /**
@@ -667,6 +674,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     public String replace(final String target) {
         return sensitiveWord.replace(target, context);
     }
+
 
     /**
      * 获取敏感词的标签

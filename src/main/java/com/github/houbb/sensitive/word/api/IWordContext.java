@@ -8,6 +8,17 @@ import com.github.houbb.sensitive.word.bs.SensitiveWordContext;
  */
 public interface IWordContext {
 
+
+    /**
+     * 为true时，遇到第一个敏感词词就返回
+     * 解决issue110
+     * @return
+     */
+    boolean failFastWordPattern();
+
+    IWordContext failFastWordPattern(boolean failFastWordPattern);
+
+
     /**
      * 是否忽略大小写
      * @return 是否
