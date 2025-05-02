@@ -9,6 +9,7 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
+import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
 import java.util.Map;
 
@@ -90,9 +91,18 @@ public class WordCheckWord extends AbstractWordCheck {
             }
         }
 
+        String whiteWord = txt.substring(beginIndex, beginIndex + maxWhite);
+        String blackWord = txt.substring(beginIndex, beginIndex + maxBlack);
+
+        String formatWhiteWord= InnerWordFormatUtils.format(whiteWord,context);
+        String formatBlackWord= InnerWordFormatUtils.format(blackWord,context);
+
+
         return WordLengthResult.newInstance()
                 .wordAllowLen(maxWhite)
-                .wordDenyLen(maxBlack);
+                .wordDenyLen(maxBlack)
+                .wordAllow(formatWhiteWord)
+                .wordDeny(formatBlackWord);
     }
 
     @Override
