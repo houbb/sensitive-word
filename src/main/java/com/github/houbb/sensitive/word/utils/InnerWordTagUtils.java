@@ -26,7 +26,7 @@ public class InnerWordTagUtils {
     public static Set<String> tags(final String word,
                             final IWordContext wordContext) {
         if(StringUtil.isEmpty(word)) {
-            return Collections.emptySet();
+            return null;
         }
 
         final IWordTag wordTag = wordContext.wordTag();

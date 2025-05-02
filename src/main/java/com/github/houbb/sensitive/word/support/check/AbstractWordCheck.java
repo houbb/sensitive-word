@@ -59,7 +59,8 @@ public abstract class AbstractWordCheck implements IWordCheck {
         return WordCheckResult.newInstance()
                 .wordLengthResult(wordLengthResult)
                 .type(getType())
-                .checkClass(clazz);
+                .checkClass(clazz)
+                ;
     }
 
 }

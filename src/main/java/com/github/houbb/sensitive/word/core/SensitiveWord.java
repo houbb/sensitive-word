@@ -6,6 +6,7 @@ import com.github.houbb.sensitive.word.api.*;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordValidModeEnum;
 import com.github.houbb.sensitive.word.support.check.WordCheckResult;
+import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 import com.github.houbb.sensitive.word.support.result.WordResult;
 import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
@@ -80,13 +81,16 @@ public class SensitiveWord extends AbstractSensitiveWord {
 
 
             // 命中
-            int wordLength = checkResult.wordLengthResult().wordDenyLen();
+            final WordLengthResult wordLengthResult = checkResult.wordLengthResult();
+            int wordLength = wordLengthResult.wordDenyLen();
             if (wordLength > 0) {
                 // 保存敏感词
                 WordResult wordResult = WordResult.newInstance()
                         .startIndex(i)
                         .endIndex(i+wordLength)
-                        .type(checkResult.type());
+                        .type(checkResult.type())
+                        .word(wordLengthResult.wordDeny());
+
                 //v0.13.0 添加判断
                 if(wordResultCondition.match(wordResult, text, modeEnum, context)) {
                     resultList.add(wordResult);
