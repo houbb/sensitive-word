@@ -9,12 +9,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @since 0.26.0
+ */
 public class SensitiveWordFailFastTest {
 
     @Test
     public void failFastTest() {
         SensitiveWordBs bs = SensitiveWordBs.newInstance()
-                .failFastWordPattern(true)
+                .wordFailFast(true)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -23,7 +26,7 @@ public class SensitiveWordFailFastTest {
                 }).init();
 
         SensitiveWordBs bs1 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(true)
+                .wordFailFast(true)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -41,7 +44,7 @@ public class SensitiveWordFailFastTest {
 
         //黑长白短，且初始下标一致
         SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(true)
+                .wordFailFast(true)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -60,7 +63,7 @@ public class SensitiveWordFailFastTest {
 
         //白长黑短，且白和黑初始下标不再一起
         SensitiveWordBs bs3 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(true)
+                .wordFailFast(true)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -78,7 +81,7 @@ public class SensitiveWordFailFastTest {
 
         //白长黑短，且白和黑初始下标在一起
         SensitiveWordBs bs4 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(true)
+                .wordFailFast(true)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -127,7 +130,7 @@ public class SensitiveWordFailFastTest {
     @Test
     public void fallOverTest() {
         SensitiveWordBs bs = SensitiveWordBs.newInstance()
-                .failFastWordPattern(false)
+                .wordFailFast(false)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -138,7 +141,7 @@ public class SensitiveWordFailFastTest {
 
         //黑长白短，且初始下标不一致
         SensitiveWordBs bs1 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(false)
+                .wordFailFast(false)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -156,7 +159,7 @@ public class SensitiveWordFailFastTest {
 
         //黑长白短，且初始下标一致
         SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(false)
+                .wordFailFast(false)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -175,7 +178,7 @@ public class SensitiveWordFailFastTest {
 
         //白长黑短，且白和黑初始下标不再一起
         SensitiveWordBs bs3 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(false)
+                .wordFailFast(false)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -193,7 +196,7 @@ public class SensitiveWordFailFastTest {
 
         //白长黑短，且白和黑初始下标在一起
         SensitiveWordBs bs4 = SensitiveWordBs.newInstance()
-                .failFastWordPattern(false)
+                .wordFailFast(false)
                 .wordDeny(new IWordDeny() {
                     @Override
                     public List<String> deny() {
@@ -238,6 +241,32 @@ public class SensitiveWordFailFastTest {
 
     }
 
+    @Test
+    public void fallOverTest2() {
+        SensitiveWordBs bs = SensitiveWordBs.newInstance()
+                .wordFailFast(false)
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("我的世界", "我的");
+                    }
+                }).init();
+
+        String text = "他的世界它的世界和她的世界都不是我的也不是我的世界";
+        List<String> textList = bs.findAll(text);
+        Assert.assertEquals(Arrays.asList("我的", "我的世界"), textList);
+
+        SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
+                .wordDeny(new IWordDeny() {
+                    @Override
+                    public List<String> deny() {
+                        return Arrays.asList("我的世界", "我的");
+                    }
+                }).init();
+
+        List<String> textList2 = bs2.findAll(text);
+        Assert.assertEquals(Arrays.asList("我的", "我的"), textList2);
+    }
 
 
 }

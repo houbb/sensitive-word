@@ -69,7 +69,11 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      */
     private boolean ignoreRepeat = false;
 
-    private boolean failFastWordPattern = true;
+    /**
+     * 单词快速匹配模式
+     * @since 0.26.0
+     */
+    private boolean wordFailFast = true;
 
 
     // 开启校验
@@ -280,7 +284,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.ignoreChineseStyle(ignoreChineseStyle);
         context.ignoreEnglishStyle(ignoreEnglishStyle);
         context.ignoreRepeat(ignoreRepeat);
-        context.failFastWordPattern(failFastWordPattern);
+        context.wordFailFast(wordFailFast);
 
         // 开启校验
         context.enableNumCheck(enableNumCheck);
@@ -582,8 +586,15 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         this.ignoreRepeat = ignoreRepeat;
         return this;
     }
-    public SensitiveWordBs failFastWordPattern(boolean failFastWordPattern) {
-        this.failFastWordPattern = failFastWordPattern;
+
+    /**
+     * 设置快速返回
+     * @param wordFailFast 快速匹配
+     * @return this
+     * @since 0.26.0
+     */
+    public SensitiveWordBs wordFailFast(boolean wordFailFast) {
+        this.wordFailFast = wordFailFast;
         return this;
     }
 

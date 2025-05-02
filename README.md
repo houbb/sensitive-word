@@ -54,6 +54,8 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 - [支持黑白名单单个的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
 
+- [支持词匹配模式的两种模式]()
+
 ## 变更日志
 
 [CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/CHANGE_LOG.md)
@@ -483,6 +485,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .enableUrlCheck(false)
         .enableIpv4Check(false)
         .enableWordCheck(true)
+        .wordFailFast(true)
         .wordCheckNum(WordChecks.num())
         .wordCheckEmail(WordChecks.email())
         .wordCheckUrl(WordChecks.url())
@@ -501,29 +504,77 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法                  | 说明                           | 默认值   |
-|:---|:--------------------|:-----------------------------|:------|
-| 1  | ignoreCase          | 忽略大小写                        | true  |
-| 2  | ignoreWidth         | 忽略半角圆角                       | true  |
-| 3  | ignoreNumStyle      | 忽略数字的写法                      | true  |
-| 4  | ignoreChineseStyle  | 忽略中文的书写格式                    | true  |
-| 5  | ignoreEnglishStyle  | 忽略英文的书写格式                    | true  |
-| 6  | ignoreRepeat        | 忽略重复词                        | false |
-| 7  | enableNumCheck      | 是否启用数字检测。                    | false  |
-| 8  | enableEmailCheck    | 是有启用邮箱检测                     | false  |
-| 9  | enableUrlCheck      | 是否启用链接检测                     | false  |
-| 10 | enableIpv4Check     | 是否启用IPv4检测                   | false  |
-| 11 | enableWordCheck     | 是否启用敏感单词检测                   | true  |
-| 12 | numCheckLen         | 数字检测，自定义指定长度。                | 8     |
-| 13 | wordTag             | 词对应的标签                       | none  |
-| 14 | charIgnore          | 忽略的字符                        | none  |
-| 15 | wordResultCondition | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真   |
-| 16 | wordCheckNum        | 数字检测策略(v0.25.0开始支持)          | `WordChecks.num()`   |
-| 17 | wordCheckEmail      | 邮箱检测策略(v0.25.0开始支持)          | `WordChecks.email()`   |
-| 18 | wordCheckUrl        | URL检测策略(v0.25.0开始支持)         | `(WordChecks.url()`   |
-| 19 | wordCheckIpv4       | ipv4检测策略(v0.25.0开始支持)        | `WordChecks.ipv4()`   |
-| 20 | wordCheckWord       | 敏感词检测策略(v0.25.0开始支持)         | `WordChecks.word()`   |
-| 21 | wordReplace         | 替换策略                         | `WordReplaces.defaults()`   |
+| 序号 | 方法                  | 说明                           | 默认值                       |
+|:---|:--------------------|:-----------------------------|:--------------------------|
+| 1  | ignoreCase          | 忽略大小写                        | true                      |
+| 2  | ignoreWidth         | 忽略半角圆角                       | true                      |
+| 3  | ignoreNumStyle      | 忽略数字的写法                      | true                      |
+| 4  | ignoreChineseStyle  | 忽略中文的书写格式                    | true                      |
+| 5  | ignoreEnglishStyle  | 忽略英文的书写格式                    | true                      |
+| 6  | ignoreRepeat        | 忽略重复词                        | false                     |
+| 7  | enableNumCheck      | 是否启用数字检测。                    | false                     |
+| 8  | enableEmailCheck    | 是有启用邮箱检测                     | false                     |
+| 9  | enableUrlCheck      | 是否启用链接检测                     | false                     |
+| 10 | enableIpv4Check     | 是否启用IPv4检测                   | false                     |
+| 11 | enableWordCheck     | 是否启用敏感单词检测                   | true                      |
+| 12 | numCheckLen         | 数字检测，自定义指定长度。                | 8                         |
+| 13 | wordTag             | 词对应的标签                       | none                      |
+| 14 | charIgnore          | 忽略的字符                        | none                      |
+| 15 | wordResultCondition | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真                       |
+| 16 | wordCheckNum        | 数字检测策略(v0.25.0开始支持)          | `WordChecks.num()`        |
+| 17 | wordCheckEmail      | 邮箱检测策略(v0.25.0开始支持)          | `WordChecks.email()`      |
+| 18 | wordCheckUrl        | URL检测策略(v0.25.0开始支持)         | `(WordChecks.url()`       |
+| 19 | wordCheckIpv4       | ipv4检测策略(v0.25.0开始支持)        | `WordChecks.ipv4()`       |
+| 20 | wordCheckWord       | 敏感词检测策略(v0.25.0开始支持)         | `WordChecks.word()`       |
+| 21 | wordReplace         | 替换策略                         | `WordReplaces.defaults()` |
+| 22 | wordFailFast        | 敏感词匹配模式是否快速返回                | true                      |
+
+
+## wordFailFast 敏感词匹配快速失败模式
+
+### 场景说明
+
+v0.26.0 开始支持。
+
+默认情况下，wordFailFast=true。匹配时快速返回，性能较好。
+
+但是有时候不太符合人的直觉。
+
+默认如下：
+
+```java
+SensitiveWordBs bs2 = SensitiveWordBs.newInstance()
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("我的世界", "我的");
+            }
+        }).init();
+
+List<String> textList2 = bs2.findAll(text);
+Assert.assertEquals(Arrays.asList("我的", "我的"), textList2);
+```
+
+此时会优先匹配短的【我的】，导致后面的【我的世界】被跳过。
+
+### failOver 模式
+
+尽可能找到最长的匹配词。
+
+```java
+SensitiveWordBs bs = SensitiveWordBs.newInstance()
+        .wordFailFast(false)
+        .wordDeny(new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("我的世界", "我的");
+            }
+        }).init();
+
+String text = "他的世界它的世界和她的世界都不是我的也不是我的世界";
+List<String> textList = bs.findAll(text);
+Assert.assertEquals(Arrays.asList("我的", "我的世界"), textList);
+```
 
 ## 内存资源的释放
 

@@ -1,7 +1,6 @@
 package com.github.houbb.sensitive.word.bs;
 
 import com.github.houbb.sensitive.word.api.*;
-import com.github.houbb.sensitive.word.support.check.WordChecks;
 
 /**
  * 上下文
@@ -13,8 +12,9 @@ public class SensitiveWordContext implements IWordContext {
 
     /**
      * issue110
+     * @since 0.26.0
      */
-    private  boolean failFastWordPattern;
+    private  boolean wordFailFast;
 
     /**
      * 忽略大小写
@@ -227,14 +227,14 @@ public class SensitiveWordContext implements IWordContext {
     }
 
     @Override
-    public boolean failFastWordPattern() {
-        return failFastWordPattern;
+    public boolean wordFailFast() {
+        return wordFailFast;
     }
 
 
     @Override
-    public IWordContext failFastWordPattern(boolean failFastWordPattern){
-        this.failFastWordPattern=failFastWordPattern;
+    public IWordContext wordFailFast(boolean wordFailFast){
+        this.wordFailFast = wordFailFast;
         return this;
     }
 

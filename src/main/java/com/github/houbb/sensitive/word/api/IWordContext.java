@@ -12,11 +12,18 @@ public interface IWordContext {
     /**
      * 为true时，遇到第一个敏感词词就返回
      * 解决issue110
-     * @return
+     * @return 是否
+     * @since 0.26.0
      */
-    boolean failFastWordPattern();
+    boolean wordFailFast();
 
-    IWordContext failFastWordPattern(boolean failFastWordPattern);
+    /**
+     * word 快速失败
+     * @param wordFailFast 快速失败
+     * @return this
+     * @since 0.26.0
+     */
+    IWordContext wordFailFast(boolean wordFailFast);
 
 
     /**

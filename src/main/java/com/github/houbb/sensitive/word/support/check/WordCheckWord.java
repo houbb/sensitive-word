@@ -5,12 +5,10 @@ import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
-import com.github.houbb.sensitive.word.api.IWordFormat;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
-import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
 import java.util.Map;
 
@@ -44,7 +42,7 @@ public class WordCheckWord extends AbstractWordCheck {
         final IWordData wordData = context.wordData();
         final IWordData wordDataAllow = context.wordDataAllow();
         final ISensitiveWordCharIgnore wordCharIgnore = context.charIgnore();
-        final boolean failFast = context.failFastWordPattern();
+        final boolean failFast = context.wordFailFast();
 
         StringBuilder stringBuilder = new StringBuilder();
         char[] rawChars = txt.toCharArray();

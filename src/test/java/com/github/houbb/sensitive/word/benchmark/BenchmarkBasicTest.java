@@ -24,6 +24,7 @@ public class BenchmarkBasicTest {
      * 12942ms 第一次优化。
      * 12983ms 添加对应的 contains 优化，性能无太大变化。
      *
+     * 【2025-5-3 01:11:31】1193ms 1281 1201 1256
      */
     @Test
     public void costTimeTest() {
