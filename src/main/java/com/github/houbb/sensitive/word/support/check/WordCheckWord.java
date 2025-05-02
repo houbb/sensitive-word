@@ -51,7 +51,7 @@ public class WordCheckWord extends AbstractWordCheck {
         int tempLen = 0;
         int maxWhite = 0;
         int maxBlack = 0;
-        int skipLen=0;
+        int skipLen = 0;
 
         for (int i = beginIndex; i < rawChars.length; i++) {
             if (wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
@@ -67,24 +67,18 @@ public class WordCheckWord extends AbstractWordCheck {
             WordContainsTypeEnum wordContainsTypeEnumDeny = wordData.contains(stringBuilder, innerContext);
 
             if (WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnumAllow)) {
-                maxWhite += tempLen;
-                if (!failFast) {
-                    //此处将tempLen设为0，为了防止重复累加
-                    tempLen = 0;
-                }else{
+                maxWhite = tempLen;
+                if (failFast) {
                     //为falFast模式，主动设为notFound退出循环
-                    wordContainsTypeEnumAllow=WordContainsTypeEnum.NOT_FOUND;
+                    wordContainsTypeEnumAllow = WordContainsTypeEnum.NOT_FOUND;
                 }
             }
 
             if (WordContainsTypeEnum.CONTAINS_END.equals(wordContainsTypeEnumDeny)) {
-                maxBlack += tempLen;
-                if (!failFast) {
-                    //此处将tempLen设为0，为了防止重复累加
-                    tempLen = 0;
-                }else{
+                maxBlack = tempLen;
+                if (failFast) {
                     //为falFast模式，主动设为notFound退出循环
-                    wordContainsTypeEnumDeny=WordContainsTypeEnum.NOT_FOUND;
+                    wordContainsTypeEnumDeny = WordContainsTypeEnum.NOT_FOUND;
                 }
             }
 
@@ -95,8 +89,8 @@ public class WordCheckWord extends AbstractWordCheck {
         }
 
         String string = stringBuilder.toString();
-        String wordAllow = string.substring(0, Math.max(0,maxWhite - skipLen));
-        String wordDeny = string.substring(0, Math.max(0,maxBlack - skipLen));
+        String wordAllow = string.substring(0, Math.max(0, maxWhite - skipLen));
+        String wordDeny = string.substring(0, Math.max(0, maxBlack - skipLen));
 
 
         return WordLengthResult.newInstance()

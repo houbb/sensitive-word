@@ -672,11 +672,9 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.2.0
      */
     public String replace(final String target) {
-        return this.replace(target,context.wordReplace());
+        return sensitiveWord.replace(target, context);
     }
-    public String replace(final String target, IWordReplace replace) {
-        return sensitiveWord.replace(target, context, replace);
-    }
+
 
     /**
      * 获取敏感词的标签

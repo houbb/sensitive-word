@@ -19,7 +19,7 @@ public interface ISensitiveWord {
      * @see WordValidModeEnum#FAIL_OVER 建议使用全部检测返回模式
      */
     List<IWordResult> findAll(final String string,
-                              final IWordContext context);
+            final IWordContext context);
 
     /**
      * 返回第一个对应的敏感词
@@ -29,22 +29,20 @@ public interface ISensitiveWord {
      * @since 0.3.2
      */
     IWordResult findFirst(final String string,
-                          final IWordContext context);
+            final IWordContext context);
 
     /**
      * 替换所有敏感词内容
-     * <p>
+     *
      * ps: 这里可以添加优化。
      *
-     * @param target  目标字符串
+     * @param target 目标字符串
      * @param context 上下文
-     * @param replace 替换策略
      * @return 替换后结果
      * @since 0.3.2
      */
     String replace(final String target,
-                   final IWordContext context,
-                   final IWordReplace replace);
+            final IWordContext context);
 
     /**
      * 包含
@@ -54,6 +52,6 @@ public interface ISensitiveWord {
      * @since 0.3.2
      */
     boolean contains(final String string,
-             final IWordContext context);
+            final IWordContext context);
 
 }
