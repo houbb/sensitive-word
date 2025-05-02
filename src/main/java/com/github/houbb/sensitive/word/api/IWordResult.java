@@ -28,4 +28,11 @@ public interface IWordResult {
      */
     String type();
 
+    /**
+     * 实际匹配的单词，方便统一的标签等处理，实际问题排查等
+     * @return 结果
+     * @since 0.25.1
+     */
+    String word();
+
 }

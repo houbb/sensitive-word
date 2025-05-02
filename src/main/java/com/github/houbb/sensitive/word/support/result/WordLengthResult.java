@@ -15,6 +15,18 @@ public class WordLengthResult {
      */
     private int wordDenyLen;
 
+    /**
+     * 黑名单匹配词
+     * @since 0.25.1
+     */
+    private String wordDeny;
+
+    /**
+     * 白名单实际匹配值
+     * @since 0.25.1
+     */
+    private String wordAllow;
+
     public static WordLengthResult newInstance() {
         return new WordLengthResult();
     }
@@ -37,11 +49,31 @@ public class WordLengthResult {
         return this;
     }
 
+    public String wordDeny() {
+        return wordDeny;
+    }
+
+    public WordLengthResult wordDeny(String wordDeny) {
+        this.wordDeny = wordDeny;
+        return this;
+    }
+
+    public String wordAllow() {
+        return wordAllow;
+    }
+
+    public WordLengthResult wordAllow(String wordAllow) {
+        this.wordAllow = wordAllow;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "WordLengthResult{" +
                 "wordAllowLen=" + wordAllowLen +
                 ", wordDenyLen=" + wordDenyLen +
+                ", wordDeny='" + wordDeny + '\'' +
+                ", wordAllow='" + wordAllow + '\'' +
                 '}';
     }
 

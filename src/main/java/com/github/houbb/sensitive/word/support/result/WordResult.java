@@ -18,6 +18,12 @@ public class WordResult implements IWordResult {
      */
     private String type;
 
+    /**
+     * 单词匹配
+     * @since 0.25.0
+     */
+    private String word;
+
     private WordResult(){}
 
     public static WordResult newInstance() {
@@ -55,11 +61,22 @@ public class WordResult implements IWordResult {
     }
 
     @Override
+    public String word() {
+        return word;
+    }
+
+    public WordResult word(String word) {
+        this.word = word;
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "WordResult{" +
                 "startIndex=" + startIndex +
                 ", endIndex=" + endIndex +
                 ", type='" + type + '\'' +
+                ", word='" + word + '\'' +
                 '}';
     }
 

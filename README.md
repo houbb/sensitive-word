@@ -96,7 +96,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.25.0</version>
+    <version>0.25.1</version>
 </dependency>
 ```
 

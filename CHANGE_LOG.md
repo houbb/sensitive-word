@@ -414,9 +414,8 @@
 | 1  | A    | wordCheck 策略支持用户自定义  | 2025-2-17 12:06:45 | https://github.com/houbb/sensitive-word/issues/101 |
 | 2  | A    | wordCheckUrlNoPrefix | 2025-2-17 12:06:45 | https://github.com/houbb/sensitive-word/issues/101 |
 
-# release_0.25.0
+# release_0.25.1
 
-| 序号 | 变更类型 | 说明                   | 时间                 | 备注   |
-|:---|:-----|----------------------|:-------------------|:-----|
-| 1  | A    | wordCheck 策略支持用户自定义  | 2025-2-17 12:06:45 | https://github.com/houbb/sensitive-word/issues/101 |
-| 2  | A    | wordCheckUrlNoPrefix | 2025-2-17 12:06:45 | https://github.com/houbb/sensitive-word/issues/101 |
+| 序号 | 变更类型 | 说明                           | 时间                | 备注                                                 |
+|:---|:-----|------------------------------|:------------------|:---------------------------------------------------|
+| 1  | A    | 修正 tags 匹配问题，黑名单命中时返回对应的黑名单词 | 2025-5-2 20:25:04 | https://github.com/houbb/sensitive-word/issues/105 |
