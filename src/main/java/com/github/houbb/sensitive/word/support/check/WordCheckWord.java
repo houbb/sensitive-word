@@ -5,6 +5,7 @@ import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordData;
+import com.github.houbb.sensitive.word.api.IWordFormat;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
@@ -50,10 +51,12 @@ public class WordCheckWord extends AbstractWordCheck {
         int tempLen = 0;
         int maxWhite = 0;
         int maxBlack = 0;
+        int skipLen=0;
 
         for (int i = beginIndex; i < rawChars.length; i++) {
             if (wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
                 tempLen++;
+                skipLen++;
                 continue;
             }
             char mappingChar = formatCharMapping.get(rawChars[i]);
@@ -91,19 +94,18 @@ public class WordCheckWord extends AbstractWordCheck {
             }
         }
 
-        String whiteWord = txt.substring(beginIndex, beginIndex + maxWhite);
-        String blackWord = txt.substring(beginIndex, beginIndex + maxBlack);
-
-        String formatWhiteWord= InnerWordFormatUtils.format(whiteWord,context);
-        String formatBlackWord= InnerWordFormatUtils.format(blackWord,context);
+        String string = stringBuilder.toString();
+        String wordAllow = string.substring(0, Math.max(0,maxWhite - skipLen));
+        String wordDeny = string.substring(0, Math.max(0,maxBlack - skipLen));
 
 
         return WordLengthResult.newInstance()
                 .wordAllowLen(maxWhite)
                 .wordDenyLen(maxBlack)
-                .wordAllow(formatWhiteWord)
-                .wordDeny(formatBlackWord);
+                .wordAllow(wordAllow)
+                .wordDeny(wordDeny);
     }
+
 
     @Override
     protected String getType() {

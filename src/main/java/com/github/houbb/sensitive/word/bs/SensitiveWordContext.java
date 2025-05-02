@@ -231,6 +231,8 @@ public class SensitiveWordContext implements IWordContext {
         return failFastWordPattern;
     }
 
+
+    @Override
     public IWordContext failFastWordPattern(boolean failFastWordPattern){
         this.failFastWordPattern=failFastWordPattern;
         return this;
