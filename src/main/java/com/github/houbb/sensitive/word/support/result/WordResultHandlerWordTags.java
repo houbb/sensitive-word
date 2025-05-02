@@ -19,13 +19,25 @@ public class WordResultHandlerWordTags extends AbstractWordResultHandler<WordTag
     protected WordTagsDto doHandle(IWordResult wordResult, IWordContext wordContext, String originalText) {
         // 截取
         String word = InnerWordCharUtils.getString(originalText.toCharArray(), wordResult);
-        // 标签
 
+        // 创建 DTO 并设置原始单词
         WordTagsDto dto = new WordTagsDto();
         dto.setWord(word);
-        // 获取 tags
-        Set<String> wordTags = InnerWordTagUtils.tags(word, wordContext);
+
+        // 如果启用了字符忽略功能，清理单词后再查找标签
+        StringBuilder wordForTagLookup = new StringBuilder();
+        char[] chars = word.toCharArray();
+        for (int i = 0; i < word.length(); i++) {
+            // 如果字符不被忽略，则保留
+            // TODO: 此处innercontext 被设为null，是否合理？
+            if (!wordContext.charIgnore().ignore(i, chars, null)) {
+                wordForTagLookup.append(chars[i]);
+            }
+        }
+        // 获取 tags (使用清理后的单词查找标签)
+        Set<String> wordTags = InnerWordTagUtils.tags(wordForTagLookup.toString(), wordContext);
         dto.setTags(wordTags);
+
         return dto;
     }
 
