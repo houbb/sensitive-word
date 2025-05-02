@@ -1289,6 +1289,14 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 [v0.21.0 敏感词新特性之白名单支持单个编辑，修正白名单包含黑名单时的问题](https://houbb.github.io/2020/01/07/sensitive-word-12-v0.21.0-allow-word-edit)
 
+[v0.23.0 敏感词结果条件拓展，内置支持链式+单词标签](https://houbb.github.io/2020/01/07/sensitive-word-13-v0.23.0-result-condition-enhance)
+
+[v0.24.0 新特性支持标签分类，内置实现多种策略](https://houbb.github.io/2020/01/07/sensitive-word-13-v0.24.0-word-tag-impl)
+
+[v0.25.0 新特性之 wordCheck 策略支持用户自定义](https://houbb.github.io/2020/01/07/sensitive-word-14-v0.25.0-url-define)
+
+[v0.25.1 新特性之返回匹配词，修正 tags 标签](https://houbb.github.io/2020/01/07/sensitive-word-14-v0.25.1-tags-match)
+
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # NLP 开源矩阵
