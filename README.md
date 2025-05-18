@@ -6,8 +6,6 @@
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/houbb/sensitive-word)
 [![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/houbb/sensitive-word/blob/master/LICENSE.txt)
 
-> [在线体验](https://houbb.github.io/opensource/sensitive-word)
-
 如果有一些疑难杂症，可以加入：[技术交流群](https://mp.weixin.qq.com/s/rkSvXxiiLGjl3S-ZOZCr0Q)
 
 [sensitive-word-admin](https://github.com/houbb/sensitive-word-admin) 是对应的控台的应用，目前功能处于初期开发中，MVP 版本可用。
@@ -55,6 +53,20 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 - [支持黑白名单单个的新增/修改，无需全量初始化](https://github.com/houbb/sensitive-word?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%8D%95%E4%B8%AA%E8%AF%8D%E7%9A%84%E6%96%B0%E5%A2%9E%E5%88%A0%E9%99%A4%E6%97%A0%E9%9C%80%E5%85%A8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96)
 
 - [支持词匹配模式的两种模式](https://github.com/houbb/sensitive-word?tab=readme-ov-file#wordfailfast-%E6%95%8F%E6%84%9F%E8%AF%8D%E5%8C%B9%E9%85%8D%E5%BF%AB%E9%80%9F%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F)
+
+## 项目推荐
+
+下面是一些日志、加解密、脱敏安全相关的库推荐：
+
+| 项目                                                                    | 介绍                    |
+|:----------------------------------------------------------------------|:----------------------|
+| [sensitive-word](https://github.com/houbb/sensitive-word)             | 高性能敏感词核心库             |
+| [sensitive-word-admin](https://github.com/houbb/sensitive-word-admin) | 敏感词控台，前后端分离           |
+| [sensitive](https://github.com/houbb/sensitive)                       | 高性能日志脱敏组件             |
+| [auto-log](https://github.com/houbb/auto-log)                         | 统一日志切面组件，支持全链路traceId |
+| [encryption-local](https://github.com/houbb/encryption-local)         | 离线加密机组件               |
+| [encryption](https://github.com/houbb/encryption)         | 加密机标准API+本地客户端        |
+| [encryption-server](https://github.com/houbb/encryption-server)        | 加密机服务                 |
 
 ## 变更日志
 
