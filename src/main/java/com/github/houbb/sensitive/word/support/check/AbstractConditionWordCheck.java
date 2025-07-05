@@ -1,6 +1,7 @@
 package com.github.houbb.sensitive.word.support.check;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
+import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
@@ -39,17 +40,31 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
 
     @Override
     protected WordLengthResult getActualLength(int beginIndex, InnerSensitiveWordContext checkContext) {
+        // 忽略字符 https://github.com/houbb/sensitive-word/issues/118
+        final ISensitiveWordCharIgnore charIgnore = checkContext.wordContext().charIgnore();
+
         final String txt = checkContext.originalText();
+        final char[] chars = txt.toCharArray();
         final IWordContext context = checkContext.wordContext();
         final Map<Character, Character> formatCharMapping = checkContext.formatCharMapping();
 
         int actualLength = 0;
+        int tempIgnoreLen = 0;
 
         // 采用 ThreadLocal 应该可以提升性能，减少对象的创建。
         StringBuilder stringBuilder = new StringBuilder();
         int currentIx = 0;
         for(int i = beginIndex; i < txt.length(); i++) {
             currentIx = i;
+
+            // 是否忽略？
+            boolean ignoreCharFlag = charIgnore.ignore(currentIx, chars, checkContext);
+            if(ignoreCharFlag) {
+                tempIgnoreLen++;
+
+                continue;
+            }
+
             char currentChar = txt.charAt(i);
             // 映射处理
             char mappingChar = formatCharMapping.get(currentChar);
@@ -68,7 +83,12 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
         // 匹配
         if(isStringCondition(currentIx, stringBuilder, checkContext)) {
             actualLength = stringBuilder.length();
+
+            // 加上跳过的长度
+            actualLength += tempIgnoreLen;
         }
+        // 重置
+        tempIgnoreLen = 0;
 
         return WordLengthResult.newInstance()
                 .wordDenyLen(actualLength)
