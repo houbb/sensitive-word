@@ -110,7 +110,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.26.2</version>
+    <version>0.27.0</version>
 </dependency>
 ```
 
@@ -1215,6 +1215,73 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 这里都是同时使用了系统默认配置，和自定义的配置。
 
 注意：**我们初始化了新的 wordBs，那么用新的 wordBs 去判断。而不是用以前的 `SensitiveWordHelper` 工具方法，工具方法配置是默认的！**
+
+
+# 系统内置词库及如何排除
+
+## 内置词库文件说明
+
+v0.27.0 将词库和当前项目拆分开，词库可以在 [https://github.com/houbb/sensitive-word-data](https://github.com/houbb/sensitive-word-data) 项目查看。
+
+对应的资源文件在 [https://github.com/houbb/sensitive-word-data/tree/main/src/main/resources](https://github.com/houbb/sensitive-word-data/tree/main/src/main/resources) 目录下
+
+| 文件                           | 说明         | 默认加载类              
+|:-----------------------------|:-----------|:-------------------|
+| `sensitive_word_allow.txt`   | 内置自定义白名单词库 | `WordAllowSystem`  |
+| `sensitive_word_deny.txt`    | 内置自定义黑名单词库 |  `WordDenySystem`                  |
+| `sensitive_word_dict.txt`    | 内置黑名单词库    |   `WordDenySystem`                 |
+| `sensitive_word_dict_en.txt` | 内置黑名单英文词库  |   `WordDenySystem`                 |
+| `sensitive_word_tags.txt`    | 内置敏感词标签词库  |   `WordTagSystem`                 |
+
+## 如何排除
+
+比如一些 android app 引入时不希望包中内置敏感的信息，希望对词库加解密或者是放在服务端初始化加载。
+
+系统的内置词库通过下面的 maven 依赖导入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>sensitive-word-data</artifactId>
+    <version>${sensitive-word-data.version}</version>
+</dependency>
+```
+
+### 依赖排除
+
+所以可以按照 maven 排除规范，如下将其排除
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>sensitive-word</artifactId>
+    <version>${sensitive-word.version}</version>
+    <exclusions>
+        <exclusion>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word-data</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+## 排除后自定义
+
+不希望使用内置词库，那就需要将原来内置的词库依赖改为自己的依赖
+
+默认配置项：
+
+```java
+SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+                .wordAllow(WordAllows.defaults())
+                .wordDeny(WordDenys.defaults())
+                .wordTag(WordTags.defaults())
+                .init();
+```
+
+你可以将用到的这3个类，改为自己的实现。
+
+可以通过加解密，或者加载远程服务的文件信息都可以。
 
 # spring 整合
 

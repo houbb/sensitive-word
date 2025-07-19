@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.26.2</version>
+    <version>0.27.0</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -27,6 +27,7 @@
         <!--============================== INTER ==============================-->
         <heaven.version>0.13.0</heaven.version>
         <opencc4j.version>1.8.1</opencc4j.version>
+        <sensitive-word-data.version>1.0.0</sensitive-word-data.version>
 
         <!--============================== OTHER ==============================-->
         <junit.version>4.13.1</junit.version>
@@ -57,6 +58,12 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>heaven</artifactId>
                 <version>${heaven.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word-data</artifactId>
+                <version>${sensitive-word-data.version}</version>
             </dependency>
             <!--============================== OTHER ==============================-->
 
@@ -91,6 +98,11 @@
         <dependency>
             <groupId>com.github.houbb</groupId>
             <artifactId>opencc4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word-data</artifactId>
         </dependency>
 
         <!--============================== OTHER ==============================-->
