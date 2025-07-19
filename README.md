@@ -1427,6 +1427,8 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 
 [v0.25.1 新特性之返回匹配词，修正 tags 标签](https://houbb.github.io/2020/01/07/sensitive-word-14-v0.25.1-tags-match)
 
+[v0.27.0 敏感词库独立拆分](https://houbb.github.io/2020/01/07/sensitive-word-15-v0.27.0-dict-split)
+
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # NLP 开源矩阵
