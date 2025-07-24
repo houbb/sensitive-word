@@ -1,7 +1,7 @@
 package com.github.houbb.sensitive.word.support.tag;
 
-import com.github.houbb.heaven.util.io.StreamUtil;
 import com.github.houbb.sensitive.word.api.IWordTag;
+import com.github.houbb.sensitive.word.utils.InnerStreamUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -16,7 +16,7 @@ public class WordTagSystem extends AbstractWordTag {
     private final IWordTag wordTag;
 
     public WordTagSystem() {
-        List<String> lines = StreamUtil.readAllLines("/sensitive_word_tags.txt");
+        List<String> lines = InnerStreamUtils.readAllLines("/sensitive_word_tags.txt");
         this.wordTag = WordTags.lines(lines);
     }
 
