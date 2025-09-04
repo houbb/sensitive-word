@@ -516,30 +516,32 @@ Assert.assertTrue(wordBs.contains(text));
 
 其中各项配置的说明如下：
 
-| 序号 | 方法                  | 说明                           | 默认值                       |
-|:---|:--------------------|:-----------------------------|:--------------------------|
-| 1  | ignoreCase          | 忽略大小写                        | true                      |
-| 2  | ignoreWidth         | 忽略半角圆角                       | true                      |
-| 3  | ignoreNumStyle      | 忽略数字的写法                      | true                      |
-| 4  | ignoreChineseStyle  | 忽略中文的书写格式                    | true                      |
-| 5  | ignoreEnglishStyle  | 忽略英文的书写格式                    | true                      |
-| 6  | ignoreRepeat        | 忽略重复词                        | false                     |
-| 7  | enableNumCheck      | 是否启用数字检测。                    | false                     |
-| 8  | enableEmailCheck    | 是有启用邮箱检测                     | false                     |
-| 9  | enableUrlCheck      | 是否启用链接检测                     | false                     |
-| 10 | enableIpv4Check     | 是否启用IPv4检测                   | false                     |
-| 11 | enableWordCheck     | 是否启用敏感单词检测                   | true                      |
-| 12 | numCheckLen         | 数字检测，自定义指定长度。                | 8                         |
-| 13 | wordTag             | 词对应的标签                       | none                      |
-| 14 | charIgnore          | 忽略的字符                        | none                      |
-| 15 | wordResultCondition | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真                       |
-| 16 | wordCheckNum        | 数字检测策略(v0.25.0开始支持)          | `WordChecks.num()`        |
-| 17 | wordCheckEmail      | 邮箱检测策略(v0.25.0开始支持)          | `WordChecks.email()`      |
-| 18 | wordCheckUrl        | URL检测策略(v0.25.0开始支持)         | `(WordChecks.url()`       |
-| 19 | wordCheckIpv4       | ipv4检测策略(v0.25.0开始支持)        | `WordChecks.ipv4()`       |
-| 20 | wordCheckWord       | 敏感词检测策略(v0.25.0开始支持)         | `WordChecks.word()`       |
-| 21 | wordReplace         | 替换策略                         | `WordReplaces.defaults()` |
-| 22 | wordFailFast        | 敏感词匹配模式是否快速返回                | true                      |
+| 序号 | 方法                   | 说明                           | 默认值                       |
+|:---|:---------------------|:-----------------------------|:--------------------------|
+| 1  | ignoreCase           | 忽略大小写                        | true                      |
+| 2  | ignoreWidth          | 忽略半角圆角                       | true                      |
+| 3  | ignoreNumStyle       | 忽略数字的写法                      | true                      |
+| 4  | ignoreChineseStyle   | 忽略中文的书写格式                    | true                      |
+| 5  | ignoreEnglishStyle   | 忽略英文的书写格式                    | true                      |
+| 6  | ignoreRepeat         | 忽略重复词                        | false                     |
+| 7  | enableNumCheck       | 是否启用数字检测。                    | false                     |
+| 8  | enableEmailCheck     | 是有启用邮箱检测                     | false                     |
+| 9  | enableUrlCheck       | 是否启用链接检测                     | false                     |
+| 10 | enableIpv4Check      | 是否启用IPv4检测                   | false                     |
+| 11 | enableWordCheck      | 是否启用敏感单词检测                   | true                      |
+| 12 | numCheckLen          | 数字检测，自定义指定长度。                | 8                         |
+| 13 | wordTag              | 词对应的标签                       | none                      |
+| 14 | charIgnore           | 忽略的字符                        | none                      |
+| 15 | wordResultCondition  | 针对匹配的敏感词额外加工，比如可以限制英文单词必须全匹配 | 恒为真                       |
+| 16 | wordCheckNum         | 数字检测策略(v0.25.0开始支持)          | `WordChecks.num()`        |
+| 17 | wordCheckEmail       | 邮箱检测策略(v0.25.0开始支持)          | `WordChecks.email()`      |
+| 18 | wordCheckUrl         | URL检测策略(v0.25.0开始支持)         | `(WordChecks.url()`       |
+| 19 | wordCheckIpv4        | ipv4检测策略(v0.25.0开始支持)        | `WordChecks.ipv4()`       |
+| 20 | wordCheckWord        | 敏感词检测策略(v0.25.0开始支持)         | `WordChecks.word()`       |
+| 21 | wordReplace          | 替换策略                         | `WordReplaces.defaults()` |
+| 22 | wordFailFast         | 敏感词匹配模式是否快速返回                | true                      |
+| 23 | wordFormatText       | 文本整体级别的格式化处理策略(v0.28.0)      | `WordFormatTexts.defaults()`                      |
+| 24 | wordWarmUp         | 预热策略(v0.29.0)                | `WordWarmUps.defaults()`                      |
 
 
 ## wordFailFast 敏感词匹配快速失败模式
