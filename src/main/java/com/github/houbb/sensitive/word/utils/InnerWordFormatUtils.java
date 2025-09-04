@@ -46,29 +46,17 @@ public final class InnerWordFormatUtils {
 
     /**
      * 字符串统一的格式化处理
-     * @param original 原始文本
-     * @param context 上下文
+     * @param map 映射集合
+     * @param c 原始
      * @return 结果
-     * @since 0.6.0
+     * @since 0.28.0
      */
-    public static Map<Character, Character> formatCharsMapping(final String original, final IWordContext context) {
-        if(StringUtil.isEmpty(original)) {
-            return Collections.emptyMap();
+    public static char getMappingChar(final Map<Character, Character> map, char c) {
+        Character mc = map.get(c);
+        if(mc != null) {
+            return mc;
         }
-
-        final int len = original.length();
-
-        char[] rawChars = original.toCharArray();
-        Map<Character, Character> map = new HashMap<>(rawChars.length);
-
-        IWordFormat charFormat = context.wordFormat();
-        for(int i = 0; i < len; i++) {
-            final char currentChar = rawChars[i];
-            char formatChar = charFormat.format(currentChar, context);
-            map.put(currentChar, formatChar);
-        }
-
-        return map;
+        return c;
     }
 
     /**

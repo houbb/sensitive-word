@@ -107,6 +107,12 @@ public class SensitiveWordContext implements IWordContext {
     private IWordFormat wordFormat;
 
     /**
+     * 文本格式化策略
+     * @since 0.28.0
+     */
+    private IWordFormatText wordFormatText;
+
+    /**
      * 单词 map 信息
      *
      * @since 0.3.2
@@ -377,6 +383,17 @@ public class SensitiveWordContext implements IWordContext {
     public SensitiveWordContext wordFormat(IWordFormat wordFormat) {
         this.wordFormat = wordFormat;
         return this;
+    }
+
+    @Override
+    public IWordContext wordFormatText(IWordFormatText wordFormatText) {
+        this.wordFormatText = wordFormatText;
+        return this;
+    }
+
+    @Override
+    public IWordFormatText wordFormatText() {
+        return wordFormatText;
     }
 
     public IWordTag wordTag() {

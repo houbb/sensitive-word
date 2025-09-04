@@ -5,6 +5,7 @@ import com.github.houbb.sensitive.word.api.ISensitiveWordCharIgnore;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
+import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
 
             char currentChar = txt.charAt(i);
             // 映射处理
-            char mappingChar = formatCharMapping.get(currentChar);
+            char mappingChar = InnerWordFormatUtils.getMappingChar(formatCharMapping, currentChar);
 
             // 符合条件
             boolean currentCondition = isCharCondition(mappingChar, i, checkContext);

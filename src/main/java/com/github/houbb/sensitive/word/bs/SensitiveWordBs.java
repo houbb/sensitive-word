@@ -15,6 +15,7 @@ import com.github.houbb.sensitive.word.support.combine.check.WordCheckCombines;
 import com.github.houbb.sensitive.word.support.combine.format.WordFormatCombines;
 import com.github.houbb.sensitive.word.support.data.WordDatas;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
+import com.github.houbb.sensitive.word.support.format.mapping.WordFormatTexts;
 import com.github.houbb.sensitive.word.support.ignore.SensitiveWordCharIgnores;
 import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
@@ -220,6 +221,12 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     private IWordCheck wordCheckIpv4 = WordChecks.ipv4();
 
     /**
+     * 文本处理类
+     * @since 0.28.0
+     */
+    private IWordFormatText wordFormatText = WordFormatTexts.defaults();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -245,6 +252,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         // 2. 格式化策略
         final IWordFormat charFormat = wordFormatCombine.initWordFormat(context);
         context.wordFormat(charFormat);
+
 
         // 3. 初始化对应的 Check 策略
         final IWordCheck sensitiveCheck = wordCheckCombine.initWordCheck(context);
@@ -285,6 +293,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         context.ignoreEnglishStyle(ignoreEnglishStyle);
         context.ignoreRepeat(ignoreRepeat);
         context.wordFailFast(wordFailFast);
+        context.wordFormatText(this.wordFormatText);
 
         // 开启校验
         context.enableNumCheck(enableNumCheck);
@@ -447,6 +456,13 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         ArgUtil.notNull(wordCheckIpv4, "wordCheckIpv4");
 
         this.wordCheckIpv4 = wordCheckIpv4;
+        return this;
+    }
+
+    public SensitiveWordBs wordFormatText(IWordFormatText wordFormatText) {
+        ArgUtil.notNull(wordFormatText, "wordFormatText");
+
+        this.wordFormatText = wordFormatText;
         return this;
     }
 

@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.27.1</version>
+    <version>0.28.0-SNAPSHOT</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -22,7 +22,7 @@
 
         <!--============================== MAIN ==============================-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.compiler.level>1.7</project.compiler.level>
+        <project.compiler.level>1.8</project.compiler.level>
 
         <!--============================== INTER ==============================-->
         <heaven.version>0.13.0</heaven.version>

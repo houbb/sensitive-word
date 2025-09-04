@@ -252,6 +252,23 @@ public interface IWordContext {
     IWordFormat wordFormat();
 
     /**
+     * 设置IWordFormatText
+     *
+     * @param wordFormatText 字符处理
+     * @return 结果
+     * @since 0.3.0
+     */
+    IWordContext wordFormatText(final IWordFormatText wordFormatText);
+
+    /**
+     * 文本格式化策略
+     *
+     * @return 策略
+     * @since 0.28.0
+     */
+    IWordFormatText wordFormatText();
+
+    /**
      * 获取 wordMap 策略
      * @return 策略
      * @since 0.3.2

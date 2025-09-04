@@ -62,7 +62,7 @@ public class SensitiveWord extends AbstractSensitiveWord {
         //TODO: 这里拆分为2个部分，从而保障性能。但是要注意处理下标的问题。
         //1. 原始的敏感词部分
         //2. email/url/num 的单独一次遍历处理。
-        final Map<Character, Character> characterCharacterMap = InnerWordFormatUtils.formatCharsMapping(text, context);
+        final Map<Character, Character> characterCharacterMap = context.wordFormatText().format(text, context);
         final InnerSensitiveWordContext checkContext = InnerSensitiveWordContext.newInstance()
                 .originalText(text)
                 .wordContext(context)

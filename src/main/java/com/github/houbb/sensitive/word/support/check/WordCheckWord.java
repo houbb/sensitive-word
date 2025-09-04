@@ -9,6 +9,7 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.constant.enums.WordTypeEnum;
 import com.github.houbb.sensitive.word.constant.enums.WordContainsTypeEnum;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
+import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class WordCheckWord extends AbstractWordCheck {
                 skipLen++;
                 continue;
             }
-            char mappingChar = formatCharMapping.get(rawChars[i]);
+            char mappingChar = InnerWordFormatUtils.getMappingChar(formatCharMapping, rawChars[i]);
             stringBuilder.append(mappingChar);
             tempLen++;
 
