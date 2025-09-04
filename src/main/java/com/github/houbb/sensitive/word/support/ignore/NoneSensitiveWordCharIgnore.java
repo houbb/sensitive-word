@@ -9,7 +9,7 @@ import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 public class NoneSensitiveWordCharIgnore extends AbstractSensitiveWordCharIgnore {
 
     @Override
-    protected boolean doIgnore(int ix, char[] chars, InnerSensitiveWordContext innerContext) {
+    protected boolean doIgnore(int ix, String text, InnerSensitiveWordContext innerContext) {
         return false;
     }
 

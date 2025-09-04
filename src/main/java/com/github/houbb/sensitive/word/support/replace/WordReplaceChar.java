@@ -29,7 +29,7 @@ public class WordReplaceChar implements IWordReplace {
     }
 
     @Override
-    public void replace(StringBuilder stringBuilder, final char[] rawChars, IWordResult wordResult, IWordContext wordContext) {
+    public void replace(StringBuilder stringBuilder, final String rawText, IWordResult wordResult, IWordContext wordContext) {
         int wordLen = wordResult.endIndex() - wordResult.startIndex();
         for(int i = 0; i < wordLen; i++) {
             stringBuilder.append(replaceChar);

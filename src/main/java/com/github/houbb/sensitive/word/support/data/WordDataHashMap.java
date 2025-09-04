@@ -51,15 +51,14 @@ public class WordDataHashMap extends AbstractWordData {
             }
 
             // 用来按照相应的格式保存敏感词库数据
-            char[] chars = key.toCharArray();
-            final int size = chars.length;
+            final int size = key.length();
 
             // 每一个新词的循环，直接将结果设置为当前 map，所有变化都会体现在结果的 map 中
             Map currentMap = newInnerWordMap;
 
             for (int i = 0; i < size; i++) {
                 // 截取敏感词当中的字，在敏感词库中字为HashMap对象的Key键值
-                char charKey = chars[i];
+                char charKey = key.charAt(i);
                 // 如果集合存在
                 Object wordMap = currentMap.get(charKey);
 

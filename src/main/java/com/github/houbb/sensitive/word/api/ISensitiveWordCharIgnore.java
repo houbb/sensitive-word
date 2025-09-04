@@ -11,12 +11,12 @@ public interface ISensitiveWordCharIgnore {
     /**
      * 是否忽略当前字符
      * @param ix 下标志
-     * @param chars 字符数组
+     * @param text 字符串
      * @param innerContext 上下文
      * @return 结果
      */
     boolean ignore(final int ix,
-                   final char[] chars,
+                   final String text,
                    InnerSensitiveWordContext innerContext);
 
 }

@@ -45,7 +45,6 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
         final ISensitiveWordCharIgnore charIgnore = checkContext.wordContext().charIgnore();
 
         final String txt = checkContext.originalText();
-        final char[] chars = txt.toCharArray();
         final IWordContext context = checkContext.wordContext();
         final Map<Character, Character> formatCharMapping = checkContext.formatCharMapping();
 
@@ -59,7 +58,7 @@ public abstract class AbstractConditionWordCheck extends AbstractWordCheck {
             currentIx = i;
 
             // 是否忽略？
-            boolean ignoreCharFlag = charIgnore.ignore(currentIx, chars, checkContext);
+            boolean ignoreCharFlag = charIgnore.ignore(currentIx, txt, checkContext);
             if(ignoreCharFlag) {
                 tempIgnoreLen++;
 

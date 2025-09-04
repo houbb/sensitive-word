@@ -47,7 +47,6 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
         // 注意边界
         int startIndex = 0;
-        char[] rawChars = target.toCharArray();
 
         for(IWordResult wordResult : allList) {
             final int itemStartIx = wordResult.startIndex();
@@ -55,19 +54,19 @@ public abstract class AbstractSensitiveWord implements ISensitiveWord {
 
             // 脱敏的左边
             if(startIndex < itemStartIx) {
-                stringBuilder.append(rawChars, startIndex, itemStartIx-startIndex);
+                stringBuilder.append(target, startIndex, itemStartIx);
             }
 
             // 脱敏部分
-            replace.replace(stringBuilder, rawChars, wordResult, context);
+            replace.replace(stringBuilder, target, wordResult, context);
 
             // 更新结尾
             startIndex = Math.max(startIndex, itemEndIx);
         }
 
         // 最后部分
-        if (startIndex < rawChars.length) {
-            stringBuilder.append(rawChars, startIndex, rawChars.length-startIndex);
+        if (startIndex < target.length()) {
+            stringBuilder.append(target, startIndex, target.length());
         }
 
         return stringBuilder.toString();

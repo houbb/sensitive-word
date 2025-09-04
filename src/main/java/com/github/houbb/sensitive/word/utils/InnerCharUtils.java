@@ -17,9 +17,8 @@ public class InnerCharUtils {
         int sum = 0;
 
         int weight = 1;
-        char[] chars = text.toCharArray();
         for(int i = len-1; i >= 0; i--) {
-            int val = getCharInt(chars[i]);
+            int val = getCharInt(text.charAt(i));
 
             sum += weight * val;
 

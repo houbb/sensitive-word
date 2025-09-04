@@ -21,7 +21,7 @@ public class WordResultHandlerWordTags extends AbstractWordResultHandler<WordTag
         WordTagsDto dto = new WordTagsDto();
 
         // 截取
-        String word = InnerWordCharUtils.getString(originalText.toCharArray(), wordResult);
+        String word = InnerWordCharUtils.getString(originalText, wordResult);
 
         // 获取 tags (使用清理后的单词查找标签)
         Set<String> wordTags = InnerWordTagUtils.tags(word, wordContext);

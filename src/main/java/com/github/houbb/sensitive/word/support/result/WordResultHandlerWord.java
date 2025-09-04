@@ -26,7 +26,7 @@ public class WordResultHandlerWord extends AbstractWordResultHandler<String> {
     @Override
     protected String doHandle(IWordResult wordResult, IWordContext wordContext, String originalText) {
         // 截取
-        return InnerWordCharUtils.getString(originalText.toCharArray(), wordResult);
+        return InnerWordCharUtils.getString(originalText, wordResult);
     }
 
 }

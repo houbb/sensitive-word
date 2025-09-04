@@ -46,19 +46,18 @@ public class WordCheckWord extends AbstractWordCheck {
         final boolean failFast = context.wordFailFast();
 
         StringBuilder stringBuilder = new StringBuilder();
-        char[] rawChars = txt.toCharArray();
         int tempLen = 0;
         int maxWhite = 0;
         int maxBlack = 0;
         int skipLen = 0;
 
-        for (int i = beginIndex; i < rawChars.length; i++) {
-            if (wordCharIgnore.ignore(i, rawChars, innerContext) && tempLen != 0) {
+        for (int i = beginIndex; i < txt.length(); i++) {
+            if (wordCharIgnore.ignore(i, txt, innerContext) && tempLen != 0) {
                 tempLen++;
                 skipLen++;
                 continue;
             }
-            char mappingChar = InnerWordFormatUtils.getMappingChar(formatCharMapping, rawChars[i]);
+            char mappingChar = InnerWordFormatUtils.getMappingChar(formatCharMapping, txt.charAt(i));
             stringBuilder.append(mappingChar);
             tempLen++;
 

@@ -74,13 +74,14 @@ public final class InnerWordCharUtils {
      * @return 结果
      * @since 0.5.0
      */
-    public static String getString(final char[] chars,
-                                   final int startIndex,
-                                   final int endIndex) {
-        // 截取
-        int len = endIndex - startIndex;
-        return new String(chars, startIndex, len);
-    }
+//    @Deprecated
+//    public static String getString(final char[] chars,
+//                                   final int startIndex,
+//                                   final int endIndex) {
+//        // 截取
+//        int len = endIndex - startIndex;
+//        return new String(chars, startIndex, len);
+//    }
 
     /**
      * 构建字符串
@@ -89,9 +90,35 @@ public final class InnerWordCharUtils {
      * @return 结果
      * @since 0.5.0
      */
-    public static String getString(final char[] chars,
+//    @Deprecated
+//    public static String getString(final char[] chars,
+//                                   final IWordResult wordResult) {
+//        return getString(chars, wordResult.startIndex(), wordResult.endIndex());
+//    }
+
+    /**
+     * 构建字符串
+     * @param text 字符串
+     * @param startIndex 开始位置
+     * @param endIndex 结束位置
+     * @return 结果
+     * @since 0.29.0
+     */
+    public static String getString(final String text,
+                                   final int startIndex,
+                                   final int endIndex) {
+        return text.substring(startIndex, endIndex);
+    }
+    /**
+     * 构建字符串
+     * @param text 字符串
+     * @param wordResult 结果
+     * @return 结果
+     * @since 0.29.0
+     */
+    public static String getString(final String text,
                                    final IWordResult wordResult) {
-        return getString(chars, wordResult.startIndex(), wordResult.endIndex());
+        return getString(text, wordResult.startIndex(), wordResult.endIndex());
     }
 
 }

@@ -14,8 +14,8 @@ import com.github.houbb.sensitive.word.utils.InnerWordCharUtils;
 public class MyWordReplace implements IWordReplace {
 
     @Override
-    public void replace(StringBuilder stringBuilder, final char[] rawChars, IWordResult wordResult, IWordContext wordContext) {
-        String sensitiveWord = InnerWordCharUtils.getString(rawChars, wordResult);
+    public void replace(StringBuilder stringBuilder, final String rawText,  IWordResult wordResult, IWordContext wordContext) {
+        String sensitiveWord = InnerWordCharUtils.getString(rawText, wordResult);
         // 自定义不同的敏感词替换策略，可以从数据库等地方读取
         if("五星红旗".equals(sensitiveWord)) {
             stringBuilder.append("国家旗帜");

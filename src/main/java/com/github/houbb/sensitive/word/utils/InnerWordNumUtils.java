@@ -89,10 +89,10 @@ public final class InnerWordNumUtils {
             return string;
         }
 
-        char[] chars = string.toCharArray();
-        StringBuilder stringBuilder = new StringBuilder(chars.length);
-        for(char c : chars) {
-            char mapChar = getMappingChar(c);
+        int length = string.length();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for(int i = 0; i < length; i++) {
+            char mapChar = getMappingChar(string.charAt(i));
 
             //TODO: stop word 的处理
             stringBuilder.append(mapChar);

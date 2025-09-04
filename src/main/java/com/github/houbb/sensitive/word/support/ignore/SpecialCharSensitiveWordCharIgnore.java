@@ -20,8 +20,8 @@ public class SpecialCharSensitiveWordCharIgnore extends AbstractSensitiveWordCha
     }
 
     @Override
-    protected boolean doIgnore(int ix, char[] chars, InnerSensitiveWordContext innerContext) {
-        char c = chars[ix];
+    protected boolean doIgnore(int ix, String text, InnerSensitiveWordContext innerContext) {
+        char c = text.charAt(ix);
         return SET.contains(c);
     }
 

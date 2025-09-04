@@ -165,9 +165,10 @@ public class WordDataTree extends AbstractWordData {
      */
     private void addWord(WordDataTreeNode newRoot, String word) {
         WordDataTreeNode tempNode = newRoot;
-        char[] chars = word.toCharArray();
-        for (char c : chars) {
+        for (int i = 0; i < word.length(); i++) {
             // 获取子节点
+            char c = word.charAt(i);
+
             WordDataTreeNode subNode = tempNode.getSubNode(c);
             if (subNode == null) {
                 subNode = new WordDataTreeNode();
@@ -188,11 +189,12 @@ public class WordDataTree extends AbstractWordData {
         WordDataTreeNode tempNode = root;
         //需要删除的
         Map<Character, WordDataTreeNode> map = new HashMap<>();
-        char[] chars = word.toCharArray();
-        int length = chars.length;
+        int length = word.length();
         for (int i = 0; i < length; i++) {
+            final char c = word.charAt(i);
+
             //不存在第一个词
-            WordDataTreeNode subNode = tempNode.getSubNode(chars[i]);
+            WordDataTreeNode subNode = tempNode.getSubNode(c);
             if (subNode == null) {
                 return;
             }
@@ -210,7 +212,7 @@ public class WordDataTree extends AbstractWordData {
             if (subNode.end()) {
                 map.clear();
             }
-            map.put(chars[i], tempNode);
+            map.put(c, tempNode);
 
             tempNode = subNode;
         }
