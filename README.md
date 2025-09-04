@@ -110,7 +110,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.28.0</version>
+    <version>0.29.0</version>
 </dependency>
 ```
 
@@ -1428,6 +1428,8 @@ FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义
 [v0.25.1 新特性之返回匹配词，修正 tags 标签](https://houbb.github.io/2020/01/07/sensitive-word-14-v0.25.1-tags-match)
 
 [v0.27.0 敏感词库独立拆分](https://houbb.github.io/2020/01/07/sensitive-word-15-v0.27.0-dict-split)
+
+[v0.28.0+v0.29.0 敏感词性能优化值本地方法调用为何这么慢?](https://houbb.github.io/2025/08/29/sensitive-word-why-so-slow)
 
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 

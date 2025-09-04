@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.issues;
 import com.github.houbb.sensitive.word.api.IWordDeny;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
+import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
 
 import java.io.IOException;
@@ -25,12 +26,7 @@ public class Issue131 {
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
                 .wordFailFast(true)
                 .wordAllow(WordAllows.empty())
-                .wordDeny(new IWordDeny() {
-                    @Override
-                    public List<String> deny() {
-                        return allWord;
-                    }
-                })
+                .wordDeny(WordDenys.empty())
                 .ignoreChineseStyle(false)
                 .ignoreCase(false)
                 .ignoreEnglishStyle(false)
@@ -39,17 +35,12 @@ public class Issue131 {
                 .ignoreWidth(false)
                 .wordTag(WordTags.none())
                 .init();
-        long time = System.currentTimeMillis();
-        costTimeTest(sensitiveWordBs, demo1);
-        long cTime = System.currentTimeMillis() - time;
-        System.out.println("---DONE"+cTime);
-    }
 
-    private static void costTimeTest(SensitiveWordBs sensitiveWordBs, String demo1) throws IOException {
-        int count = 10000;
-
-        for (int i = 0; i < count; i++) {
+        for(int i = 0; i < 5; i++) {
+            long time = System.nanoTime();
             List<String> emitWord1 = sensitiveWordBs.findAll(demo1);
+            long cTime = System.nanoTime() - time;
+            System.out.println("Total="+cTime);
         }
     }
 

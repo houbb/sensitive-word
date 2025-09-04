@@ -21,6 +21,7 @@ import com.github.houbb.sensitive.word.support.replace.WordReplaces;
 import com.github.houbb.sensitive.word.support.result.WordResultHandlers;
 import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import com.github.houbb.sensitive.word.support.tag.WordTags;
+import com.github.houbb.sensitive.word.support.warmup.WordWarmUps;
 import com.github.houbb.sensitive.word.utils.InnerWordFormatUtils;
 import com.github.houbb.sensitive.word.utils.InnerWordTagUtils;
 
@@ -227,6 +228,12 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
     private IWordFormatText wordFormatText = WordFormatTexts.defaults();
 
     /**
+     * 预热
+     * @since 0.29.0
+     */
+    private IWordWarmUp wordWarmUp = WordWarmUps.defaults();
+
+    /**
      * 新建验证实例
      * <p>
      * double-lock
@@ -273,7 +280,17 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
 
         this.context = context;
 
+        this.warmUp(wordAllowList, wordDenyList);
+
         return this;
+    }
+
+    /**
+     * 避免冷启动
+     * @since 0.29.0
+     */
+    private void warmUp(final List<String> wordAllowList, final List<String> wordDenyList) {
+        this.wordWarmUp.warmUp(this, context, wordAllowList, wordDenyList);
     }
 
     /**
@@ -463,6 +480,13 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
         ArgUtil.notNull(wordFormatText, "wordFormatText");
 
         this.wordFormatText = wordFormatText;
+        return this;
+    }
+
+    public SensitiveWordBs wordWarmUp(IWordWarmUp wordWarmUp) {
+        ArgUtil.notNull(wordWarmUp, "wordWarmUp");
+
+        this.wordWarmUp = wordWarmUp;
         return this;
     }
 
@@ -663,8 +687,6 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.0.1
      */
     public <R> List<R> findAll(final String target, final IWordResultHandler<R> handler) {
-        ArgUtil.notNull(handler, "handler");
-
         List<IWordResult> wordResults = sensitiveWord.findAll(target, context);
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
@@ -685,8 +707,6 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * @since 0.0.1
      */
     public <R> R findFirst(final String target, final IWordResultHandler<R> handler) {
-        ArgUtil.notNull(handler, "handler");
-
         IWordResult wordResult = sensitiveWord.findFirst(target, context);
         return handler.handle(wordResult, context, target);
     }
