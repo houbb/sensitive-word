@@ -2,7 +2,6 @@ package com.github.houbb.sensitive.word.support.format.mapping;
 
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordFormat;
-import com.github.houbb.sensitive.word.support.check.WordCheckNone;
 import com.github.houbb.sensitive.word.support.format.WordFormatNone;
 
 import java.util.Collections;
@@ -26,6 +25,7 @@ public class WordFormatTextDefault extends AbstractWordFormatText {
             return Collections.emptyMap();
         }
 
+        //v0.29.2
         Map<Character, Character> map = new HashMap<>();
         for(int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);

@@ -3,20 +3,17 @@ package com.github.houbb.sensitive.word.support.format;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordFormat;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.github.houbb.sensitive.word.collection.Char2CharMap;
 
 /**
  * 忽略英文的各种格式
  * @author binbin.hou
  * @since 0.0.6
  */
-@Deprecated
 @ThreadSafe
-public class WordFormatIgnoreEnglishStyle implements IWordFormat {
+public class WordFormatIgnoreEnglishStyleC2C implements IWordFormat {
 
-    private static final IWordFormat INSTANCE = new WordFormatIgnoreEnglishStyle();
+    private static final IWordFormat INSTANCE = new WordFormatIgnoreEnglishStyleC2C();
 
     public static IWordFormat getInstance() {
         return INSTANCE;
@@ -44,7 +41,7 @@ public class WordFormatIgnoreEnglishStyle implements IWordFormat {
     /**
      * 字母映射表
      */
-    private static final Map<Character,Character> LETTER_MAP = new HashMap<>(LETTERS_ONE.length());
+    private static final Char2CharMap LETTER_MAP = new Char2CharMap(LETTERS_ONE.length());
 
     static {
         final int size = LETTERS_ONE.length();
@@ -60,10 +57,9 @@ public class WordFormatIgnoreEnglishStyle implements IWordFormat {
      * @since 0.29.x
      */
     private char getMappingChar(final char c) {
-        Character mapChar = LETTER_MAP.get(c);
-        return mapChar == null ? c : mapChar;
+        char mc = LETTER_MAP.get(c);
+        return mc == 0 ? c : mc;
     }
-
 
     @Override
     public char format(char original, IWordContext context) {

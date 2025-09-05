@@ -3,6 +3,7 @@ package com.github.houbb.sensitive.word.support.format;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordFormat;
+import com.github.houbb.sensitive.word.collection.Char2CharMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +13,10 @@ import java.util.Map;
  * @author binbin.hou
  * @since 0.0.5
  */
-@Deprecated
 @ThreadSafe
-public class WordFormatIgnoreNumStyle implements IWordFormat {
+public class WordFormatIgnoreNumStyleC2C implements IWordFormat {
 
-    private static final IWordFormat INSTANCE = new WordFormatIgnoreNumStyle();
+    private static final IWordFormat INSTANCE = new WordFormatIgnoreNumStyleC2C();
 
     public static IWordFormat getInstance() {
         return INSTANCE;
@@ -58,7 +58,7 @@ public class WordFormatIgnoreNumStyle implements IWordFormat {
             "123456789" +
             "123456789";
 
-    private static final Map<Character,Character> NUMBER_MAP = new HashMap<>(NUM_ONE.length());
+    private static final Char2CharMap NUMBER_MAP = new Char2CharMap(NUM_ONE.length());
 
     static {
         final int size = NUM_ONE.length();
@@ -74,8 +74,8 @@ public class WordFormatIgnoreNumStyle implements IWordFormat {
      * @since 0.0.4
      */
     private char getMappingChar(final char c) {
-        Character mapChar = NUMBER_MAP.get(c);
-        return mapChar == null ? c : mapChar;
+        char mc = NUMBER_MAP.get(c);
+        return mc == 0 ? c : mc;
     }
 
     @Override

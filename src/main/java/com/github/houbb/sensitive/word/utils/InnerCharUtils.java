@@ -6,6 +6,24 @@ package com.github.houbb.sensitive.word.utils;
 public class InnerCharUtils {
 
     /**
+     * 转换为半角
+     * @param original 原始
+     * @return 半角
+     * @since 0.29.2
+     */
+    public static char toHalfWidth(char original) {
+        // 全角空格
+        if (original == '\u3000') return ' ';
+        // 其他可转换全角字符
+        if (original >= '\uFF01' && original <= '\uFF5E') {
+            return (char) (original - 0xFEE0);
+        }
+        // 其他字符保持不变
+        return original;
+    }
+
+
+    /**
      * 转换为整数
      * @param text 文本
      * @return 整数

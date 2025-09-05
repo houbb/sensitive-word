@@ -1,9 +1,9 @@
 package com.github.houbb.sensitive.word.support.format;
 
 import com.github.houbb.heaven.annotation.ThreadSafe;
-import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.sensitive.word.api.IWordContext;
 import com.github.houbb.sensitive.word.api.IWordFormat;
+import com.github.houbb.sensitive.word.utils.InnerCharUtils;
 
 /**
  * 格式化字宽度
@@ -21,7 +21,7 @@ public class WordFormatIgnoreWidth implements IWordFormat {
 
     @Override
     public char format(char original, IWordContext context) {
-        return CharUtil.toHalfWidth(original);
+        return InnerCharUtils.toHalfWidth(original);
     }
 
 }

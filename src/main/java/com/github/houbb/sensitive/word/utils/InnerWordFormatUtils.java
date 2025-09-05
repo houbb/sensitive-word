@@ -47,17 +47,20 @@ public final class InnerWordFormatUtils {
 
     /**
      * 字符串统一的格式化处理
+     *
+     * 注意：这个需要 map 的实现是 {@link it.unimi.dsi.fastutil.chars.Char2CharOpenHashMap}
      * @param map 映射集合
      * @param c 原始
      * @return 结果
      * @since 0.28.0
      */
     public static char getMappingChar(final Map<Character, Character> map, char c) {
-        Character mc = map.get(c);
-        if(mc != null) {
-            return mc;
+        //Char2CharOpenHashMap 不存在映射也是返回 null
+        Object mc = map.get(c);
+        if(mc == null) {
+            return c;
         }
-        return c;
+        return (char) mc;
     }
 
     /**

@@ -51,7 +51,7 @@ public final class WordFormats {
     }
 
     public static IWordFormat ignoreEnglishStyle() {
-        return WordFormatIgnoreEnglishStyle.getInstance();
+        return WordFormatIgnoreEnglishStyleC2C.getInstance();
     }
 
     public static IWordFormat ignoreChineseStyle() {
@@ -59,7 +59,7 @@ public final class WordFormats {
     }
 
     public static IWordFormat ignoreNumStyle() {
-        return WordFormatIgnoreNumStyle.getInstance();
+        return WordFormatIgnoreNumStyleC2C.getInstance();
     }
 
     public static IWordFormat ignoreWidth() {
