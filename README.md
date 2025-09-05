@@ -30,7 +30,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 
 - 基于 fluent-api 实现，使用优雅简洁
 
-- [基于 DFA 算法，性能为 7W+ QPS，应用无感](https://github.com/houbb/sensitive-word#benchmark)
+- [基于 DFA 算法，性能为 14W+ QPS，应用无感](https://github.com/houbb/sensitive-word#benchmark)
 
 - [支持敏感词的判断、返回、脱敏等常见操作](https://github.com/houbb/sensitive-word#%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95)
 
