@@ -1417,6 +1417,12 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 [v0.28.0+v0.29.0 敏感词性能优化值本地方法调用为何这么慢?](https://houbb.github.io/2025/08/29/sensitive-word-why-so-slow)
 
+[v0.29.1 敏感词性能优化-0.29.1-内部类+迭代器内部类](https://houbb.github.io/2025/09/05/sensitive-word-v0.29.1-opt-init-iter)
+
+[v0.29.2 基本类型拆箱、装箱的进一步优化的尝试](https://houbb.github.io/2025/09/05/sensitive-word-v0.29.2-basic-type-opt)
+
+[vv0.29.3 依赖的繁简体转换 opencc4j 优化](https://houbb.github.io/2025/08/29/sensitive-word-v0.29.3-opencc4j-opt)
+
 ![wechat](https://img-blog.csdnimg.cn/63926529df364f09bcb203a8a9016854.png)
 
 # NLP 开源矩阵
