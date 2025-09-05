@@ -14,6 +14,7 @@ public class BenchmarkTimesTest {
      *
      * V0.6.0: 1470ms，接近 7.2W QPS
      * V0.7.0: 1380ms
+     * v0.29.2: 781ms，接近 14W QPS
      */
     @Test
     public void onlyWordAndNoReplaceTest() {
@@ -47,6 +48,7 @@ public class BenchmarkTimesTest {
      *
      * V0.6.0: 2744ms, 约 3.7W QPS
      * V0.7.0: 2723ms
+     * V0.29.2: 1588ms，约 6.29W QPS
      */
     @Test
     public void onlyWordAndWithReplaceTest() {

@@ -110,7 +110,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.29.1</version>
+    <version>0.29.2</version>
 </dependency>
 ```
 
@@ -1334,7 +1334,7 @@ public class SpringSensitiveWordConfig {
 
 # Benchmark
 
-V0.6.0 以后，添加对应的 benchmark 测试。
+V0.29.2 以后，对应的 benchmark 测试。
 
 > [BenchmarkTimesTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/benchmark/BenchmarkTimesTest.java)
 
@@ -1354,10 +1354,10 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 测试数据：100+ 字符串，循环 10W 次。
 
-| 序号 | 场景               | 耗时 | 备注            |
-|:----|:-----------------|:----|:--------------|
-| 1 | 只做敏感词，无任何格式转换    | 1470ms，约 7.2W QPS | 追求极致性能，可以这样配置 |
-| 2 | 只做敏感词，支持全部格式转换  | 2744ms，约 3.7W QPS | 满足大部分场景       |
+| 序号 | 场景               | QPS                 | 备注         |
+|:----|:-----------------|:--------------------|:--------------|
+| 1 | 只做敏感词，无任何格式转换    | 781ms，接近 14W QPS    | 追求极致性能，可以这样配置 |
+| 2 | 只做敏感词，支持全部格式转换  | 1588ms，约 6.29W QPS  | 满足大部分场景       |
 
 # STAR
 
@@ -1365,13 +1365,9 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 # 后期 road-map
 
-- [] fastutil 优化 jdk 内置集合类
+- [x] 各种其他涉及到 char 拆箱的地方改进
 
 - [] 中文转换优化-opencc4j 内存+性能优化 
-
-WordFormatIgnoreChineseStyle 转换类不够精简，可以优化一下。采用直接映射（收口在 opencc4j）。
-
-- [] 各种其他涉及到 char 拆箱的地方改进
 
 # 拓展阅读
 
