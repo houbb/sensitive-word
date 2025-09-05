@@ -464,3 +464,10 @@
 | 1  | O    | 尽量用 string.charAt 替代 `chars[i]` | 2025-9-4 16:22:24 | https://github.com/houbb/sensitive-word/issues/131 |
 | 2  | O    | 移除引导类公共方法的 check                | 2025-9-4 16:22:24 | https://github.com/houbb/sensitive-word/issues/131 |
 | 3  | A    | 新增 warmUp                       | 2025-9-4 16:22:24 |  |
+
+# release_0.29.1
+
+| 序号 | 变更类型 | 说明                          | 时间                | 备注                  |
+|:---|:-----|-----------------------------|:------------------|:--------------------|
+| 1  | O    | 改进 check、format 的 chains 方法 | 2025-9-5 16:22:24 | 优化性能                |
+| 2  | O    | InnerWordFormatUtils#format | 2025-9-5 16:22:24 | 优化性能+内存 toCharArray |

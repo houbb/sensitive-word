@@ -35,8 +35,9 @@ public final class InnerWordFormatUtils {
 
         StringBuilder stringBuilder = new StringBuilder();
         IWordFormat charFormat = context.wordFormat();
-        char[] chars = original.toCharArray();
-        for(char c : chars) {
+        int len = original.length();
+        for(int i = 0; i < len; i++) {
+            char c = original.charAt(i);
             char cf = charFormat.format(c, context);
             stringBuilder.append(cf);
         }

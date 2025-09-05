@@ -1,13 +1,10 @@
 package com.github.houbb.sensitive.word.support.check;
 
-import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordCheck;
-import com.github.houbb.sensitive.word.api.IWordContext;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,29 +20,16 @@ public final class WordChecks {
             return none();
         }
 
-        return new WordCheckInit() {
-            @Override
-            protected void init(Pipeline<IWordCheck> pipeline) {
-                for(IWordCheck check : sensitiveChecks) {
-                    pipeline.addLast(check);
-                }
-            }
-        };
+        List<IWordCheck> wordChecks = new ArrayList<>(sensitiveChecks.length);
+        return array(wordChecks);
     }
 
-    public static IWordCheck chains(final Collection<IWordCheck> sensitiveChecks) {
+    public static IWordCheck chains(final List<IWordCheck> sensitiveChecks) {
         if (CollectionUtil.isEmpty(sensitiveChecks)){
             return none();
         }
 
-        return new WordCheckInit() {
-            @Override
-            protected void init(Pipeline<IWordCheck> pipeline) {
-                for(IWordCheck check : sensitiveChecks) {
-                    pipeline.addLast(check);
-                }
-            }
-        };
+        return array(sensitiveChecks);
     }
 
     public static IWordCheck email() {
@@ -86,6 +70,16 @@ public final class WordChecks {
      */
     public static IWordCheck urlNoPrefix() {
         return WordCheckUrlNoPrefix.getInstance();
+    }
+
+    /**
+     * 集合
+     *
+     * @return 实现
+     * @since 0.30.0
+     */
+    public static IWordCheck array(final List<IWordCheck> wordChecks) {
+        return new WordCheckArray(wordChecks);
     }
 
 }

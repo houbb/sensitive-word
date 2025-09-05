@@ -14,6 +14,7 @@ import java.util.List;
  * @since 0.0.5
  */
 @ThreadSafe
+@Deprecated
 public abstract class WordFormatInit implements IWordFormat {
 
     /**

@@ -31,7 +31,7 @@ public class WordDataTreeNode implements ISensitiveWordDestroy {
         return this;
     }
 
-    public WordDataTreeNode getSubNode(final char c) {
+    public WordDataTreeNode getSubNode(final Character c) {
         if(subNodeMap == null) {
             return null;
         }
@@ -52,14 +52,14 @@ public class WordDataTreeNode implements ISensitiveWordDestroy {
         subNodeMap=null;
     }
 
-    public void removeNode(final char c) {
+    public void removeNode(final Character c) {
         if (subNodeMap == null) {
             return;
         }
         subNodeMap.remove(c);
     }
 
-    public WordDataTreeNode addSubNode(char c, WordDataTreeNode subNode) {
+    public WordDataTreeNode addSubNode(Character c, WordDataTreeNode subNode) {
         if(this.subNodeMap == null) {
             subNodeMap = new HashMap<>();
         }

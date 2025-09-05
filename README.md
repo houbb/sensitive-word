@@ -110,7 +110,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.29.0</version>
+    <version>0.29.1</version>
 </dependency>
 ```
 
@@ -1365,25 +1365,13 @@ ps: 不同环境会有差异，但是比例基本稳定。
 
 # 后期 road-map
 
-- [x] 移除单个汉字的敏感词，在中国，要把词组当做一次词，降低误判率。
+- [] fastutil 优化 jdk 内置集合类
 
-- [x] 支持单个的敏感词变化？
+- [] 中文转换优化-opencc4j 内存+性能优化 
 
-remove、add、edit?
+WordFormatIgnoreChineseStyle 转换类不够精简，可以优化一下。采用直接映射（收口在 opencc4j）。
 
-- [x] 敏感词标签接口支持
-
-- [x] 敏感词处理时标签支持
-
-- [x] wordData 的内存占用对比 + 优化
-
-- [x] 用户指定自定义的词组，同时允许指定词组的组合获取，更加灵活
-
-FormatCombine/CheckCombine/AllowDenyCombine 组合策略，允许用户自定义。
-
-- [ ] word check 策略的优化，统一遍历+转换
-
-- [ ] 添加 ThreadLocal 等性能优化
+- [] 各种其他涉及到 char 拆箱的地方改进
 
 # 拓展阅读
 

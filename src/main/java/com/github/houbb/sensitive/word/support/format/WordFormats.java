@@ -1,13 +1,10 @@
 package com.github.houbb.sensitive.word.support.format;
 
-import com.github.houbb.heaven.support.pipeline.Pipeline;
-import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.util.ArrayUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.github.houbb.sensitive.word.api.IWordFormat;
-import com.github.houbb.sensitive.word.api.IWordContext;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,14 +26,8 @@ public final class WordFormats {
             return none();
         }
 
-        return new WordFormatInit() {
-            @Override
-            protected void init(Pipeline<IWordFormat> pipeline) {
-                for(IWordFormat charFormat : charFormats) {
-                    pipeline.addLast(charFormat);
-                }
-            }
-        };
+        List<IWordFormat> wordFormats = new ArrayList<>(charFormats.length);
+        return array(wordFormats);
     }
 
     /**
@@ -44,19 +35,12 @@ public final class WordFormats {
      * @param charFormats 列表
      * @return 结果
      */
-    public static IWordFormat chains(final Collection<IWordFormat> charFormats) {
+    public static IWordFormat chains(final List<IWordFormat> charFormats) {
         if(CollectionUtil.isEmpty(charFormats)) {
             return none();
         }
 
-        return new WordFormatInit() {
-            @Override
-            protected void init(Pipeline<IWordFormat> pipeline) {
-                for(IWordFormat charFormat : charFormats) {
-                    pipeline.addLast(charFormat);
-                }
-            }
-        };
+        return array(charFormats);
     }
 
     public static IWordFormat none() {
@@ -80,6 +64,10 @@ public final class WordFormats {
 
     public static IWordFormat ignoreWidth() {
         return WordFormatIgnoreWidth.getInstance();
+    }
+
+    public static IWordFormat array(final List<IWordFormat> wordFormats) {
+        return new WordFormatArray(wordFormats);
     }
 
 }

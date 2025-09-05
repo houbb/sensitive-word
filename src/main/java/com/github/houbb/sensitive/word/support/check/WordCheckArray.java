@@ -1,7 +1,6 @@
 package com.github.houbb.sensitive.word.support.check;
 
-import com.github.houbb.heaven.support.pipeline.Pipeline;
-import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
+import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.sensitive.word.api.IWordCheck;
 import com.github.houbb.sensitive.word.api.context.InnerSensitiveWordContext;
 import com.github.houbb.sensitive.word.support.result.WordLengthResult;
@@ -9,31 +8,29 @@ import com.github.houbb.sensitive.word.support.result.WordLengthResult;
 import java.util.List;
 
 /**
- * 检测初始化类
- * @since 0.3.0
+ * 集合
+ * @author binbin.hou
+ * @since 0.30.0
  */
-@Deprecated
-public abstract class WordCheckInit implements IWordCheck {
+public class WordCheckArray implements IWordCheck {
 
-    /**
-     * 初始化列表
-     *
-     * @param pipeline 当前列表泳道
-     * @since 0.0.13
-     */
-    protected abstract void init(final Pipeline<IWordCheck> pipeline);
+    private final IWordCheck[] sensitiveChecks;
+    private final int size;
+    public WordCheckArray(List<IWordCheck> sensitiveChecks) {
+        ArgUtil.notEmpty(sensitiveChecks, "sensitiveChecks");
 
+        this.size = sensitiveChecks.size();
+        this.sensitiveChecks = new IWordCheck[size];
+        for(int i = 0; i < size; i++) {
+            this.sensitiveChecks[i] = sensitiveChecks.get(i);
+        }
+    }
 
     @Override
-    public WordCheckResult sensitiveCheck(final int beginIndex,
-                                          final InnerSensitiveWordContext checkContext) {
-
-        Pipeline<IWordCheck> pipeline = new DefaultPipeline<>();
-        this.init(pipeline);
-        List<IWordCheck> sensitiveChecks = pipeline.list();
-
+    public WordCheckResult sensitiveCheck(int beginIndex, InnerSensitiveWordContext checkContext) {
         // 循环调用
-        for(IWordCheck sensitiveCheck : sensitiveChecks) {
+        for(int i = 0; i < size; i++) {
+            IWordCheck sensitiveCheck = sensitiveChecks[i];
             WordCheckResult result = sensitiveCheck.sensitiveCheck(beginIndex, checkContext);
 
             WordLengthResult wordLengthResult = result.wordLengthResult();
