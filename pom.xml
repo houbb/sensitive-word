@@ -6,7 +6,7 @@
 
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.29.3-SNAPSHOT</version>
+    <version>0.29.3</version>
 
     <properties>
         <!--============================== All Plugins START ==============================-->
@@ -26,7 +26,7 @@
 
         <!--============================== INTER ==============================-->
         <heaven.version>0.13.0</heaven.version>
-        <opencc4j.version>1.14.0-SNAPSHOT</opencc4j.version>
+        <opencc4j.version>1.14.0</opencc4j.version>
         <sensitive-word-data.version>1.0.0</sensitive-word-data.version>
 
         <!--============================== OTHER ==============================-->
@@ -181,20 +181,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${plugin.maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <!-- 指定源码编码 -->
-                    <encoding>UTF-8</encoding>
-                    <!-- 指定文档编码 -->
-                    <docencoding>UTF-8</docencoding>
-                    <!-- 输出 HTML 的 charset -->
-                    <charset>UTF-8</charset>
-                    <!-- 强制生成，不因警告/错误中断 -->
-                    <failOnError>false</failOnError>
-                    <!-- 可以跳过 doclint -->
-                    <additionalJOptions>
-                        <additionalJOption>-Xdoclint:none</additionalJOption>
-                    </additionalJOptions>
-                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -271,9 +265,6 @@
                             <docencoding>UTF-8</docencoding>
                             <additionalJOptions>
                                 <additionalJOption>-Xdoclint:none</additionalJOption>
-                                <additionalJOption>-charset UTF-8</additionalJOption>
-                                <additionalJOption>-encoding UTF-8</additionalJOption>
-                                <additionalJOption>-docencoding UTF-8</additionalJOption>
                             </additionalJOptions>
                         </configuration>
                         <executions>
