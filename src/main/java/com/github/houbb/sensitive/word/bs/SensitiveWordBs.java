@@ -189,7 +189,7 @@ public class SensitiveWordBs implements ISensitiveWordDestroy {
      * 敏感词结果匹配策略
      * @since 0.13.0
      */
-    private IWordResultCondition wordResultCondition = WordResultConditions.alwaysTrue();
+    private IWordResultCondition wordResultCondition = WordResultConditions.defaults();
 
     /**
      * 单词检测策略

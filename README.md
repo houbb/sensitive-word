@@ -110,7 +110,7 @@ v0.24.0 开始内置支持对敏感词的分类细化，不过工作量比较大
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>sensitive-word</artifactId>
-    <version>0.29.2</version>
+    <version>0.29.4</version>
 </dependency>
 ```
 
@@ -767,6 +767,7 @@ WordResultConditions 工具类可以获取匹配策略
 
 | 实现                                         | 说明                  | 支持版本    |
 |:-------------------------------------------|:--------------------|:--------|
+| defaults                                   | 默认策略                | v0.29.4 |
 | alwaysTrue                                 | 恒为真                 |         |
 | englishWordMatch                           | 英文单词全词匹配            | v0.13.0 |
 | englishWordNumMatch                        | 英文单词/数字全词匹配         | v0.20.0 |

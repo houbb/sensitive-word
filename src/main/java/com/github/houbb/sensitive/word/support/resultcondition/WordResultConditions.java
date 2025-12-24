@@ -15,6 +15,15 @@ import java.util.List;
 public final class WordResultConditions {
 
     /**
+     * 默认策略
+     * @return 结果
+     * @since 0.29.4
+     */
+    public static IWordResultCondition defaults() {
+        return englishWordMatch();
+    }
+
+    /**
      * 恒为真
      * @return 结果
      */

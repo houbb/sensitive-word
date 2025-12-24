@@ -1,11 +1,15 @@
 package com.github.houbb.sensitive.word.bs;
 
+import com.github.houbb.sensitive.word.api.IWordDeny;
 import com.github.houbb.sensitive.word.support.allow.WordAllows;
 import com.github.houbb.sensitive.word.support.deny.WordDenys;
 import com.github.houbb.sensitive.word.support.replace.WordReplaces;
+import com.github.houbb.sensitive.word.support.resultcondition.WordResultConditions;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -112,6 +116,24 @@ public class SensitiveWordBsTest {
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
         Assert.assertTrue(wordBs.contains(text));
+    }
+
+    /**
+     * 是否包含
+     * @since 0.29.4
+     */
+    @Test
+    public void wordMatchTest() {
+        IWordDeny wordDeny = new IWordDeny() {
+            @Override
+            public List<String> deny() {
+                return Arrays.asList("av");
+            }
+        };
+        final String text = "have a nice day";
+
+        Assert.assertFalse(SensitiveWordBs.newInstance().wordDeny(wordDeny).init().contains(text));
+        Assert.assertTrue(SensitiveWordBs.newInstance().wordDeny(wordDeny).wordResultCondition(WordResultConditions.alwaysTrue()).init().contains(text));
     }
 
 }
